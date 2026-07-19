@@ -8,26 +8,31 @@ const Router = () => {
 
 export default Router
 
+// import { BrowserRouter, Route, Routes } from "react-router-dom";
+// import NotFound from "../pages/not-found";
+// import { routers } from "../store/routers";
 
+// const Routing = () => {
+//   return (
+//     <>
+//       <BrowserRouter>
+//         {/* <SideBar /> */}
+//         <Routes>
+//           {routers.map((route) => {
+//             return (
+//               <Route
+//                 path={route.path}
+//                 element={route.element}
+//                 key={route.path}
+//               />
+//             );
+//           })}
+//           <Route path="*" element={<NotFound />} />
+//         </Routes>
+//         {/* <Footer/> */}
+//       </BrowserRouter>
+//     </>
+//   );
+// };
 
-
-
-// import { StrictMode } from 'react'
-// import { createRoot } from 'react-dom/client'
-// import { BrowserRouter, Routes, Route } from 'react-router'
-// import App from './App.tsx'
-// import './index.css'
-
-// // Un exemple de page de profil pour le test
-// const Profile = () => <div className="p-8 text-white">Mon Profil</div>
-
-// createRoot(document.getElementById('root')!).render(
-//   <StrictMode>
-//     <BrowserRouter>
-//       <Routes>
-//         <Route path="/" element={<App />} />
-//         <Route path="/profile" element={<Profile />} />
-//       </Routes>
-//     </BrowserRouter>
-//   </StrictMode>,
-// )
+// export default Routing;
