@@ -52,7 +52,7 @@ export const userApi = {
         return res.json();
     },
 
-    update: async (token: string, data: User) => {
+    update: async (token: string, data: Account) => {
         const res = await fetch(`${API_URL}/users/update`, {
             method: "PUT",
             headers: {

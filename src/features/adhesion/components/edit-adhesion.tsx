@@ -4,6 +4,7 @@ import { getToken } from "../../../utlis/get-token";
 import { useToast } from "../../../components/toast-context";
 import Modal from "../../../components/modal";
 import { Loader2 } from "lucide-react";
+import { useEditeAdhesion } from "../hooks/use-edit-aadhesion";
 
 type modalProps = {
   open: string;
@@ -14,7 +15,7 @@ type modalProps = {
 
 const EditAdhesion = ({ open, onClose, addhesion, choice }: modalProps) => {
   const token = getToken();
-  const { updateUser, fail, pending } = useUpdateUser(token ?? "");
+  const { updateUser, fail, pending } = useEditeAdhesion(token ?? "");
   const { showToast } = useToast();
   const [formData, setFormData] = useState({
     id: addhesion.id,
@@ -68,11 +69,11 @@ const EditAdhesion = ({ open, onClose, addhesion, choice }: modalProps) => {
             onChange={handleMembreChange}
           >
             <option value="">-- Choix role --</option>
-            {roleItems.map((rol) => (
+            {/* {roleItems.map((rol) => (
               <option key={rol.id} value={rol.id}>
                 {rol.name}
               </option>
-            ))}
+            ))} */}
           </select>
         </div>
         <div className="w-full my-1">

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Loader2 } from "lucide-react";
 import { useToast } from "../../../components/toast-context";
 import { getToken } from "../../../utlis/get-token";
+import { useCreateAdhesion } from "../hooks/use-create-adhesion";
 import type { User } from "../../../utlis/type";
 // import { useToast } from "@/components/customer-toast";
 // import { useCreateUser } from "../hooks/use-create-user";
@@ -19,7 +20,7 @@ const CreateAdhesion = ({ open, onClose, roleItems }: createUserProps) => {
 
   const { showToast } = useToast();
   const [formData, setFormData] = useState({
-    id: "",
+    id: 0,
     membre: "",
     montant: 0,
     annee: "",
@@ -72,7 +73,7 @@ const CreateAdhesion = ({ open, onClose, roleItems }: createUserProps) => {
               <option value="">-- Choix role --</option>
               {roleItems.map((rol) => (
                 <option key={rol.id} value={rol.id}>
-                  {rol.name}
+                  {rol.email}
                 </option>
               ))}
             </select>
