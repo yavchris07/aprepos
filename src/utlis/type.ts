@@ -3,7 +3,10 @@ import type { ReactNode } from "react";
 export const ADMN = "";
 export const CASHIER = "";
 
-export interface router { path: string, element: ReactNode }
+export interface router {
+  path: string;
+  element: ReactNode;
+}
 
 // types
 export type User = {
@@ -72,7 +75,6 @@ export type Refund = {
   date: string;
 };
 
-
 export type Social = {
   id: number;
   membre: string;
@@ -82,4 +84,7 @@ export type Social = {
   date: string;
 };
 
+export type LoginData = { email: string; password: string };
 
+
+// https://www.youtube.com/watch?v=dHbkxKjzD3I

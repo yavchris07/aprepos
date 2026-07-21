@@ -1,11 +1,11 @@
-
+import RootLayout from "../components/root-layout";
 
 const MemberPage = () => {
   return (
-    <div>
-      
-    </div>
-  )
-}
+    <RootLayout>
+      <p>Account</p>
+    </RootLayout>
+  );
+};
 
-export default MemberPage
+export default MemberPage;

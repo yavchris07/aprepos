@@ -1,11 +1,12 @@
-import React from 'react'
+import React from "react";
+import RootLayout from "../components/root-layout";
 
 const RefundPage = () => {
   return (
-    <div>
-      
-    </div>
-  )
-}
+    <RootLayout>
+      <p>Account</p>
+    </RootLayout>
+  );
+};
 
-export default RefundPage
+export default RefundPage;

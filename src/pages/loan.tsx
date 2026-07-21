@@ -1,11 +1,11 @@
-import React from 'react'
+import RootLayout from "../components/root-layout";
 
 const LoanPage = () => {
   return (
-    <div>
-      
-    </div>
-  )
-}
+    <RootLayout>
+      <p>Account</p>
+    </RootLayout>
+  );
+};
 
-export default LoanPage
+export default LoanPage;

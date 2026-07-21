@@ -1,11 +1,11 @@
-import React from 'react'
+import RootLayout from "../components/root-layout";
 
 const TransactionPage = () => {
   return (
-    <div>
-      
-    </div>
-  )
-}
+    <RootLayout>
+      <p>Account</p>
+    </RootLayout>
+  );
+};
 
-export default TransactionPage
+export default TransactionPage;

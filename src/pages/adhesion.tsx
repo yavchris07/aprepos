@@ -1,11 +1,12 @@
-import React from 'react'
+import React from "react";
+import RootLayout from "../components/root-layout";
 
 const AdhesionPage = () => {
   return (
-    <div>
-      
-    </div>
-  )
-}
+    <RootLayout>
+      <p>Account</p>
+    </RootLayout>
+  );
+};
 
-export default AdhesionPage
+export default AdhesionPage;

@@ -1,9 +1,12 @@
+import type { Adhesion } from "../../utlis/type";
 
-const API_URL = process.env.NEXT_PUBLIC_BASE_URL;
+// const API_URL = import.meta.env.BASE_URL;
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000/api";
 
-export const userApi = {
 
-    create: async (data: User, token: string) => {
+export const adhesionApi = {
+
+    create: async (data: Adhesion, token: string) => {
 
         const res = await fetch(`${API_URL}/users/create`, {
             method: "POST",
@@ -49,7 +52,7 @@ export const userApi = {
         return res.json();
     },
 
-    update: async (token: string, data: User) => {
+    update: async (token: string, data: Adhesion) => {
         const res = await fetch(`${API_URL}/users/update`, {
             method: "PUT",
             headers: {
@@ -62,7 +65,7 @@ export const userApi = {
         return res.json();
     },
 
-    delete: async (token: string, id:string) => {
+    delete: async (token: string, id:number) => {
         const res = await fetch(`${API_URL}/users/delete`, {
             method: "DELETE",
             headers: {

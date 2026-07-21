@@ -7,9 +7,15 @@ const SplashScreenPage = () => {
   useEffect(() => {
     setTimeout(() => {
       navigate("/login");
-    }, 2300);  
+    }, 2300);
   }, [navigate]);
-  return (<div>Splash screen</div>);
+
+  console.log('Splash')
+  return (
+    <div className="bg-red-500">
+      <h4 className="text-5xl">Splash screen</h4>
+    </div>
+  );
 };
 
 export default SplashScreenPage;

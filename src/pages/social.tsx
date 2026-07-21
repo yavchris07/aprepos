@@ -1,9 +1,11 @@
+import RootLayout from "../components/root-layout";
+
 const SocialPage = () => {
   return (
-    <div>
-      
-    </div>
-  )
-}
+    <RootLayout>
+      <p>Account</p>
+    </RootLayout>
+  );
+};
 
-export default SocialPage
+export default SocialPage;

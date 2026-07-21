@@ -1,10 +1,10 @@
-import React from 'react'
+import RootLayout from '../components/root-layout'
 
 const AccountPage = () => {
   return (
-    <div>
-      
-    </div>
+    <RootLayout>
+      <p>Account</p>
+    </RootLayout>
   )
 }
 

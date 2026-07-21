@@ -1,6 +1,7 @@
-import { type ReactNode, useState } from 'react';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { BrowserRouter } from 'react-router';
+import { type ReactNode, useState } from "react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { BrowserRouter } from "react-router";
+import { ToastProvider } from "../components/customer-toast";
 
 interface AppProviderProps {
   children: ReactNode;
@@ -14,17 +15,17 @@ export function AppProvider({ children }: AppProviderProps) {
         defaultOptions: {
           queries: {
             refetchOnWindowFocus: false, // Recommandé en prod pour éviter les requêtes intempestives
-            retry: 1,                    // Nombre de tentatives en cas d'échec API
-            staleTime: 1000 * 60 * 5,    // Les données sont considérées "fraîches" pendant 5 min
+            retry: 1, // Nombre de tentatives en cas d'échec API
+            staleTime: 1000 * 60 * 5, // Les données sont considérées "fraîches" pendant 5 min
           },
         },
-      })
+      }),
   );
 
   return (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
-        {children}
+        <ToastProvider>{children}</ToastProvider>
       </BrowserRouter>
     </QueryClientProvider>
   );

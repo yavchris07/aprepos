@@ -1,10 +1,11 @@
+import RootLayout from "../components/root-layout";
 
 const KindPage = () => {
   return (
-    <div>
-      
-    </div>
-  )
-}
+    <RootLayout>
+      <p>Account</p>
+    </RootLayout>
+  );
+};
 
-export default KindPage
+export default KindPage;

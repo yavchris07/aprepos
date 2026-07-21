@@ -1,20 +1,7 @@
-import './App.css'
+// import Router from "./components/router";
 
-function App() {
+import Router from "./components/router";
 
-  return (
-    <>
-      <section id="center">
-        <div className="hero">
-        </div>
-        <div>
-          <h1 className='text-8xl'>APREPOS</h1>
-           
-        </div>
-        
-      </section>
-    </>
-  )
-}
+function App() {return <Router />;}
 
-export default App
+export default App;
