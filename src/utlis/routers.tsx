@@ -3,6 +3,7 @@ import AdhesionPage from "../pages/adhesion";
 import DashboardPage from "../pages/dashboard";
 import LoanPage from "../pages/loan";
 import LoginPage from "../pages/login";
+import MemberPage from "../pages/member";
 import RefundPage from "../pages/refund";
 import SocialPage from "../pages/social";
 import SplashScreenPage from "../pages/splash-screen";
@@ -45,5 +46,9 @@ export const routers: router[] = [
   {
     path: "/dashboard",
     element: <DashboardPage />,
+  },
+   {
+    path: "/members",
+    element: <MemberPage />,
   },
 ];

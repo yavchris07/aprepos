@@ -17,7 +17,7 @@ export const useEditeAdhesion = (token: string) => {
   });
 
   return {
-    updateUser: mutation.mutateAsync,
+    editAdhesion: mutation.mutateAsync,
     pending: mutation.isPending,
     fail: mutation.error instanceof Error ? mutation.error.message : "",
     data: mutation.data,

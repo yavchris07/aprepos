@@ -35,7 +35,7 @@ const Navbar = () => {
         <div className="flex items-center justify-between">
           <div className="menu-left flex gap-1">
             <a href="/dashboard" className="text-xl font-bold text-gray-900">
-              <h3>APREPOS</h3>
+              <h3>CEPARCREA</h3>
             </a>
           </div>
 

@@ -4,7 +4,7 @@ const API_URL = import.meta.env.BASE_URL;
 // const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:8000/api";
 
 
-export const userApi = {
+export const accountApi = {
 
     create: async (data: Account, token: string) => {
 
@@ -65,7 +65,7 @@ export const userApi = {
         return res.json();
     },
 
-    delete: async (token: string, id:string) => {
+    delete: async (token: string, id:number) => {
         const res = await fetch(`${API_URL}/users/delete`, {
             method: "DELETE",
             headers: {

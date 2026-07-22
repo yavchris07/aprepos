@@ -61,7 +61,7 @@ const LoginForm = () => {
             />
           </div>
           <div className="flex flex-col my-4">
-            <button className="bg-green-700 py-2 px-3 rounded hover:bg-green-800 text-white cursor-pointer flex justify-center">
+            <button className="bg-green-800 py-2 px-3 rounded hover:bg-green-900 text-white cursor-pointer flex justify-center">
               {pending ? (
                 <Loader2 className="animate-spin text-center" size={22} />
               ) : (

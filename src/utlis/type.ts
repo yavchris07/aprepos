@@ -49,10 +49,10 @@ export type Account = {
   balance: number;
 };
 
-export type Transactions = {
+export type Transaction = {
   id: number;
   compte: number;
-  type_transactions: string;
+  type_transaction: string;
   montant: number;
   date: string;
   reference: string;

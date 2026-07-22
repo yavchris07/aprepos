@@ -68,7 +68,7 @@ const DeletAdhesion = ({ adhesion, open, onClose }: modalProps) => {
           </span>
           <button
             type="submit"
-            className="bg-red-700 text-white text-xs py-2 px-6 rounded cursor-pointer font-semibold flex justify-center"
+            className="bg-red-800 text-white text-xs py-2 px-6 rounded cursor-pointer font-semibold flex justify-center"
             disabled={pending}
           >
             {pending ? (

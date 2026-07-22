@@ -64,7 +64,6 @@ const ListAdhesion = ({
               </td>
               <td className="whitespace-nowrap px-6 py-2 font-medium text-gray-900">
                 <div className="flex items-center gap-2">
-                  {/* <User2 className="h-4 w-4 text-gray-700 shrink-0" /> */}
                   <span>{adh.montant}</span>
                 </div>
               </td>

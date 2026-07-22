@@ -21,7 +21,7 @@ const Sidebar = () => {
       <div className="bg-white border border-gray-200 rounded p-4">
         <div className="space-y-4">
           <div className="flex flex-col items-start justify-center">
-            <div className="w-22.5 h-22.5 rounded-full bg-purple-500 flex items-center justify-center">
+            <div className="w-22.5 h-22.5 rounded-full bg-green-800 flex items-center justify-center">
               <User size={50} color="white" />
             </div>
             <p className="text-xs py-3">

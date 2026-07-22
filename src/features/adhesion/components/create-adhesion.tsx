@@ -3,18 +3,15 @@ import { Loader2 } from "lucide-react";
 import { useToast } from "../../../components/toast-context";
 import { getToken } from "../../../utlis/get-token";
 import { useCreateAdhesion } from "../hooks/use-create-adhesion";
-import type { User } from "../../../utlis/type";
-// import { useToast } from "@/components/customer-toast";
-// import { useCreateUser } from "../hooks/use-create-user";
-// import { Role } from "@/utils/types";
+import type { Member } from "../../../utlis/type";
 
 type createUserProps = {
-  open: boolean;
+  open: string;
   onClose: () => void;
-  roleItems: User[];
+  members: Member[];
 };
 
-const CreateAdhesion = ({ open, onClose, roleItems }: createUserProps) => {
+const CreateAdhesion = ({ open, onClose, members }: createUserProps) => {
   const token = getToken();
   const { create, fail, pending } = useCreateAdhesion(token ?? "");
 
@@ -69,11 +66,12 @@ const CreateAdhesion = ({ open, onClose, roleItems }: createUserProps) => {
             <select
               className="border border-gray-400 text-black py-2 pl-2 rounded text-sm w-full"
               onChange={handleMembreChange}
+              value={formData.membre}
             >
-              <option value="">-- Choix role --</option>
-              {roleItems.map((rol) => (
-                <option key={rol.id} value={rol.id}>
-                  {rol.email}
+              <option value="">-- Membre --</option>
+              {members.map((m) => (
+                <option key={m.id} value={m.id}>
+                  {m.nom_complet}
                 </option>
               ))}
             </select>
@@ -88,7 +86,7 @@ const CreateAdhesion = ({ open, onClose, roleItems }: createUserProps) => {
               onChange={(e) =>
                 setFormData({ ...formData, montant: Number(e.target.value) })
               }
-              placeholder="Matricule"
+              placeholder="Montant"
               className="border border-gray-400 text-black py-2 pl-2 rounded text-sm w-full"
             />
           </div>
@@ -101,7 +99,7 @@ const CreateAdhesion = ({ open, onClose, roleItems }: createUserProps) => {
               onChange={(e) =>
                 setFormData({ ...formData, annee: e.target.value })
               }
-              placeholder="Numéro ID"
+              placeholder="Année"
               className="border border-gray-400 text-black py-2 pl-2 rounded text-sm w-full"
             />
           </div>
@@ -109,7 +107,7 @@ const CreateAdhesion = ({ open, onClose, roleItems }: createUserProps) => {
           <div className="w-full my-1">
             <label className="text-gray-900 text-xs font-semibold">Date</label>
             <input
-              type="text"
+              type="date"
               value={formData.date}
               onChange={(e) =>
                 setFormData({ ...formData, date: e.target.value })
@@ -128,7 +126,7 @@ const CreateAdhesion = ({ open, onClose, roleItems }: createUserProps) => {
             </span>
             <button
               type="submit"
-              className="bg-amber-500 text-black text-xs py-2 px-6 rounded cursor-pointer font-semibold flex justify-center"
+              className="bg-green-800 text-white text-xs py-2 px-6 rounded cursor-pointer font-semibold flex justify-center"
               disabled={pending}
             >
               {pending ? (

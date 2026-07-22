@@ -64,7 +64,7 @@ const SidebarItems = () => {
     { path: "/socials", name: "Social", icon: <Repeat2 size={17} /> },
     { path: "/loans", name: "Emprunts", icon: <Coins size={17} /> },
     {
-      path: "/refund",
+      path: "/refunds",
       name: "Remboursement",
       icon: <ChartCandlestick size={17} />,
     },

@@ -1,21 +1,21 @@
 import React, { useState } from "react";
-import type { Adhesion } from "../../../utlis/type";
+import type { Adhesion, Member } from "../../../utlis/type";
 import { getToken } from "../../../utlis/get-token";
 import { useToast } from "../../../components/toast-context";
 import Modal from "../../../components/modal";
 import { Loader2 } from "lucide-react";
-import { useEditeAdhesion } from "../hooks/use-edit-aadhesion";
+import { useEditeAdhesion } from "../hooks/use-edit-adhesion";
 
 type modalProps = {
   open: string;
   onClose: () => void;
   addhesion: Adhesion;
-  choice: { id: string; name: string }[];
+  members: Member[];
 };
 
-const EditAdhesion = ({ open, onClose, addhesion, choice }: modalProps) => {
+const EditAdhesion = ({ open, onClose, addhesion, members }: modalProps) => {
   const token = getToken();
-  const { updateUser, fail, pending } = useEditeAdhesion(token ?? "");
+  const { editAdhesion, fail, pending } = useEditeAdhesion(token ?? "");
   const { showToast } = useToast();
   const [formData, setFormData] = useState({
     id: addhesion.id,
@@ -25,13 +25,11 @@ const EditAdhesion = ({ open, onClose, addhesion, choice }: modalProps) => {
     date: addhesion.date,
   });
 
-  console.log("rrr == : ", choice);
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       console.log("XX==XX :", formData);
-      await updateUser(formData);
+      await editAdhesion(formData);
       showToast("Mise a jour reussie !", "success");
       onClose();
     } catch (e) {
@@ -53,7 +51,7 @@ const EditAdhesion = ({ open, onClose, addhesion, choice }: modalProps) => {
   return (
     <Modal>
       <div className="flex justify-between items-center my-2">
-        <h2 className="text-black font-semibold">Editer utilisateur</h2>
+        <h2 className="text-black font-semibold">Editer adhesion</h2>
         <span onClick={onClose} className="text-gray-600 cursor-pointer">
           x
         </span>
@@ -67,13 +65,14 @@ const EditAdhesion = ({ open, onClose, addhesion, choice }: modalProps) => {
           <select
             className="border border-gray-400 text-black py-2 pl-2 rounded text-sm w-full"
             onChange={handleMembreChange}
+            value={formData.membre}
           >
-            <option value="">-- Choix role --</option>
-            {/* {roleItems.map((rol) => (
-              <option key={rol.id} value={rol.id}>
-                {rol.name}
+            <option value="">-- Membre --</option>
+            {members.map((m) => (
+              <option key={m.id} value={m.id}>
+                {m.nom_complet}
               </option>
-            ))} */}
+            ))}
           </select>
         </div>
         <div className="w-full my-1">
@@ -122,10 +121,14 @@ const EditAdhesion = ({ open, onClose, addhesion, choice }: modalProps) => {
           </span>
           <button
             type="submit"
-            className="bg-amber-500 text-black text-xs py-2 px-6 rounded cursor-pointer font-semibold flex justify-center"
+            className="bg-green-800 text-white text-xs py-2 px-6 rounded cursor-pointer font-semibold flex justify-center"
             disabled={pending}
           >
-            {pending ? <Loader2 className="animate-spin" size={14} /> : "Editer"}
+            {pending ? (
+              <Loader2 className="animate-spin" size={14} />
+            ) : (
+              "Editer"
+            )}
           </button>
         </div>
       </form>
