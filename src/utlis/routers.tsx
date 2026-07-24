@@ -5,6 +5,7 @@ import LoanPage from "../pages/loan";
 import LoginPage from "../pages/login";
 import MemberPage from "../pages/member";
 import RefundPage from "../pages/refund";
+import SettingPage from "../pages/settings";
 import SocialPage from "../pages/social";
 import SplashScreenPage from "../pages/splash-screen";
 import TransactionPage from "../pages/transaction";
@@ -47,8 +48,12 @@ export const routers: router[] = [
     path: "/dashboard",
     element: <DashboardPage />,
   },
-   {
+  {
     path: "/members",
     element: <MemberPage />,
+  },
+  {
+    path: "/settings",
+    element: <SettingPage />,
   },
 ];

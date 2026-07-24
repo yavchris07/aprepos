@@ -2,10 +2,10 @@ import { useState } from "react";
 import RootLayout from "../components/root-layout";
 import type { Loan } from "../utlis/type";
 import CreateLoan from "../features/loan/components/create-loan";
- 
+
 import ListLoans from "../features/loan/components/list-loan";
 import EditLoan from "../features/loan/components/edit-loan";
- 
+
 import DeleteLoan from "../features/loan/components/delete-loan";
 
 const LoanPage = () => {
@@ -172,16 +172,41 @@ const LoanPage = () => {
 
   return (
     <RootLayout>
-      <div className="flex justify-between">
-        <p>Emprunts</p>
+      <div className="flex justify-between items-center my-3">
+        <h1 className="text-gray-900 font-semibold text-sm">
+          Tableau de board /{" "}
+          <span className="text-gray-500">Emprunts</span>{" "}
+        </h1>
+
         <span
-          className="bg-green-800 text-white px-3 py-1 rounded"
+          className="bg-green-800 text-white px-3 py-1 rounded cursor-pointer"
           onClick={() => setModal("open")}
         >
-          Nouveau
+          Nouvelle
         </span>
-      </div>\
-      <ListLoans loading={false} onDelete={handleDelete} onEdit={handleEdit} onView={handleView} loans={ln} />
+      </div>
+
+      <div className="flex justify-between items-center my-6 rounded">
+        <div>
+          {" "}
+          <span className="bg-green-800 py-2 px-4 rounded text-xs text-white">
+            PDF
+          </span>{" "}
+        </div>
+        <input
+          type="text"
+          placeholder="Recherchez par nom !"
+          className="border border-gray-400 py-2 pl-2 rounded"
+        />
+      </div>
+
+      <ListLoans
+        loading={false}
+        onDelete={handleDelete}
+        onEdit={handleEdit}
+        onView={handleView}
+        loans={ln}
+      />
 
       {modal === "open" && (
         <CreateLoan

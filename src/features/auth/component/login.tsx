@@ -27,18 +27,18 @@ const LoginForm = () => {
   };
   return (
     // <div className="min-h-full flex flex-col">
-    <div className="flex flex-col flex-1 items-center justify-center font-sans mt-40 ">
+    <div className="flex flex-col flex-1 items-center justify-center font-sans bg-zinc-200">
       <div className="p-1 px-10 py-40">
-        <h1>Ceparcrea</h1>
-        <p className="text-gray-400 text-xs">Coopérative d'épargne et crédit de l'amitié.</p> 
+        <h1 className="font-semibold">CEPARCREA</h1>
+        <p className="text-gray-500 text-sm">Coopérative d'épargne et crédit de l'amitié.</p> 
         <form className="my-4" onSubmit={handleSubmit}>
           <div className="flex flex-col my-2">
-            <label htmlFor="" className="text-sm text-gray-500">
+            <label className="text-sm text-gray-500">
               E-mail
             </label>
             <input
               type="text"
-              className="border border-gray-400 rounded py-2 pl-3 text-gray-900 text-sm"
+              className="border border-gray-400 rounded py-3 pl-3 text-gray-900 text-sm"
               placeholder="E-mail"
               value={formData.email}
               onChange={(e) => {
@@ -47,12 +47,12 @@ const LoginForm = () => {
             />
           </div>
           <div className="flex flex-col">
-            <label htmlFor="" className="text-sm text-gray-500">
+            <label className="text-sm text-gray-500">
               Mot de passe
             </label>
             <input
               type="password"
-              className="border border-gray-400 rounded py-2 pl-3 text-gray-900 text-sm"
+              className="border border-gray-400 rounded py-3 pl-3 text-gray-900 text-sm"
               placeholder="Mot de passe"
               value={formData.password}
               onChange={(e) =>
@@ -61,7 +61,7 @@ const LoginForm = () => {
             />
           </div>
           <div className="flex flex-col my-4">
-            <button className="bg-green-800 py-2 px-3 rounded hover:bg-green-900 text-white cursor-pointer flex justify-center">
+            <button className="bg-green-800 py-3 px-3 rounded hover:bg-green-900 text-white cursor-pointer flex justify-center">
               {pending ? (
                 <Loader2 className="animate-spin text-center" size={22} />
               ) : (
@@ -69,8 +69,8 @@ const LoginForm = () => {
               )}
             </button>
           </div>
-          <p className="text-gray-600 text-xs"> <strong> Problème de connexion ?</strong> Veiullez contacter l'Administrateur.</p>
-          <p className="text-green-700 text-xs text-center font-semibold">info@alt-space.com</p>
+          <p className="text-gray-600 text-sm"> <strong> Problème de connexion ?</strong> Veuillez contacter l'Administrateur.</p>
+          <p className="text-green-700 text-sm text-center font-semibold mt-2">info@alt-space.com</p>
         </form>
       </div>
     </div>
