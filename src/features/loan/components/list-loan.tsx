@@ -10,13 +10,7 @@ interface loanProps {
   onView: (loan: Loan) => void;
 }
 
-const ListLoans = ({
-  loans,
-  loading,
-  onDelete,
-  onEdit,
-  onView,
-}: loanProps) => {
+const ListLoans = ({ loans, loading, onDelete, onEdit, onView }: loanProps) => {
   if (loading) return <Loading />;
   return (
     <div className="w-full bg-gray-100 my-2">
@@ -38,24 +32,25 @@ const ListLoans = ({
             >
               Taux
             </th>
-             <th
+            <th
               scope="col"
               className="px-6 py-4 max-w-xs text-left md:max-w-md"
             >
               Total
             </th>
-             <th
+            <th
               scope="col"
               className="px-6 py-4 max-w-xs text-left md:max-w-md"
             >
-              Date
+              Reste
             </th>
             <th
               scope="col"
               className="px-6 py-4 max-w-xs text-left md:max-w-md"
             >
-              Etat
+              Date
             </th>
+
             <th scope="col" className="px-6 py-4 text-center">
               Actions
             </th>
@@ -76,16 +71,17 @@ const ListLoans = ({
               <td className="whitespace-nowrap px-6 py-2">
                 <span>{loan.montant}</span>
               </td>
+
+              <td className="whitespace-nowrap px-6 py-2">
+                <span className="font-medium">{loan.total_a_payer}</span>
+              </td>
               <td className="whitespace-nowrap px-6 py-2">
                 <span className="font-medium">{loan.taux_interet}</span>
               </td>
               <td className="whitespace-nowrap px-6 py-2">
-                <span className="font-medium">{loan.total_a_payer}</span>
+                <span className="font-medium text-red-700">{loan.balance}</span>
               </td>
-               <td className="whitespace-nowrap px-6 py-2">
-                <span className="font-medium">{loan.balance}</span>
-              </td>
-               <td className="whitespace-nowrap px-6 py-2">
+              <td className="whitespace-nowrap px-6 py-2">
                 <span className="font-medium">{loan.date}</span>
               </td>
               <td className="whitespace-nowrap px-6 py-2 font-medium flex gap-2 justify-center">

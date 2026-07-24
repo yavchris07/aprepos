@@ -6,6 +6,7 @@ import EditAdhesion from "../features/adhesion/components/edit-adhesion";
 import DeletAdhesion from "../features/adhesion/components/delete-adhesion";
 import CreateAdhesion from "../features/adhesion/components/create-adhesion";
 import { ArrowBigLeft, ArrowBigRight } from "lucide-react";
+import AdhesionItem from "../features/adhesion/components/adhesion-item";
 
 const AdhesionPage = () => {
   const items = [
@@ -109,7 +110,8 @@ const AdhesionPage = () => {
     <RootLayout>
       <div className="flex justify-between items-center my-3">
         <h1 className="text-gray-900 font-semibold text-sm">
-          Tableau de board / <span className="text-gray-500">Adhesion</span>{" "}
+          Tableau de board /{" "}
+          <span className="text-gray-500">Adhesion</span>{" "}
         </h1>
 
         <span
@@ -123,13 +125,13 @@ const AdhesionPage = () => {
       <div className="flex justify-between items-center my-6 rounded">
         <div>
           {" "}
-          <span className="bg-green-800 py-2 px-4 rounded text-xs text-white">
+          <span className="bg-green-800 py-2 px-4 rounded text-xs text-white cursor-pointer">
             PDF
           </span>{" "}
         </div>
         <input
           type="text"
-          placeholder="Recherchez par nom !"
+          placeholder="Recherche par nom !"
           className="border border-gray-400 py-2 pl-2 rounded"
           value={searchQuery}
           onChange={handleSearchChange}
@@ -143,6 +145,36 @@ const AdhesionPage = () => {
         onEdit={handleEdit}
         onView={handleView}
       />
+
+      {items.length > 12 && (
+        <div className="flex gap-2 text-gray-500 w-max px-4 py-2 rounded mt-6">
+          <button
+            disabled={currentPage === 1}
+            onClick={() => setCurrentPage((prev) => prev - 1)}
+            className="bg-green-700 text-white p-2 rounded-full cursor-pointer hover:bg-green-600 transition disabled:bg-gray-400 disabled:cursor-not-allowed"
+          >
+            <ArrowBigLeft size={12} />
+          </button>
+          <span>
+            Page {currentPage} / {totalPages}
+          </span>
+          <button
+            disabled={currentPage === totalPages}
+            onClick={() => setCurrentPage((prev) => prev + 1)}
+            className="bg-green-700 text-white p-2 rounded-full cursor-pointer hover:bg-green-600 transition disabled:bg-gray-400 disabled:cursor-not-allowed"
+          >
+            <ArrowBigRight size={12} />
+          </button>
+        </div>
+      )}
+
+      {modal === "view" && selectedItem && (
+        <AdhesionItem
+          adhesion={selectedItem}
+          onClose={() => setModal(null)}
+          open={modal}
+        />
+      )}
       {modal === "open" && (
         <CreateAdhesion
           onClose={() => setModal(null)}

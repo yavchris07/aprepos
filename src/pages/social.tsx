@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import RootLayout from "../components/root-layout";
 import CreateSocial from "../features/socials/components/create-socila";
 import ListSocial from "../features/socials/components/list-social";
 import type { Social } from "../utlis/type";
 import EditSocial from "../features/socials/components/edit-social";
 import DeleteSocial from "../features/socials/components/delete-social";
+import { ArrowBigLeft, ArrowBigRight } from "lucide-react";
 
 const SocialPage = () => {
   const sc = [
@@ -197,6 +198,31 @@ const SocialPage = () => {
     setSelectedItem(item);
     setModal("view");
   };
+
+  const [searchQuery, setSearchQuery] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+
+  //Search
+  const filteredData = useMemo(() => {
+    return sc.filter((item) =>
+      item.membre.toLowerCase().includes(searchQuery.toLowerCase()),
+    );
+  }, [sc, searchQuery]);
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
+    setCurrentPage(1);
+  };
+
+  // Pagination
+  const itemsPerPage = 18;
+
+  // Pagination logic
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentSocials = filteredData.slice(indexOfFirstItem, indexOfLastItem);
+
+  const totalPages = Math.ceil(sc.length / itemsPerPage);
   return (
     <RootLayout>
       <div className="flex justify-between items-center my-3">
@@ -215,14 +241,16 @@ const SocialPage = () => {
       <div className="flex justify-between items-center my-6 rounded">
         <div>
           {" "}
-          <span className="bg-green-800 py-2 px-4 rounded text-xs text-white">
-            PDF
+          <span className="bg-green-800 py-2 px-4 rounded text-xs text-white cursor-pointer">
+            Relevé
           </span>{" "}
         </div>
         <input
           type="text"
           placeholder="Recherchez par nom !"
           className="border border-gray-400 py-2 pl-2 rounded"
+          onChange={handleSearchChange}
+          value={searchQuery}
         />
       </div>
 
@@ -231,8 +259,31 @@ const SocialPage = () => {
         onDelete={handleDelete}
         onEdit={handleEdit}
         onView={handleView}
-        socials={sc}
+        socials={currentSocials}
       />
+
+      {/* Pagination */}
+      {sc.length > 18 && (
+        <div className="flex gap-2 text-gray-500 w-max px-4 py-2 rounded mt-2 ">
+          <button
+            disabled={currentPage === 1}
+            onClick={() => setCurrentPage((prev) => prev - 1)}
+            className="bg-green-700 text-white p-2 rounded-full cursor-pointer hover:bg-green-600 transition disabled:bg-gray-400 disabled:cursor-not-allowed"
+          >
+            <ArrowBigLeft size={10} />
+          </button>
+          <span>
+            Page {currentPage} / {totalPages}
+          </span>
+          <button
+            disabled={currentPage === totalPages}
+            onClick={() => setCurrentPage((prev) => prev + 1)}
+            className="bg-green-700 text-white p-2 rounded-full cursor-pointer hover:bg-green-600 transition disabled:bg-gray-400 disabled:cursor-not-allowed"
+          >
+            <ArrowBigRight size={10} />
+          </button>
+        </div>
+      )}
 
       {modal === "open" && (
         <CreateSocial

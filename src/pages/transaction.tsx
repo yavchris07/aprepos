@@ -257,7 +257,7 @@ const TransactionPage = () => {
   ];
 
   const [selectedItem, setSelectedItem] = useState<Transaction | null>(null);
-  const [modal, setModal] = useState<"open" | "edit" | "delete" | "view">(null);
+  const [modal, setModal] = useState<"open" | "edit" | "delete">(null);
 
   const handleDelete = (item: Transaction) => {
     setSelectedItem(item);
@@ -267,10 +267,10 @@ const TransactionPage = () => {
     setSelectedItem(item);
     setModal("edit");
   };
-  const handleView = (item: Transaction) => {
-    setSelectedItem(item);
-    setModal("view");
-  };
+  // const handleView = (item: Transaction) => {
+  //   setSelectedItem(item);
+  //   setModal("view");
+  // };
 
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -318,7 +318,7 @@ const TransactionPage = () => {
       <div className="flex justify-between items-center my-6 rounded">
         <div>
           {" "}
-          <span className="bg-green-800 py-2 px-4 rounded text-xs text-white">
+          <span className="bg-green-800 py-2 px-4 rounded text-xs text-white cursor-pointer">
             PDF
           </span>{" "}
         </div>
@@ -335,11 +335,11 @@ const TransactionPage = () => {
         loading={false}
         onDelete={handleDelete}
         onEdit={handleEdit}
-        onView={handleView}
+        // onView={handleView}
         transactions={currentTransactions}
       />
 
-      {tr.length > 12 && (
+      {tr.length > 18 && (
         <div className="flex gap-2 text-gray-500 w-max px-4 py-2 rounded mt-2 ">
           <button
             disabled={currentPage === 1}
@@ -386,4 +386,4 @@ const TransactionPage = () => {
   );
 };
 
-export default TransactionPage;
+export default TransactionPage

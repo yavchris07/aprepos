@@ -1,4 +1,4 @@
-import { Eye, Pencil, Trash2 } from "lucide-react";
+import { Pencil, Trash2 } from "lucide-react";
 import type { Transaction } from "../../../utlis/type";
 import Loading from "../../../components/loading";
 
@@ -7,7 +7,7 @@ interface listTransactionProps {
   loading: boolean;
   onDelete: (transaction: Transaction) => void;
   onEdit: (transaction: Transaction) => void;
-  onView: (transaction: Transaction) => void;
+  // onView: (transaction: Transaction) => void;
 }
 
 const ListTransaction = ({
@@ -15,7 +15,7 @@ const ListTransaction = ({
   loading,
   onDelete,
   onEdit,
-  onView,
+  // onView,
 }: listTransactionProps) => {
   if (loading) return <Loading />;
   return (
@@ -82,12 +82,12 @@ const ListTransaction = ({
                 <span className="font-medium">{adh.date}</span>
               </td>
               <td className="whitespace-nowrap px-6 py-2 font-medium flex gap-2 justify-center">
-                <button
+                {/* <button
                   onClick={() => onView(adh)}
                   className=" hover:bg-gray-100 cursor-pointer"
                 >
                   <Eye size={16} />
-                </button>
+                </button> */}
                 <button
                   onClick={() => onEdit(adh)}
                   className=" hover:bg-gray-100 cursor-pointer"

@@ -4,6 +4,7 @@ import {
   ChartCandlestick,
   CircleUserRound,
   Coins,
+  FileChartColumn,
   LayoutDashboard,
   ReceiptText,
   Repeat2,
@@ -53,9 +54,6 @@ const SidebarItems = () => {
       name: "Tableau de bord",
       icon: <LayoutDashboard size={17} />,
     },
-    { path: "/adhesions", name: "Adhesions", icon: <ReceiptText size={17} /> },
-    { path: "/members", name: "Membres", icon: <UserIcon size={17} /> },
-    { path: "/accounts", name: "Comptes", icon: <CircleUserRound size={17} /> },
     {
       path: "/transactions",
       name: "Transactions",
@@ -68,9 +66,19 @@ const SidebarItems = () => {
       name: "Remboursement",
       icon: <ChartCandlestick size={17} />,
     },
+    {
+      path: "/statement",
+      name: "Relevé de compte",
+      icon: <FileChartColumn size={17} />,
+    },
+    { path: "/members", name: "Membres", icon: <UserIcon size={17} /> },
+    { path: "/accounts", name: "Comptes", icon: <CircleUserRound size={17} /> },
+    { path: "/adhesions", name: "Adhesions", icon: <ReceiptText size={17} /> },
     { path: "/settings", name: "Parametres", icon: <SettingsIcon size={17} /> },
   ];
- 
+
+  //
+
   // const { isMounted, user } = hydrationProfile;
   // if (!isMounted) {
   //   return <div className="animate-pulse bg-transparent h-20 w-full" />;
@@ -89,8 +97,8 @@ const SidebarItems = () => {
             key={item.path}
             className={`flex items-center gap-2 p-2 rounded transition ${
               isActive
-                ? "bg-gray-200 text-gray-900 font-medium"
-                : "text-black hover:bg-gray-100"
+                ? "bg-green-800 text-white font-medium"
+                : "text-black hover:bg-green-100"
             }`}
           >
             <div className="shrink-0">{item.icon}</div>

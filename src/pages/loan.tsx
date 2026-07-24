@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import RootLayout from "../components/root-layout";
 import type { Loan } from "../utlis/type";
 import CreateLoan from "../features/loan/components/create-loan";
@@ -7,6 +7,7 @@ import ListLoans from "../features/loan/components/list-loan";
 import EditLoan from "../features/loan/components/edit-loan";
 
 import DeleteLoan from "../features/loan/components/delete-loan";
+import { ArrowBigLeft, ArrowBigRight } from "lucide-react";
 
 const LoanPage = () => {
   const ln = [
@@ -170,6 +171,31 @@ const LoanPage = () => {
     setModal("view");
   };
 
+  const [searchQuery, setSearchQuery] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+
+  //Search
+  const filteredData = useMemo(() => {
+    return ln.filter((item) =>
+      String(item.membre).toLowerCase().includes(searchQuery.toLowerCase()),
+    );
+  }, [ln, searchQuery]);
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
+    setCurrentPage(1);
+  };
+
+  // Pagination
+  const itemsPerPage = 18;
+
+  // Pagination logic
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentloans = filteredData.slice(indexOfFirstItem, indexOfLastItem);
+
+  const totalPages = Math.ceil(ln.length / itemsPerPage);
+
   return (
     <RootLayout>
       <div className="flex justify-between items-center my-3">
@@ -189,14 +215,16 @@ const LoanPage = () => {
       <div className="flex justify-between items-center my-6 rounded">
         <div>
           {" "}
-          <span className="bg-green-800 py-2 px-4 rounded text-xs text-white">
-            PDF
+          <span className="bg-green-800 py-2 px-4 rounded text-xs text-white cursor-pointer">
+            Liste emprunts
           </span>{" "}
         </div>
         <input
           type="text"
           placeholder="Recherchez par nom !"
           className="border border-gray-400 py-2 pl-2 rounded"
+          onChange={handleSearchChange}
+          value={searchQuery}
         />
       </div>
 
@@ -205,8 +233,30 @@ const LoanPage = () => {
         onDelete={handleDelete}
         onEdit={handleEdit}
         onView={handleView}
-        loans={ln}
+        loans={currentloans}
       />
+
+      {ln.length > 18 && (
+        <div className="flex gap-2 text-gray-500 w-max px-4 py-2 rounded mt-2 ">
+          <button
+            disabled={currentPage === 1}
+            onClick={() => setCurrentPage((prev) => prev - 1)}
+            className="bg-green-700 text-white p-2 rounded-full cursor-pointer hover:bg-green-600 transition disabled:bg-gray-400 disabled:cursor-not-allowed"
+          >
+            <ArrowBigLeft size={10} />
+          </button>
+          <span>
+            Page {currentPage} / {totalPages}
+          </span>
+          <button
+            disabled={currentPage === totalPages}
+            onClick={() => setCurrentPage((prev) => prev + 1)}
+            className="bg-green-700 text-white p-2 rounded-full cursor-pointer hover:bg-green-600 transition disabled:bg-gray-400 disabled:cursor-not-allowed"
+          >
+            <ArrowBigRight size={10} />
+          </button>
+        </div>
+      )}
 
       {modal === "open" && (
         <CreateLoan
