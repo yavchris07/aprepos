@@ -1,71 +1,29 @@
 import { useMemo, useState } from "react";
 import RootLayout from "../components/root-layout";
 import ListAdhesion from "../features/adhesion/components/list-adhesion";
-import type { Adhesion } from "../utlis/type";
+import type { Adhesion, Member } from "../utlis/type";
 import EditAdhesion from "../features/adhesion/components/edit-adhesion";
 import DeletAdhesion from "../features/adhesion/components/delete-adhesion";
 import CreateAdhesion from "../features/adhesion/components/create-adhesion";
-import { ArrowBigLeft, ArrowBigRight } from "lucide-react";
-import AdhesionItem from "../features/adhesion/components/adhesion-item";
+// import { ArrowBigLeft, ArrowBigRight } from "lucide-react";
+// import AdhesionItem from "../features/adhesion/components/adhesion-item";
+// import GetMember from "../features/members/components/get-member";
+import { getToken } from "../utlis/get-token";
+import { useMembers } from "../features/members/hooks/use-members";
+import { useAdhesion } from "../features/adhesion/hooks/use-adhesions";
 
 const AdhesionPage = () => {
-  const items = [
-    {
-      id: 1,
-      membre: "123",
-      annee: "2026",
-      montant: 10000,
-      date: "2026-20-11",
-    },
-    {
-      id: 2,
-      membre: "1334",
-      annee: "2026",
-      montant: 10000,
-      date: "2026-20-11",
-    },
-    {
-      id: 3,
-      membre: "1231",
-      annee: "2026",
-      montant: 10000,
-      date: "2026-20-11",
-    },
-    {
-      id: 4,
-      membre: "12023",
-      annee: "2026",
-      montant: 10000,
-      date: "2026-20-11",
-    },
-  ];
+  const token = getToken();
+  const { data: mbs } = useMembers(token);
+  const { data, isLoading } = useAdhesion(token);
+  const members: Member[] = mbs?.members ?? [];
+  const adhesions: Adhesion[] = data?.adhesions ?? [];
+  const pagination = data?.pagination;
 
-  const members = [
-    {
-      id: 1,
-      nom_complet: "KASEREKA NZANGI",
-      phone: "098747343",
-      adresse: "hIMBI ",
-      status: "aCTIF",
-    },
-    {
-      id: 2,
-      nom_complet: "OLIVIER MUNYANEZ",
-      phone: "098747343",
-      adresse: "hIMBI ",
-      status: "aCTIF",
-    },
-    {
-      id: 3,
-      nom_complet: "OMBENI YETU",
-      phone: "098747343",
-      adresse: "hIMBI ",
-      status: "aCTIF",
-    },
-  ];
+  console.log(pagination);
 
   const [selectedItem, setSelectedItem] = useState<Adhesion | null>(null);
-  const [modal, setModal] = useState<"open" | "edit" | "delete" | "view">(null);
+  const [modal, setModal] = useState<"open" | "edit" | "delete">(null);
 
   const handleDelete = (item: Adhesion) => {
     setSelectedItem(item);
@@ -75,36 +33,25 @@ const AdhesionPage = () => {
     setSelectedItem(item);
     setModal("edit");
   };
-  const handleView = (item: Adhesion) => {
-    setSelectedItem(item);
-    setModal("view");
-  };
 
   console.log(selectedItem);
 
   const [searchQuery, setSearchQuery] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
+  // const [currentPage, setCurrentPage] = useState(1);
 
   //Search
   const filteredData = useMemo(() => {
-    return items.filter((item) =>
+    return adhesions.filter((item) =>
       item?.membre.toLowerCase().includes(searchQuery.toLowerCase()),
     );
-  }, [items, searchQuery]);
+  }, [searchQuery]);
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
-    setCurrentPage(1);
+    // setCurrentPage(1);
   };
 
-  const itemsPerPage = 3;
-
-  // Pagination logic
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentRapports = filteredData.slice(indexOfFirstItem, indexOfLastItem);
-
-  const totalPages = Math.ceil(items.length / itemsPerPage);
+  console.log("XXXXXXXXXXXXXXXXX ", adhesions);
 
   return (
     <RootLayout>
@@ -139,42 +86,20 @@ const AdhesionPage = () => {
       </div>
 
       <ListAdhesion
-        adhesions={currentRapports}
-        loading={false}
+        adhesions={filteredData}
+        loading={isLoading}
         onDelete={handleDelete}
         onEdit={handleEdit}
-        onView={handleView}
       />
 
-      {items.length > 12 && (
-        <div className="flex gap-2 text-gray-500 w-max px-4 py-2 rounded mt-6">
-          <button
-            disabled={currentPage === 1}
-            onClick={() => setCurrentPage((prev) => prev - 1)}
-            className="bg-green-700 text-white p-2 rounded-full cursor-pointer hover:bg-green-600 transition disabled:bg-gray-400 disabled:cursor-not-allowed"
-          >
-            <ArrowBigLeft size={12} />
-          </button>
-          <span>
-            Page {currentPage} / {totalPages}
-          </span>
-          <button
-            disabled={currentPage === totalPages}
-            onClick={() => setCurrentPage((prev) => prev + 1)}
-            className="bg-green-700 text-white p-2 rounded-full cursor-pointer hover:bg-green-600 transition disabled:bg-gray-400 disabled:cursor-not-allowed"
-          >
-            <ArrowBigRight size={12} />
-          </button>
-        </div>
-      )}
-
+      {/* 
       {modal === "view" && selectedItem && (
         <AdhesionItem
           adhesion={selectedItem}
           onClose={() => setModal(null)}
           open={modal}
         />
-      )}
+      )} */}
       {modal === "open" && (
         <CreateAdhesion
           onClose={() => setModal(null)}
@@ -197,7 +122,7 @@ const AdhesionPage = () => {
           open={modal}
         />
       )}
-
+      {/* 
       {items.length > 12 && (
         <div className="flex gap-2 text-gray-500 w-max px-4 py-2 rounded mt-6">
           <button
@@ -219,7 +144,7 @@ const AdhesionPage = () => {
             <ArrowBigRight size={12} />
           </button>
         </div>
-      )}
+      )} */}
     </RootLayout>
   );
 };

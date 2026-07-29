@@ -1,6 +1,6 @@
 import type { Adhesion } from "../../utlis/type";
 const API_URL = import.meta.env.VITE_API_URL;
-const BASE_URL = '';
+const BASE_URL = "/adhesions/";
 
 export const adhesionApi = {
   create: async (data: Adhesion, token: string) => {
@@ -8,61 +8,59 @@ export const adhesionApi = {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        ...(token ? { Authorization: `Token ${token}` } : {}),
       },
       body: JSON.stringify(data),
     });
 
-    const responseData = await res.json();
-    console.log("==== xxx ==== xxx === :", responseData);
+    const text = await res.text();
 
-    if (!res.ok) {
-      throw new Error(responseData.message || "Erreur de connexion");
+    console.log("Status :", res.status);
+    console.log("Response :", text);
+
+    try {
+      const json = JSON.parse(text);
+
+      if (!res.ok) {
+        throw new Error(json.message || JSON.stringify(json));
+      }
+
+      return json;
+    } catch {
+      throw new Error(`Le serveur n'a pas renvoyé du JSON.\n${text}`);
     }
-    return responseData;
   },
 
   getAll: async (token: string) => {
     const res = await fetch(`${API_URL}${BASE_URL}`, {
       headers: {
         "Content-Type": "application/json",
-        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        ...(token ? { Authorization: `Token ${token}` } : {}),
       },
     });
-    if (!res.ok) throw new Error("Erreur fetch users");
-    return res.json();
-  },
-
-  get: async (token: string) => {
-    const res = await fetch(`${API_URL}${BASE_URL}`, {
-      headers: {
-        "Content-Type": "application/json",
-        ...(token ? { Authorization: `Bearer ${token}` } : {}),
-      },
-    });
-    if (!res.ok) throw new Error("Erreur fetch user");
+    if (!res.ok) throw new Error("Erreur fetch adhesion");
     return res.json();
   },
 
   update: async (token: string, data: Adhesion) => {
-    const res = await fetch(`${API_URL}${BASE_URL}`, {
+    const res = await fetch(`${API_URL}${BASE_URL}/${data.id}/`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
-        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        ...(token ? { Authorization: `Token ${token}` } : {}),
       },
       body: JSON.stringify(data),
     });
-    if (!res.ok) throw new Error("Erreur update user");
+    if (!res.ok) throw new Error("Erreur update adhesion");
     return res.json();
   },
 
   delete: async (token: string, id: number) => {
-    const res = await fetch(`${API_URL}${BASE_URL}`, {
+    const res = await fetch(`${API_URL}${BASE_URL}/${id}/`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
-        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        ...(token ? { Authorization: `Token ${token}` } : {}),
       },
       body: JSON.stringify({ id }),
     });

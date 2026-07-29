@@ -5,6 +5,7 @@ import { getToken } from "../../../utlis/get-token";
 import { useCreateAdhesion } from "../hooks/use-create-adhesion";
 import type { Member } from "../../../utlis/type";
 import Modal from "../../../components/modal";
+// import GetMember from "../../members/components/get-member";
 
 type createUserProps = {
   open: string;
@@ -19,11 +20,14 @@ const CreateAdhesion = ({ open, onClose, members }: createUserProps) => {
   const { showToast } = useToast();
   const [formData, setFormData] = useState({
     id: 0,
-    membre: "",
+    membre: 0,
     montant: 0,
+    devise:'',
     annee: "",
     date: "",
   });
+
+  const currency = [{id:'usd', name:'USD'},{id:'cdf', name:'CDF'}]
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -42,11 +46,16 @@ const CreateAdhesion = ({ open, onClose, members }: createUserProps) => {
     }
   };
 
+   const handleDeviseChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setFormData({ ...formData, devise: event.target.value });
+  };
+
   const handleMembreChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setFormData({ ...formData, membre: event.target.value });
+    setFormData({ ...formData, membre: Number(event.target.value) });
   };
 
   if (!open) return null;
+
   return (
     <Modal>
       <div className="flex justify-between items-center my-2">
@@ -60,6 +69,16 @@ const CreateAdhesion = ({ open, onClose, members }: createUserProps) => {
       </p>
       <form onSubmit={handleSubmit} className="flex flex-col gap-0">
         <div className="w-full my-1">
+          {/* <GetMember
+            value={formData.id}
+            onChange={(member) =>
+              setFormData((prev) => ({
+                ...prev,
+                compte: member.id,
+              }))
+            }
+          /> */}
+
           <label className="text-gray-900 text-xs font-semibold">Membre</label>
           <select
             className="border border-gray-400 text-black py-2 pl-2 rounded text-sm w-full"
@@ -85,6 +104,22 @@ const CreateAdhesion = ({ open, onClose, members }: createUserProps) => {
             placeholder="Montant"
             className="border border-gray-400 text-black py-2 pl-2 rounded text-sm w-full"
           />
+        </div>
+
+        <div className="w-full my-1">
+          <label className="text-gray-900 text-xs font-semibold">Devise</label>
+          <select
+            className="border border-gray-400 text-black py-2 pl-2 rounded text-sm w-full"
+            onChange={handleDeviseChange}
+            value={formData.devise}
+          >
+            <option value="">-- Devise --</option>
+            {currency.map((m) => (
+              <option key={m.id} value={m.id}>
+                {m.name}
+              </option>
+            ))}
+          </select>
         </div>
 
         <div className="w-full my-1">

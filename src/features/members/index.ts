@@ -10,7 +10,7 @@ export const memberApi = {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        ...(token ? { Authorization: `Token ${token}` } : {}),
       },
       body: JSON.stringify(data),
     });
@@ -35,11 +35,11 @@ export const memberApi = {
     return res.json();
   },
 
-  get: async (token: string) => {
-    const res = await fetch(`${API_URL}${BASE_URL}`, {
+  get: async (token: string,id:number) => {
+    const res = await fetch(`${API_URL}${BASE_URL}/${id}/`, {
       headers: {
         "Content-Type": "application/json",
-        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        ...(token ? { Authorization: `Token ${token}` } : {}),
       },
     });
     if (!res.ok) throw new Error("Erreur fetch user");
@@ -47,11 +47,11 @@ export const memberApi = {
   },
 
   update: async (token: string, data: Member) => {
-    const res = await fetch(`${API_URL}${BASE_URL}`, {
-      method: "PUT",
+    const res = await fetch(`${API_URL}${BASE_URL}/${data.id}`, {
+      method: "PATCH",
       headers: {
         "Content-Type": "application/json",
-        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        ...(token ? { Authorization: `Token ${token}` } : {}),
       },
       body: JSON.stringify(data),
     });
@@ -60,11 +60,11 @@ export const memberApi = {
   },
 
   delete: async (token: string, id: number) => {
-    const res = await fetch(`${API_URL}${BASE_URL}`, {
+    const res = await fetch(`${API_URL}${BASE_URL}/${id}/`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
-        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        ...(token ? { Authorization: `Token ${token}` } : {}),
       },
       body: JSON.stringify({ id }),
     });

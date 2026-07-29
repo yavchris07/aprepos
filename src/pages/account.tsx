@@ -1,92 +1,32 @@
 import { useMemo, useState } from "react";
 import RootLayout from "../components/root-layout";
 import ListAccount from "../features/account/components/list-account";
-import type { Account } from "../utlis/type";
+import type { Account, Member } from "../utlis/type";
 import CreateAccount from "../features/account/components/create-account";
 import EditAccount from "../features/account/components/edit-account";
 import DeleteAccount from "../features/account/components/delete-account";
 import { ArrowBigLeft, ArrowBigRight } from "lucide-react";
+import { useMembers } from "../features/members/hooks/use-members";
+import { useAccounts } from "../features/account/hooks/use-accounts";
+import { getToken } from "../utlis/get-token";
 
 const AccountPage = () => {
-  const accounts = [
-    {
-      id: 1,
-      membre: 1,
-      numero_compte: "ACC-20260001",
-      balance: 1250.75,
-    },
-    {
-      id: 2,
-      membre: 2,
-      numero_compte: "ACC-20260002",
-      balance: 840.5,
-    },
-    {
-      id: 3,
-      membre: 3,
-      numero_compte: "ACC-20260003",
-      balance: 0,
-    },
-    {
-      id: 4,
-      membre: 4,
-      numero_compte: "ACC-20260004",
-      balance: 325.25,
-    },
-    {
-      id: 5,
-      membre: 5,
-      numero_compte: "ACC-20260005",
-      balance: 5120,
-    },
-    {
-      id: 6,
-      membre: 6,
-      numero_compte: "ACC-20260006",
-      balance: 187.9,
-    },
-    {
-      id: 7,
-      membre: 7,
-      numero_compte: "ACC-20260007",
-      balance: 2695.4,
-    },
-  ];
+  const token = getToken();
+  const { data: mb } = useMembers(token);
+  const { data } = useAccounts(token);
 
-  const members = [
-    {
-      id: 1,
-      nom_complet: "KASEREKA NZANGI",
-      phone: "098747343",
-      adresse: "hIMBI ",
-      status: "aCTIF",
-    },
-    {
-      id: 2,
-      nom_complet: "OLIVIER MUNYANEZ",
-      phone: "098747343",
-      adresse: "hIMBI ",
-      status: "aCTIF",
-    },
-    {
-      id: 3,
-      nom_complet: "OMBENI YETU",
-      phone: "098747343",
-      adresse: "hIMBI ",
-      status: "aCTIF",
-    },
-  ];
+  const members: Member[] = mb?.members ?? [];
+  const accounts: Account[] = data?.accounts ?? [];
+  const pagination = data?.pagination;
+
+  console.log(pagination);
 
   const [selectedItem, setSelectedItem] = useState<Account | null>(null);
-  const [modal, setModal] = useState<"open" | "edit" | "delete" | "view">(null);
+  const [modal, setModal] = useState<"open" | "delete" | "view">(null);
 
   const handleDelete = (item: Account) => {
     setSelectedItem(item);
     setModal("delete");
-  };
-  const handleEdit = (item: Account) => {
-    setSelectedItem(item);
-    setModal("edit");
   };
   const handleView = (item: Account) => {
     setSelectedItem(item);
@@ -99,7 +39,7 @@ const AccountPage = () => {
   //Search
   const filteredData = useMemo(() => {
     return accounts.filter((item) =>
-      String(item.membre).toLowerCase().includes(searchQuery.toLowerCase()),
+      item.membre_nom.toLowerCase().includes(searchQuery.toLowerCase()),
     );
   }, [accounts, searchQuery]);
 
@@ -118,7 +58,7 @@ const AccountPage = () => {
 
   const totalPages = Math.ceil(accounts.length / itemsPerPage);
 
-  console.log(handleView);
+  console.log();
   return (
     <RootLayout>
       <div className="flex justify-between items-center my-3">
@@ -155,10 +95,9 @@ const AccountPage = () => {
         accounts={currentAccounts}
         loading={false}
         onDelete={handleDelete}
-        onEdit={handleEdit}
+        // onEdit={handleEdit}
         onView={handleView}
       />
-
 
       {/* Pagination */}
       {accounts.length > 18 && (
@@ -190,7 +129,7 @@ const AccountPage = () => {
           open={modal}
         />
       )}
-      {modal === "edit" && selectedItem && (
+      {modal === "view" && selectedItem && (
         <EditAccount
           account={selectedItem}
           members={members}

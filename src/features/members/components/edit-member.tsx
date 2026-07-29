@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useEditeMember } from "../hooks/use-edit-member";
-import type { Member } from "../../../utlis/type";
+import type { Kind, Member } from "../../../utlis/type";
 import { Loader2 } from "lucide-react";
 import { useToast } from "../../../components/toast-context";
 import { getToken } from "../../../utlis/get-token";
@@ -8,10 +8,11 @@ import { getToken } from "../../../utlis/get-token";
 type editMemberProps = {
   open: string;
   onClose: () => void;
-  member:Member
+  member: Member;
+  kinds: Kind[];
 };
 
-const EditMember = ({onClose,open,member}:editMemberProps) => {
+const EditMember = ({ onClose, open, member,kinds }: editMemberProps) => {
   const token = getToken();
   const { editMember, fail, pending } = useEditeMember(token ?? "");
 
@@ -21,8 +22,15 @@ const EditMember = ({onClose,open,member}:editMemberProps) => {
     nom_complet: member.nom_complet,
     phone: member.phone,
     adresse: member.adresse,
+    type_member: member.type_member,
     status: member.status,
   });
+
+  const handleTypeMemberChange = (
+    event: React.ChangeEvent<HTMLSelectElement>,
+  ) => {
+    setFormData({ ...formData, type_member: Number(event.target.value) });
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -65,7 +73,7 @@ const EditMember = ({onClose,open,member}:editMemberProps) => {
               onChange={(e) =>
                 setFormData({ ...formData, nom_complet: e.target.value })
               }
-              placeholder="Matricule"
+              placeholder="Nom complet"
               className="border border-gray-400 text-black py-2 pl-2 rounded text-sm w-full"
             />
           </div>
@@ -113,7 +121,23 @@ const EditMember = ({onClose,open,member}:editMemberProps) => {
               className="border border-gray-400 text-black py-2 pl-2 rounded text-sm w-full"
             />
           </div>
-
+          <div className="w-full my-1">
+            <label className="text-gray-900 text-xs font-semibold">
+              Membre
+            </label>
+            <select
+              className="border border-gray-400 text-black py-2 pl-2 rounded text-sm w-full"
+              onChange={handleTypeMemberChange}
+              value={formData.type_member}
+            >
+              <option value="">-- Type Membre --</option>
+              {kinds.map((m) => (
+                <option key={m.id} value={m.id}>
+                  {m.nom}
+                </option>
+              ))}
+            </select>
+          </div>
           <div className="flex justify-end gap-2 my-2">
             <span
               className="hover:bg-gray-100 border border-gray-300 text-gray-900 text-xs py-2 px-6 rounded font-semibold cursor-pointer"
@@ -129,7 +153,7 @@ const EditMember = ({onClose,open,member}:editMemberProps) => {
               {pending ? (
                 <Loader2 className="animate-spin" size={14} />
               ) : (
-                "Ajouter"
+                "Modifier"
               )}
             </button>
           </div>

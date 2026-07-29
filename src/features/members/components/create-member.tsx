@@ -4,13 +4,15 @@ import { useToast } from "../../../components/toast-context";
 import { getToken } from "../../../utlis/get-token";
 import { useCreateMember } from "../hooks/use-create-member";
 import Modal from "../../../components/modal";
+import type { Kind } from "../../../utlis/type";
 
 type createMemberProps = {
   open: string;
   onClose: () => void;
+  kinds : Kind[]
 };
 
-const CreateMember = ({ onClose, open }: createMemberProps) => {
+const CreateMember = ({ onClose, open, kinds }: createMemberProps) => {
   const token = getToken();
   const { create, fail, pending } = useCreateMember(token ?? "");
 
@@ -20,8 +22,15 @@ const CreateMember = ({ onClose, open }: createMemberProps) => {
     nom_complet: "",
     phone: "",
     adresse: "",
-    status: "",
+    type_member: 0,
+    status: "actif",
   });
+
+  const handleTypeMemberChange = (
+    event: React.ChangeEvent<HTMLSelectElement>,
+  ) => {
+    setFormData({ ...formData, type_member: Number(event.target.value) });
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -97,22 +106,21 @@ const CreateMember = ({ onClose, open }: createMemberProps) => {
             className="border border-gray-400 text-black py-2 pl-2 rounded text-sm w-full"
           />
         </div>
-
-        {/* <div className="w-full my-1">
-            <label className="text-gray-900 text-xs font-semibold">
-              Status
-            </label>
-            <input
-              type="text"
-              value={formData.status}
-              onChange={(e) =>
-                setFormData({ ...formData, status: e.target.value })
-              }
-              placeholder="Status"
-              className="border border-gray-400 text-black py-2 pl-2 rounded text-sm w-full"
-            />
-          </div> */}
-
+        <div className="w-full my-1">
+          <label className="text-gray-900 text-xs font-semibold">Membre</label>
+          <select
+            className="border border-gray-400 text-black py-2 pl-2 rounded text-sm w-full"
+            onChange={handleTypeMemberChange}
+            value={formData.type_member}
+          >
+            <option value="">-- Type Membre --</option>
+            {kinds.map((m) => (
+              <option key={m.id} value={m.id}>
+                {m.nom}
+              </option>
+            ))}
+          </select>
+        </div>
         <div className="flex justify-end gap-2 my-2">
           <span
             className="hover:bg-gray-100 border border-gray-300 text-gray-900 text-xs py-2 px-6 rounded font-semibold cursor-pointer"

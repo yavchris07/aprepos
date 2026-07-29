@@ -1,48 +1,36 @@
-import { ArrowBigLeft, ArrowBigRight } from "lucide-react";
-import { useState } from "react";
+// import { ArrowBigLeft, ArrowBigRight } from "lucide-react";
+// import type { Pagination } from "../utlis/type";
 
-type paginationProps = {
-  items: [];
-  filtered: [];
-};
+// type paginationProps = {
+//   items: Pagination[];
+// };
 
-const Pagination = ({ items, filtered }: paginationProps) => {
-  const itemsPerPage = 18;
-  const [currentPage, setCurrentPage] = useState(1);
+// const Pagination = ({ items }: paginationProps) => {
+   
+//   return (
+//     <div className="flex gap-2 text-gray-500 w-max px-4 py-2 rounded mt-6">
+//       <button
+//         disabled={!items?.previous}
+//         onClick={}
+//         className="bg-green-700 text-white p-2 rounded-full cursor-pointer hover:bg-green-600 transition disabled:bg-gray-400 disabled:cursor-not-allowed"
+//       >
+//         <ArrowBigLeft size={10} />
+//       </button>
+//       <span>
+//         Page {currentPage} / {totalPages}
+//       </span>
+//       <button
+//         disabled={items.next === totalPages}
+//         onClick={() => setCurrentPage((prev) => prev + 1)}
+//         className="bg-green-700 text-white p-2 rounded-full cursor-pointer hover:bg-green-600 transition disabled:bg-gray-400 disabled:cursor-not-allowed"
+//       >
+//         <ArrowBigRight size={10} />
+//       </button>
+//     </div>
+//   );
+// };
 
-  // Pagination logic
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItem = filtered.slice(indexOfFirstItem, indexOfLastItem);
-
-  const totalPages = Math.ceil(items.length / itemsPerPage);
-  console.log(currentItem)
-
-  if (items.length < 18) return null;
-  return (
-    <div className="flex gap-2 text-gray-500 w-max px-4 py-2 rounded mt-6">
-      <button
-        disabled={currentPage === 1}
-        onClick={() => setCurrentPage((prev) => prev - 1)}
-        className="bg-green-700 text-white p-2 rounded-full cursor-pointer hover:bg-green-600 transition disabled:bg-gray-400 disabled:cursor-not-allowed"
-      >
-        <ArrowBigLeft size={10} />
-      </button>
-      <span>
-        Page {currentPage} / {totalPages}
-      </span>
-      <button
-        disabled={currentPage === totalPages}
-        onClick={() => setCurrentPage((prev) => prev + 1)}
-        className="bg-green-700 text-white p-2 rounded-full cursor-pointer hover:bg-green-600 transition disabled:bg-gray-400 disabled:cursor-not-allowed"
-      >
-        <ArrowBigRight size={10} />
-      </button>
-    </div>
-  );
-};
-
-export default Pagination;
+// export default Pagination;
 
 
 
@@ -84,4 +72,16 @@ export default Pagination;
 // };
 
 // export default Pagination;
+
+
+
+const Pagination = () => {
+  return (
+    <div>
+      
+    </div>
+  )
+}
+
+export default Pagination
 

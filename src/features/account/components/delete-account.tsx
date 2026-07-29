@@ -16,7 +16,7 @@ const DeleteAccount = ({ onClose, open, account }: deleteAccountProps) => {
   const token = getToken();
   const { deleteAccount, fail, pending } = useDeleteAccount(token ?? "");
   const { showToast } = useToast();
-  const [formData, setFormData] = useState({ id: "" });
+  const [formData, setFormData] = useState({ id: account.id });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -54,8 +54,9 @@ const DeleteAccount = ({ onClose, open, account }: deleteAccountProps) => {
         <input
           type="text"
           value={formData.id}
-          onChange={(e) => setFormData({ ...formData, id: e.target.value })}
+          onChange={(e) => setFormData({ ...formData, id: Number(e.target.value) })}
           placeholder="id"
+          className="hidden"
         />
 
         <div className="flex justify-end gap-2 my-2">

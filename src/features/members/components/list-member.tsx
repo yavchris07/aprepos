@@ -1,4 +1,4 @@
-import { Eye, Pencil, Trash2 } from "lucide-react";
+import { Pencil, Trash2 } from "lucide-react";
 import type { Member } from "../../../utlis/type";
 import Loading from "../../../components/loading";
 
@@ -7,16 +7,10 @@ interface memberProps {
   loading: boolean;
   onDelete: (member: Member) => void;
   onEdit: (member: Member) => void;
-  onView: (member: Member) => void;
+  // onView: (member: Member) => void;
 }
 
-const ListMember = ({
-  members,
-  loading,
-  onDelete,
-  onEdit,
-  onView,
-}: memberProps) => {
+const ListMember = ({ members, loading, onDelete, onEdit }: memberProps) => {
   if (loading) return <Loading />;
   return (
     <div className="w-full bg-gray-100 my-2">
@@ -37,6 +31,12 @@ const ListMember = ({
               className="px-6 py-4 max-w-xs text-left md:max-w-md"
             >
               Adresse
+            </th>
+            <th
+              scope="col"
+              className="px-6 py-4 max-w-xs text-left md:max-w-md"
+            >
+              Type de membre
             </th>
             <th
               scope="col"
@@ -68,16 +68,19 @@ const ListMember = ({
                 <span className="font-medium">{mb.adresse}</span>
               </td>
               <td className="whitespace-nowrap px-6 py-2">
+                <span className="font-medium">{mb.type_member_detail?.nom}</span>
+              </td>
+              <td className="whitespace-nowrap px-6 py-2">
                 <span className="font-medium">{mb.status}</span>
               </td>
               <td className="whitespace-nowrap px-6 py-2 font-medium flex gap-2 justify-center">
                 {/* onView={} onEdit={} onDelete={} */}
-                <button
+                {/* <button
                   onClick={() => onView(mb)}
                   className=" hover:bg-gray-100 cursor-pointer"
                 >
                   <Eye size={16} />
-                </button>
+                </button> */}
                 <button
                   onClick={() => onEdit(mb)}
                   className=" hover:bg-gray-100 cursor-pointer"

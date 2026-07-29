@@ -1,7 +1,7 @@
 import type { Account } from "../../utlis/type";
 
 const API_URL = import.meta.env.VITE_API_URL;
-const BASE_URL = "";
+const BASE_URL = "/comptes/";
 
 export const accountApi = {
   create: async (data: Account, token: string) => {
@@ -9,7 +9,7 @@ export const accountApi = {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        ...(token ? { Authorization: `Token ${token}` } : {}),
       },
       body: JSON.stringify(data),
     });
@@ -27,7 +27,7 @@ export const accountApi = {
     const res = await fetch(`${API_URL}${BASE_URL}`, {
       headers: {
         "Content-Type": "application/json",
-        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        ...(token ? { Authorization: `Token ${token}` } : {}),
       },
     });
     if (!res.ok) throw new Error("Erreur fetch users");
@@ -38,7 +38,7 @@ export const accountApi = {
     const res = await fetch(`${API_URL}${BASE_URL}`, {
       headers: {
         "Content-Type": "application/json",
-        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        ...(token ? { Authorization: `Token ${token}` } : {}),
       },
     });
     if (!res.ok) throw new Error("Erreur fetch user");
@@ -50,24 +50,36 @@ export const accountApi = {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
-        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        ...(token ? { Authorization: `Token ${token}` } : {}),
       },
       body: JSON.stringify(data),
     });
-    if (!res.ok) throw new Error("Erreur update user");
-    return res.json();
+    // if (!res.ok) throw new Error("Erreur update account");
+    // return res.json();
+
+    if (!res.ok) {
+      throw new Error("Erreur delete account");
+    }
+
+    const text = await res.text();
+
+    return text ? JSON.parse(text) : res;
   },
 
   delete: async (token: string, id: number) => {
-    const res = await fetch(`${API_URL}${BASE_URL}`, {
+    const res = await fetch(`${API_URL}${BASE_URL}${id}/`, {
       method: "DELETE",
       headers: {
-        "Content-Type": "application/json",
-        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        ...(token ? { Authorization: `Token ${token}` } : {}),
       },
-      body: JSON.stringify({ id }),
     });
-    if (!res.ok) throw new Error("Erreur delete user");
-    return res.json();
+
+    if (!res.ok) {
+      throw new Error("Erreur delete account");
+    }
+
+    const text = await res.text();
+
+    return text ? JSON.parse(text) : null;
   },
 };

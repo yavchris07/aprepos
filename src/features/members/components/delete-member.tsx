@@ -16,7 +16,7 @@ const DeleteMember = ({ onClose, open, member }: deleteMemberProps) => {
   const token = getToken();
   const { deleteMember, fail, pending } = useDeleteMember(token ?? "");
   const { showToast } = useToast();
-  const [formData, setFormData] = useState({ id: "" });
+  const [formData, setFormData] = useState({ id: member.id });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -52,7 +52,9 @@ const DeleteMember = ({ onClose, open, member }: deleteMemberProps) => {
         <input
           type="text"
           value={formData.id}
-          onChange={(e) => setFormData({ ...formData, id: e.target.value })}
+          onChange={(e) =>
+            setFormData({ ...formData, id: Number(e.target.value) })
+          }
           placeholder="id"
         />
 

@@ -75,7 +75,7 @@ const CreateAccount = ({ members, onClose, open }: createAccountProps) => {
               ))}
             </select>
           </div>
-          <div className="w-full my-1">
+          <div className="w-full my-1 hidden">
             <label className="text-gray-900 text-xs font-semibold">
               Numéro compte
             </label>
@@ -90,7 +90,7 @@ const CreateAccount = ({ members, onClose, open }: createAccountProps) => {
             />
           </div>
 
-          <div className="w-full my-1">
+          <div className="w-full my-1 hidden">
             <label className="text-gray-900 text-xs font-semibold">
               Balance
             </label>

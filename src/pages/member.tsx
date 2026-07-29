@@ -1,69 +1,18 @@
 import { useMemo, useState } from "react";
 import RootLayout from "../components/root-layout";
 import ListMember from "../features/members/components/list-member";
-import type { Member } from "../utlis/type";
+import type { Kind, Member } from "../utlis/type";
 import CreateMember from "../features/members/components/create-member";
 import EditMember from "../features/members/components/edit-member";
 import DeleteMember from "../features/members/components/delete-member";
 import { ArrowBigLeft, ArrowBigRight } from "lucide-react";
 import { getToken } from "../utlis/get-token";
 import { useMembers } from "../features/members/hooks/use-members";
+import { useKinds } from "../features/kind/hooks/use-kind";
 
 const MemberPage = () => {
-  const memberds = [
-    {
-      id: 1,
-      nom_complet: "Jean Mukendi",
-      phone: "+243975123456",
-      adresse: "Commune d'Ibanda, Bukavu",
-      status: "Actif",
-    },
-    {
-      id: 2,
-      nom_complet: "Grace Bahati",
-      phone: "+243991234567",
-      adresse: "Commune de Kadutu, Bukavu",
-      status: "Actif",
-    },
-    {
-      id: 3,
-      nom_complet: "Patrick Kabeya",
-      phone: "+243812345678",
-      adresse: "Commune de Bagira, Bukavu",
-      status: "Inactif",
-    },
-    {
-      id: 4,
-      nom_complet: "Aline Kasereka",
-      phone: "+243998765432",
-      adresse: "Goma, Quartier Les Volcans",
-      status: "Suspendu",
-    },
-    {
-      id: 5,
-      nom_complet: "Samuel Nyembo",
-      phone: "+243971112233",
-      adresse: "Uvira, Centre-ville",
-      status: "Actif",
-    },
-    {
-      id: 6,
-      nom_complet: "Esther Ilunga",
-      phone: "+243995556677",
-      adresse: "Butembo, Quartier Vulamba",
-      status: "En attente",
-    },
-    {
-      id: 7,
-      nom_complet: "David Mumbere",
-      phone: "+243810001122",
-      adresse: "Beni, Quartier Mambango",
-      status: "Actif",
-    },
-  ];
-
   const [selectedItem, setSelectedItem] = useState<Member | null>(null);
-  const [modal, setModal] = useState<"open" | "edit" | "delete" | "view">(null);
+  const [modal, setModal] = useState<"open" | "edit" | "delete">(null);
 
   const handleDelete = (item: Member) => {
     setSelectedItem(item);
@@ -73,22 +22,31 @@ const MemberPage = () => {
     setSelectedItem(item);
     setModal("edit");
   };
-  const handleView = (item: Member) => {
-    setSelectedItem(item);
-    setModal("view");
-  };
+  // const handleView = (item: Member) => {
+  //   setSelectedItem(item);
+  //   setModal("view");
+  // };
+
+  const token = getToken();
+  const { data } = useMembers(token);
+  const { data: types } = useKinds(token);
+  const members: Member[] = data?.members ?? [];
+  const kinds: Kind[] = types?.kinds ?? [];
+  const pagination = data?.pagination;
+  console.log("MMMMM : ", members);
+  console.log("YYYYYYY : ", pagination);
 
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
 
   //Search
   const filteredData = useMemo(() => {
-    return memberds.filter((item) =>
+    return members.filter((item) =>
       String(item.nom_complet)
         .toLowerCase()
         .includes(searchQuery.toLowerCase()),
     );
-  }, [memberds, searchQuery]);
+  }, [members, searchQuery]);
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
@@ -103,14 +61,7 @@ const MemberPage = () => {
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentMembers = filteredData.slice(indexOfFirstItem, indexOfLastItem);
 
-  const totalPages = Math.ceil(memberds.length / itemsPerPage);
-
-  const token = getToken();
-  const { data } = useMembers(token);
-  const members: Member = data?.members ?? [];
-  const pagination = data?.pagination;
-  console.log("MMMMM : ", members);
-  console.log("YYYYYYY : ", pagination);
+  const totalPages = Math.ceil(members.length / itemsPerPage);
 
   return (
     <RootLayout>
@@ -148,10 +99,10 @@ const MemberPage = () => {
         members={currentMembers}
         onDelete={handleDelete}
         onEdit={handleEdit}
-        onView={handleView}
+        // onView={handleView}
       />
 
-      {memberds.length > 18 && (
+      {members.length > 18 && (
         <div className="flex gap-2 text-gray-500 w-max px-4 py-2 rounded mt-2 ">
           <button
             disabled={currentPage === 1}
@@ -174,13 +125,18 @@ const MemberPage = () => {
       )}
 
       {modal == "open" && (
-        <CreateMember onClose={() => setModal(null)} open={modal} />
+        <CreateMember
+          onClose={() => setModal(null)}
+          open={modal}
+          kinds={kinds}
+        />
       )}
       {modal === "edit" && selectedItem && (
         <EditMember
           member={selectedItem}
           onClose={() => setModal(null)}
           open={modal}
+          kinds={kinds}
         />
       )}
       {modal === "delete" && selectedItem && (

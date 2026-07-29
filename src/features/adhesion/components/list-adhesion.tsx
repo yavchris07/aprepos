@@ -1,5 +1,5 @@
 // import { User } from "@/utils/type";
-import { Eye, Pencil, Trash2 } from "lucide-react";
+import { Pencil, Trash2 } from "lucide-react";
 import type { Adhesion } from "../../../utlis/type";
 import Loading from "../../../components/loading";
 
@@ -8,15 +8,14 @@ interface adhesionProps {
   loading: boolean;
   onDelete: (adhesions: Adhesion) => void;
   onEdit: (adhesions: Adhesion) => void;
-  onView: (adhesions: Adhesion) => void;
+  // onView: (adhesions: Adhesion) => void;
 }
 
 const ListAdhesion = ({
   adhesions,
   loading,
   onDelete,
-  onEdit,
-  onView,
+  onEdit
 }: adhesionProps) => {
   if (loading) return <Loading />;
   return (
@@ -75,12 +74,12 @@ const ListAdhesion = ({
               </td>
               <td className="whitespace-nowrap px-6 py-2 font-medium flex gap-2 justify-center">
                 {/* onView={} onEdit={} onDelete={} */}
-                <button
+                {/* <button
                   onClick={() => onView(adh)}
                   className=" hover:bg-gray-100 cursor-pointer"
                 >
                   <Eye size={16} />
-                </button>
+                </button> */}
                 <button
                   onClick={() => onEdit(adh)}
                   className=" hover:bg-gray-100 cursor-pointer"

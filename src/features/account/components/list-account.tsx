@@ -1,7 +1,4 @@
-{
-//   /* <PiggyBank /> */
-}
-import { Eye, Pencil, Trash2 } from "lucide-react";
+import { Eye, Trash2 } from "lucide-react";
 import type { Account } from "../../../utlis/type";
 import Loading from "../../../components/loading";
 
@@ -9,7 +6,7 @@ interface accountProps {
   accounts: Account[];
   loading: boolean;
   onDelete: (account: Account) => void;
-  onEdit: (account: Account) => void;
+  // onEdit: (account: Account) => void;
   onView: (account: Account) => void;
 }
 
@@ -17,7 +14,6 @@ const ListAccount = ({
   accounts,
   loading,
   onDelete,
-  onEdit,
   onView,
 }: accountProps) => {
   if (loading) return <Loading />;
@@ -56,7 +52,7 @@ const ListAccount = ({
                 <span className="font-medium">{adh.id}</span>
               </td>
               <td className="whitespace-nowrap px-6 py-2">
-                <span className="font-medium">{adh.membre}</span>
+                <span className="font-medium">{adh.membre_nom}</span>
               </td>
               <td className="whitespace-nowrap px-6 py-2 font-medium text-gray-900">
                 <div className="flex items-center gap-2">
@@ -73,12 +69,12 @@ const ListAccount = ({
                 >
                   <Eye size={16} />
                 </button>
-                <button
+                {/* <button
                   onClick={() => onEdit(adh)}
                   className=" hover:bg-gray-100 cursor-pointer"
                 >
                   <Pencil size={16} />
-                </button>
+                </button> */}
 
                 <button
                   onClick={() => onDelete(adh)}

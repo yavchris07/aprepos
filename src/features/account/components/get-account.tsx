@@ -112,22 +112,5 @@ useEffect(() => {
 
 export default GetAccount;
 
-// // ...existing code...
-// const handleQueryChange = (value: string) => {
-//   setQuery(value);
-//   if (value.trim().length < 2) {
-//     setResults([]);
-//   }
-// };
-
-// useEffect(() => {
-//   if (query.trim().length < 2) return;
-
-//   // fetch/search logic here
-// }, [query]);
-// // ...existing code...
-
-// Crud sur tous les models
-// Modele compte aura un endpoint de recherche.
-// La pagination.
-// Recherche. 
+ 
+ 

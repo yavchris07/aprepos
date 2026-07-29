@@ -4,9 +4,15 @@ import { adhesionApi } from "..";
 export const useAdhesion = (token: string) => {
   return useQuery({
     queryKey: ["adhesions"],
-    queryFn: async () => {
-      const res = await adhesionApi.getAll(token);
-      return res.data;
-    },
+    queryFn: async () => adhesionApi.getAll(token),
+    select: (data) => ({
+      adhesions: data.results,
+      pagination: {
+        count: data.count,
+        next: data.next,
+        previous: data.previous,
+      },
+    }),
   });
 };
+

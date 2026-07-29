@@ -25,7 +25,9 @@ export type Member = {
   nom_complet: string;
   phone: string;
   adresse: string;
+  type_member: number;
   status: string;
+  type_member_detail?: { id: number, nom: string, description: string }
 };
 
 export type Kind = {
@@ -36,9 +38,10 @@ export type Kind = {
 
 export type Adhesion = {
   id: number;
-  membre: string;
+  membre: number;
   annee: string;
   montant: number;
+  devise : string,
   date: string;
 };
 
@@ -47,6 +50,7 @@ export type Account = {
   membre: number;
   numero_compte: string;
   balance: number;
+  membre_nom?: string,
 };
 
 export type Transaction = {
@@ -84,4 +88,12 @@ export type Social = {
   date: string;
 };
 
+export type Pagination = {
+  count: number;
+  next: null;
+  previous: null;
+};
+
 export type LoginData = { username: string; password: string };
+
+
