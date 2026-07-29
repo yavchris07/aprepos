@@ -1,15 +1,15 @@
-import type {  Kind } from "../../utlis/type";
+import type { Kind } from "../../utlis/type";
 
-// const API_URL = import.meta.env.BASE_URL;
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000/api";
+const API_URL = import.meta.env.VITE_API_URL;
+const BASE_URL = '/type-membres/'
 
 export const kindApi = {
   create: async (data: Kind, token: string) => {
-    const res = await fetch(`${API_URL}/users/create`, {
+    const res = await fetch(`${API_URL}${BASE_URL}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        ...(token ? { Authorization: `Token ${token}` } : {}),
       },
       body: JSON.stringify(data),
     });
@@ -24,10 +24,10 @@ export const kindApi = {
   },
 
   getAll: async (token: string) => {
-    const res = await fetch(`${API_URL}/users/all`, {
+    const res = await fetch(`${API_URL}${BASE_URL}`, {
       headers: {
         "Content-Type": "application/json",
-        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        ...(token ? { Authorization: `Token ${token}` } : {}),
       },
     });
     if (!res.ok) throw new Error("Erreur fetch users");
@@ -35,10 +35,10 @@ export const kindApi = {
   },
 
   get: async (token: string) => {
-    const res = await fetch(`${API_URL}/users/get`, {
+    const res = await fetch(`${API_URL}${BASE_URL}`, {
       headers: {
         "Content-Type": "application/json",
-        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        ...(token ? { Authorization: `Token ${token}` } : {}),
       },
     });
     if (!res.ok) throw new Error("Erreur fetch user");
@@ -46,11 +46,11 @@ export const kindApi = {
   },
 
   update: async (token: string, data: Kind) => {
-    const res = await fetch(`${API_URL}/users/update`, {
+    const res = await fetch(`${API_URL}${BASE_URL}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
-        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        ...(token ? { Authorization: `Token ${token}` } : {}),
       },
       body: JSON.stringify(data),
     });
@@ -59,11 +59,11 @@ export const kindApi = {
   },
 
   delete: async (token: string, id: number) => {
-    const res = await fetch(`${API_URL}/users/delete`, {
+    const res = await fetch(`${API_URL}${BASE_URL}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
-        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        ...(token ? { Authorization: `Token ${token}` } : {}),
       },
       body: JSON.stringify({ id }),
     });

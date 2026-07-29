@@ -1,12 +1,17 @@
 import { useQuery } from "@tanstack/react-query";
 import { memberApi } from "..";
 
-export const useMember = (token: string) => {
+export const useMembers = (token: string) => {
   return useQuery({
     queryKey: ["members"],
-    queryFn: async () => {
-      const res = await memberApi.getAll(token);
-      return res.data;
-    },
+    queryFn: () => memberApi.getAll(token),
+    select: (data) => ({
+      members: data.results,
+      pagination: {
+        count: data.count,
+        next: data.next,
+        previous: data.previous,
+      },
+    }),
   });
 };

@@ -2,7 +2,7 @@ export const getToken = () => {
   if (typeof window === "undefined") return null;
 
   try {
-    const token = localStorage.getItem("abichoi-token");
+    const token = localStorage.getItem("avec-token");
     // console.log("Inua token :", token);
     return token;
   } catch (error) {

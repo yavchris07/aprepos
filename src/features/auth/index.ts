@@ -1,15 +1,13 @@
 import type { LoginData } from "../../utlis/type";
-
-const API_URL = import.meta.env.BASE_URL;
-// const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:8000/api";
+const API_URL = import.meta.env.VITE_API_URL;
+const BASE_URL = '/login/'
 
 export const authApi = {
   login: async (data: LoginData) => {
-    const res = await fetch(`${API_URL}/users/create`, {
+    const res = await fetch(`${API_URL}${BASE_URL}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        // ...(token ? { Authorization: `Bearer ${token}` } : {}),
       },
       body: JSON.stringify(data),
     });
@@ -20,6 +18,23 @@ export const authApi = {
     if (!res.ok) {
       throw new Error(responseData.message || "Erreur de connexion");
     }
+
+    //save token
+    if (responseData) {
+      localStorage.setItem("avec-token", responseData.token);
+    }
+ 
+    // save user
+    if (responseData) {
+      const user = {
+        id: responseData.user_id,
+        username: responseData.username,
+        email: responseData.email
+      };
+      console.log('XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX', user)
+      localStorage.setItem("avec-user", JSON.stringify(user));
+    }
+
     return responseData;
   },
 

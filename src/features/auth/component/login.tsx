@@ -6,13 +6,14 @@ import { useLogin } from "../hooks/use-login";
 
 const LoginForm = () => {
   const navigate = useNavigate();
-  const [formData, setFormData] = useState({ email: "", password: "" });
+  const [formData, setFormData] = useState({ username: "", password: "" });
   const { showToast } = useToast();
   const { login, fail, pending } = useLogin();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
+      console.log('Payload :', formData)
       await login(formData);
       navigate("/dashboard");
       showToast("Connexion reussi avec succes !", "success");
@@ -40,9 +41,9 @@ const LoginForm = () => {
               type="text"
               className="border border-gray-400 rounded py-3 pl-3 text-gray-900 text-sm"
               placeholder="E-mail"
-              value={formData.email}
+              value={formData.username}
               onChange={(e) => {
-                setFormData({ ...formData, email: e.target.value });
+                setFormData({ ...formData, username: e.target.value });
               }}
             />
           </div>

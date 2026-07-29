@@ -1,80 +1,73 @@
 import type { Account } from "../../utlis/type";
 
-const API_URL = import.meta.env.BASE_URL;
-// const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:8000/api";
-
+const API_URL = import.meta.env.VITE_API_URL;
+const BASE_URL = "";
 
 export const accountApi = {
+  create: async (data: Account, token: string) => {
+    const res = await fetch(`${API_URL}${BASE_URL}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      },
+      body: JSON.stringify(data),
+    });
 
-    create: async (data: Account, token: string) => {
+    const responseData = await res.json();
+    console.log("==== xxx ==== xxx === :", responseData);
 
-        const res = await fetch(`${API_URL}/users/create`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                ...(token ? { Authorization: `Bearer ${token}` } : {}),
-            },
-            body: JSON.stringify(data),
-        }
-        );
+    if (!res.ok) {
+      throw new Error(responseData.message || "Erreur de connexion");
+    }
+    return responseData;
+  },
 
-        const responseData = await res.json();
-        console.log('==== xxx ==== xxx === :', responseData)
+  getAll: async (token: string) => {
+    const res = await fetch(`${API_URL}${BASE_URL}`, {
+      headers: {
+        "Content-Type": "application/json",
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      },
+    });
+    if (!res.ok) throw new Error("Erreur fetch users");
+    return res.json();
+  },
 
-        if (!res.ok) {
-            throw new Error(
-                responseData.message ||
-                "Erreur de connexion"
-            );
-        }
-        return responseData;
-    },
+  get: async (token: string) => {
+    const res = await fetch(`${API_URL}${BASE_URL}`, {
+      headers: {
+        "Content-Type": "application/json",
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      },
+    });
+    if (!res.ok) throw new Error("Erreur fetch user");
+    return res.json();
+  },
 
-    getAll: async (token: string) => {
-        const res = await fetch(`${API_URL}/users/all`, {
-            headers: {
-                "Content-Type": "application/json",
-                ...(token ? { Authorization: `Bearer ${token}` } : {}),
-            }
-        });
-        if (!res.ok) throw new Error("Erreur fetch users");
-        return res.json();
-    },
+  update: async (token: string, data: Account) => {
+    const res = await fetch(`${API_URL}${BASE_URL}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      },
+      body: JSON.stringify(data),
+    });
+    if (!res.ok) throw new Error("Erreur update user");
+    return res.json();
+  },
 
-    get: async (token: string) => {
-        const res = await fetch(`${API_URL}/users/get`, {
-            headers: {
-                "Content-Type": "application/json",
-                ...(token ? { Authorization: `Bearer ${token}` } : {}),
-            }
-        });
-        if (!res.ok) throw new Error("Erreur fetch user");
-        return res.json();
-    },
-
-    update: async (token: string, data: Account) => {
-        const res = await fetch(`${API_URL}/users/update`, {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json",
-                ...(token ? { Authorization: `Bearer ${token}` } : {}),
-            },
-            body: JSON.stringify(data),
-        });
-        if (!res.ok) throw new Error("Erreur update user");
-        return res.json();
-    },
-
-    delete: async (token: string, id:number) => {
-        const res = await fetch(`${API_URL}/users/delete`, {
-            method: "DELETE",
-            headers: {
-                "Content-Type": "application/json",
-                ...(token ? { Authorization: `Bearer ${token}` } : {}),
-            },
-            body: JSON.stringify({ id }),
-        });
-        if (!res.ok) throw new Error("Erreur delete user");
-        return res.json();
-    },
-}
+  delete: async (token: string, id: number) => {
+    const res = await fetch(`${API_URL}${BASE_URL}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      },
+      body: JSON.stringify({ id }),
+    });
+    if (!res.ok) throw new Error("Erreur delete user");
+    return res.json();
+  },
+};

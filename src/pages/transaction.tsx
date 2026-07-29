@@ -287,7 +287,7 @@ const TransactionPage = () => {
   };
 
   // Pagination
-  const itemsPerPage = 18;
+  const itemsPerPage = 20;
 
   // Pagination logic
   const indexOfLastItem = currentPage * itemsPerPage;
@@ -363,7 +363,6 @@ const TransactionPage = () => {
       {modal === "open" && (
         <CreateTransaction
           onClose={() => setModal(null)}
-          accounts={accounts}
           open={modal}
         />
       )}

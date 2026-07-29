@@ -1,10 +1,11 @@
 import { User } from "lucide-react";
 // import { useEffect, useState } from "react";
-import SidebarItems from "./sidebar-itms";
+import SidebarItems from "./sidebar-items";
+import { getCurrentUser } from "../utlis/get-user";
 // import { getCurrentUser } from "../utlis/get-user";
 
 const Sidebar = () => {
-  // const user = getCurrentUser();
+  const user = getCurrentUser();
   // const [isMounted, setIsMounted] = useState(false);
   // useEffect(() => {
   //   const raf = requestAnimationFrame(() => setIsMounted(true));
@@ -25,16 +26,17 @@ const Sidebar = () => {
               <User size={50} color="white" />
             </div>
             <p className="text-xs py-3">
-              <strong className="text-gray-900 text-xl">
+              <strong className="text-orange-800 text-xl">
                 {/* {isMounted ? user?.name : ""} */}
+                {user.username}
+                {/* <p className="text-orange-800 text-sm"> {user.username}</p> */}
               </strong>
             </p>
-            <p className="text-blue-600 text-sm"> Email</p>
-            <p className="text-gray-600 text-sm">Role</p>
-            
+            <p className="text-blue-600 text-sm">{user.email}</p>
             <p className="text-gray-500 text-sm">
               {/* {isMounted ? user?.phone : "Numero invalide"} */}
             </p>
+
           </div>
         </div>
       </div>

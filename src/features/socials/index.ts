@@ -1,10 +1,11 @@
 import type { Social } from "../../utlis/type";
 
-const API_URL = import.meta.env.BASE_URL;
+const API_URL = import.meta.env.VITE_API_URL;
+const BASE_URL = '/remboursements/'
 
 export const socialApi = {
   create: async (data: Social, token: string) => {
-    const res = await fetch(`${API_URL}/users/create`, {
+    const res = await fetch(`${API_URL}${BASE_URL}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

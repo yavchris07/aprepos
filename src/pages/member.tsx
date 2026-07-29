@@ -6,9 +6,11 @@ import CreateMember from "../features/members/components/create-member";
 import EditMember from "../features/members/components/edit-member";
 import DeleteMember from "../features/members/components/delete-member";
 import { ArrowBigLeft, ArrowBigRight } from "lucide-react";
+import { getToken } from "../utlis/get-token";
+import { useMembers } from "../features/members/hooks/use-members";
 
 const MemberPage = () => {
-  const members = [
+  const memberds = [
     {
       id: 1,
       nom_complet: "Jean Mukendi",
@@ -81,12 +83,12 @@ const MemberPage = () => {
 
   //Search
   const filteredData = useMemo(() => {
-    return members.filter((item) =>
+    return memberds.filter((item) =>
       String(item.nom_complet)
         .toLowerCase()
         .includes(searchQuery.toLowerCase()),
     );
-  }, [members, searchQuery]);
+  }, [memberds, searchQuery]);
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
@@ -101,7 +103,14 @@ const MemberPage = () => {
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentMembers = filteredData.slice(indexOfFirstItem, indexOfLastItem);
 
-  const totalPages = Math.ceil(members.length / itemsPerPage);
+  const totalPages = Math.ceil(memberds.length / itemsPerPage);
+
+  const token = getToken();
+  const { data } = useMembers(token);
+  const members: Member = data?.members ?? [];
+  const pagination = data?.pagination;
+  console.log("MMMMM : ", members);
+  console.log("YYYYYYY : ", pagination);
 
   return (
     <RootLayout>
@@ -142,7 +151,7 @@ const MemberPage = () => {
         onView={handleView}
       />
 
-      {members.length > 18 && (
+      {memberds.length > 18 && (
         <div className="flex gap-2 text-gray-500 w-max px-4 py-2 rounded mt-2 ">
           <button
             disabled={currentPage === 1}

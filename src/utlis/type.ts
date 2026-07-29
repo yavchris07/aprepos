@@ -31,7 +31,7 @@ export type Member = {
 export type Kind = {
   id: number;
   nom: string;
-  descriptin: string;
+  description: string;
 };
 
 export type Adhesion = {
@@ -84,7 +84,4 @@ export type Social = {
   date: string;
 };
 
-export type LoginData = { email: string; password: string };
-
-
-// https://www.youtube.com/watch?v=dHbkxKjzD3I
+export type LoginData = { username: string; password: string };

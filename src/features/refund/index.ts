@@ -1,10 +1,11 @@
 import type { Refund } from "../../utlis/type";
 
-const API_URL = import.meta.env.BASE_URL;
+const API_URL = import.meta.env.VITE_API_URL;
+const BASE_URL = '/remboursements/'
 
 export const refundApi = {
   create: async (data: Refund, token: string) => {
-    const res = await fetch(`${API_URL}/users/create`, {
+    const res = await fetch(`${API_URL}${BASE_URL}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -23,7 +24,7 @@ export const refundApi = {
   },
 
   getAll: async (token: string) => {
-    const res = await fetch(`${API_URL}/users/all`, {
+    const res = await fetch(`${API_URL}${BASE_URL}`, {
       headers: {
         "Content-Type": "application/json",
         ...(token ? { Authorization: `Bearer ${token}` } : {}),
@@ -34,7 +35,7 @@ export const refundApi = {
   },
 
   get: async (token: string) => {
-    const res = await fetch(`${API_URL}/users/get`, {
+    const res = await fetch(`${API_URL}${BASE_URL}`, {
       headers: {
         "Content-Type": "application/json",
         ...(token ? { Authorization: `Bearer ${token}` } : {}),
@@ -45,7 +46,7 @@ export const refundApi = {
   },
 
   update: async (token: string, data: Refund) => {
-    const res = await fetch(`${API_URL}/users/update`, {
+    const res = await fetch(`${API_URL}${BASE_URL}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -58,7 +59,7 @@ export const refundApi = {
   },
 
   delete: async (token: string, id: number) => {
-    const res = await fetch(`${API_URL}/users/delete`, {
+    const res = await fetch(`${API_URL}${BASE_URL}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",

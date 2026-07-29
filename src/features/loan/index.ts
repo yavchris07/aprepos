@@ -1,10 +1,11 @@
 import type { Loan } from "../../utlis/type";
 
-const API_URL = import.meta.env.BASE_URL;
+const API_URL = import.meta.env.VITE_API_URL;
+const BASE_URL = "/emprunts/";
 
 export const loanApi = {
   create: async (data: Loan, token: string) => {
-    const res = await fetch(`${API_URL}/users/create`, {
+    const res = await fetch(`${API_URL}${BASE_URL}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -23,7 +24,7 @@ export const loanApi = {
   },
 
   getAll: async (token: string) => {
-    const res = await fetch(`${API_URL}/users/all`, {
+    const res = await fetch(`${API_URL}${BASE_URL}`, {
       headers: {
         "Content-Type": "application/json",
         ...(token ? { Authorization: `Bearer ${token}` } : {}),
@@ -34,7 +35,7 @@ export const loanApi = {
   },
 
   get: async (token: string) => {
-    const res = await fetch(`${API_URL}/users/get`, {
+    const res = await fetch(`${API_URL}${BASE_URL}`, {
       headers: {
         "Content-Type": "application/json",
         ...(token ? { Authorization: `Bearer ${token}` } : {}),
@@ -45,7 +46,7 @@ export const loanApi = {
   },
 
   update: async (token: string, data: Loan) => {
-    const res = await fetch(`${API_URL}/users/update`, {
+    const res = await fetch(`${API_URL}${BASE_URL}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -58,7 +59,7 @@ export const loanApi = {
   },
 
   delete: async (token: string, id: number) => {
-    const res = await fetch(`${API_URL}/users/delete`, {
+    const res = await fetch(`${API_URL}${BASE_URL}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",

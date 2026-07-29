@@ -16,7 +16,7 @@ export const useEditeKind = (token: string) => {
   });
 
   return {
-    updateUser: mutation.mutateAsync,
+    updateKind: mutation.mutateAsync,
     pending: mutation.isPending,
     fail: mutation.error instanceof Error ? mutation.error.message : "",
     data: mutation.data,

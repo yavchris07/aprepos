@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import RootLayout from "../components/root-layout";
-import CreateSocial from "../features/socials/components/create-socila";
+import CreateSocial from "../features/socials/components/create-social";
 import ListSocial from "../features/socials/components/list-social";
 import type { Social } from "../utlis/type";
 import EditSocial from "../features/socials/components/edit-social";
