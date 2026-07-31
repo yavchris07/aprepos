@@ -4,6 +4,7 @@ import { useToast } from "../../../components/toast-context";
 import { getToken } from "../../../utlis/get-token";
 import type { Member } from "../../../utlis/type";
 import { useCreateSocial } from "../hooks/use-create-social";
+import { getISOWeek, getISOWeekYear } from "date-fns";
 
 type createSocialProps = {
   open: string;
@@ -21,8 +22,25 @@ const CreateSocial = ({ members, onClose, open }: createSocialProps) => {
     semaine: 0,
     annee: "",
     montant: 0,
+    devise: "",
     date: "",
   });
+
+  const handleDateChange = (date: string) => {
+    const d = new Date(date);
+
+    setFormData((prev) => ({
+      ...prev,
+      date,
+      semaine: getISOWeek(d),
+      annee: getISOWeekYear(d).toString(),
+    }));
+  };
+
+  const currency = [
+    { id: "usd", name: "USD" },
+    { id: "cdf", name: "CDF" },
+  ];
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -39,6 +57,10 @@ const CreateSocial = ({ members, onClose, open }: createSocialProps) => {
         showToast(fail, "error");
       }
     }
+  };
+
+  const handleDeviseChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setFormData({ ...formData, devise: event.target.value });
   };
 
   const handleMembreChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -90,47 +112,37 @@ const CreateSocial = ({ members, onClose, open }: createSocialProps) => {
               className="border border-gray-400 text-black py-2 pl-2 rounded text-sm w-full"
             />
           </div>
-
           <div className="w-full my-1">
             <label className="text-gray-900 text-xs font-semibold">
-              Semaine
+              Devise
             </label>
-            <input
-              type="text"
-              value={formData.semaine}
-              onChange={(e) =>
-                setFormData({ ...formData, semaine: Number(e.target.value) })
-              }
-              placeholder="Semaine"
+            <select
               className="border border-gray-400 text-black py-2 pl-2 rounded text-sm w-full"
-            />
+              onChange={handleDeviseChange}
+              value={formData.devise}
+            >
+              <option value="">-- Devise --</option>
+              {currency.map((m) => (
+                <option key={m.id} value={m.id}>
+                  {m.name}
+                </option>
+              ))}
+            </select>
           </div>
           <div className="w-full my-1">
-            <label className="text-gray-900 text-xs font-semibold">
-              Année
-            </label>
-            <input
-              type="text"
-              value={formData.annee}
-              onChange={(e) =>
-                setFormData({ ...formData, annee: e.target.value })
-              }
-              placeholder="Année"
-              className="border border-gray-400 text-black py-2 pl-2 rounded text-sm w-full"
-            />
-          </div>
-          <div className="w-full my-1">
-            <label className="text-gray-900 text-xs font-semibold">
-              Date
-            </label>
+            <label className="text-gray-900 text-xs font-semibold">Date</label>
+            <p className="text-xs text-red-500 italic">Mettez uniquement la date de samedi ou du jour choisit pour payer le cas social</p>
             <input
               type="date"
               value={formData.date}
-              onChange={(e) =>
-                setFormData({ ...formData, date:  e.target.value })
-              }
+              onChange={(e) => handleDateChange(e.target.value)}
               className="border border-gray-400 text-black py-2 pl-2 rounded text-sm w-full"
             />
+          </div>
+
+          <div className="text-sm text-gray-600">
+            <p>Semaine : {formData.semaine}</p>
+            <p>Année : {formData.annee}</p>
           </div>
           <div className="flex justify-end gap-2 my-2">
             <span

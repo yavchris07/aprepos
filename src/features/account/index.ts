@@ -77,9 +77,7 @@ export const accountApi = {
     if (!res.ok) {
       throw new Error("Erreur delete account");
     }
-
     const text = await res.text();
-
     return text ? JSON.parse(text) : null;
   },
 };

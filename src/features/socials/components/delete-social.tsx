@@ -1,5 +1,5 @@
 import { Loader2 } from "lucide-react";
-import React, { useState } from "react";
+import React from "react";
 import type { Social } from "../../../utlis/type";
 import { useToast } from "../../../components/toast-context";
 import { getToken } from "../../../utlis/get-token";
@@ -16,7 +16,7 @@ const DeleteSocial = ({ onClose, open, social }: deleteSocialProps) => {
   const token = getToken();
   const { deleteSocial, fail, pending } = useDeleteSocial(token ?? "");
   const { showToast } = useToast();
-  const [formData, setFormData] = useState({ id: "" });
+  // const [formData, setFormData] = useState({ id: "" });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -48,15 +48,18 @@ const DeleteSocial = ({ onClose, open, social }: deleteSocialProps) => {
       <form onSubmit={handleSubmit}>
         <p className="text-gray-500 text-sm">
           Voulez-vous vraiment supprimer cette contribution de social ?{" "}
-          <strong>y a pas de retour apres cette action</strong>
+          <strong className="text-sm text-gray-900">
+            y a pas de retour apres cette action
+          </strong>
         </p>
 
-        <input
+        {/* <input
           type="text"
           value={formData.id}
           onChange={(e) => setFormData({ ...formData, id: e.target.value })}
           placeholder="id"
-        />
+          className="hidden"
+        /> */}
 
         <div className="flex justify-end gap-2 my-2">
           <span

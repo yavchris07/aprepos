@@ -1,5 +1,5 @@
 import { Loader2 } from "lucide-react";
-import React, { useState } from "react";
+import React from "react";
 import type { Member } from "../../../utlis/type";
 import { useToast } from "../../../components/toast-context";
 import { getToken } from "../../../utlis/get-token";
@@ -16,7 +16,6 @@ const DeleteMember = ({ onClose, open, member }: deleteMemberProps) => {
   const token = getToken();
   const { deleteMember, fail, pending } = useDeleteMember(token ?? "");
   const { showToast } = useToast();
-  const [formData, setFormData] = useState({ id: member.id });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -46,17 +45,9 @@ const DeleteMember = ({ onClose, open, member }: deleteMemberProps) => {
       </div>
       <form onSubmit={handleSubmit}>
         <p className="text-gray-500 text-sm">
-          Voulez-vous vraiment supprimer ce membre ?
+          Voulez-vous vraiment supprimer ce membre{" "}
+          <strong className="text-gray-900">{member.nom_complet}</strong> ?
         </p>
-
-        <input
-          type="text"
-          value={formData.id}
-          onChange={(e) =>
-            setFormData({ ...formData, id: Number(e.target.value) })
-          }
-          placeholder="id"
-        />
 
         <div className="flex justify-end gap-2 my-2">
           <span

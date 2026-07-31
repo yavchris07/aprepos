@@ -3,7 +3,7 @@ import { Loader2 } from "lucide-react";
 import { useToast } from "../../../components/toast-context";
 import { getToken } from "../../../utlis/get-token";
 import type { Member, Social } from "../../../utlis/type";
-import { useCreateSocial } from "../hooks/use-create-social";
+import { useEditeSocial } from "../hooks/use-edit-social";
 
 type createSocialProps = {
   open: string;
@@ -14,7 +14,7 @@ type createSocialProps = {
 
 const EditSocial = ({ members, onClose, open, social }: createSocialProps) => {
   const token = getToken();
-  const { create, fail, pending } = useCreateSocial(token ?? "");
+  const { editSocial, fail, pending } = useEditeSocial(token ?? "");
   const { showToast } = useToast();
   const [formData, setFormData] = useState({
     id: social.id,
@@ -28,7 +28,7 @@ const EditSocial = ({ members, onClose, open, social }: createSocialProps) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await create(formData);
+      await editSocial(formData);
       showToast("Création reussie !", "success");
       onClose();
     } catch (e) {

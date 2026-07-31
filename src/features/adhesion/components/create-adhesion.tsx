@@ -22,12 +22,15 @@ const CreateAdhesion = ({ open, onClose, members }: createUserProps) => {
     id: 0,
     membre: 0,
     montant: 0,
-    devise:'',
+    devise: "",
     annee: "",
     date: "",
   });
 
-  const currency = [{id:'usd', name:'USD'},{id:'cdf', name:'CDF'}]
+  const currency = [
+    { id: "usd", name: "USD" },
+    { id: "cdf", name: "CDF" },
+  ];
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -45,8 +48,8 @@ const CreateAdhesion = ({ open, onClose, members }: createUserProps) => {
       }
     }
   };
-
-   const handleDeviseChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  
+  const handleDeviseChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setFormData({ ...formData, devise: event.target.value });
   };
 

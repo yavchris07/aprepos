@@ -48,7 +48,7 @@ const DeleteAccount = ({ onClose, open, account }: deleteAccountProps) => {
       <form onSubmit={handleSubmit}>
         <p className="text-gray-500 text-sm">
           Voulez-vous vraiment supprimer ce compte épargne ?{" "}
-          <strong>y a pas de retour apres cette action</strong>
+          <strong className="text-gray-900">y a pas de retour apres cette action</strong>
         </p>
 
         <input

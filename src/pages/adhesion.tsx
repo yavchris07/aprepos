@@ -14,13 +14,13 @@ import { useAdhesion } from "../features/adhesion/hooks/use-adhesions";
 
 const AdhesionPage = () => {
   const token = getToken();
-  const { data: mbs } = useMembers(token);
-  const { data, isLoading } = useAdhesion(token);
+  const { data: mbs } = useMembers(token ?? '');
+  const { data, isLoading } = useAdhesion(token ?? '');
   const members: Member[] = mbs?.members ?? [];
   const adhesions: Adhesion[] = data?.adhesions ?? [];
   const pagination = data?.pagination;
 
-  console.log(pagination);
+  console.log('VVVVVVVVVVVVV ',pagination); 
 
   const [selectedItem, setSelectedItem] = useState<Adhesion | null>(null);
   const [modal, setModal] = useState<"open" | "edit" | "delete">(null);
@@ -42,16 +42,16 @@ const AdhesionPage = () => {
   //Search
   const filteredData = useMemo(() => {
     return adhesions.filter((item) =>
-      item?.membre.toLowerCase().includes(searchQuery.toLowerCase()),
+      item?.membre_nom.toLowerCase().includes(searchQuery.toLowerCase()),
     );
-  }, [searchQuery]);
+  }, [adhesions, searchQuery]);
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
     // setCurrentPage(1);
   };
 
-  console.log("XXXXXXXXXXXXXXXXX ", adhesions);
+  console.log("XXXXXXXXXXXXXXXXX : ", adhesions);
 
   return (
     <RootLayout>
@@ -109,7 +109,7 @@ const AdhesionPage = () => {
       )}
       {modal === "edit" && selectedItem && (
         <EditAdhesion
-          addhesion={selectedItem}
+          adhesion={selectedItem}
           onClose={() => setModal(null)}
           members={members}
           open={modal}

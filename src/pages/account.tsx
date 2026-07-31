@@ -13,7 +13,7 @@ import { getToken } from "../utlis/get-token";
 const AccountPage = () => {
   const token = getToken();
   const { data: mb } = useMembers(token);
-  const { data } = useAccounts(token);
+  const { data, isLoading } = useAccounts(token);
 
   const members: Member[] = mb?.members ?? [];
   const accounts: Account[] = data?.accounts ?? [];
@@ -93,7 +93,7 @@ const AccountPage = () => {
 
       <ListAccount
         accounts={currentAccounts}
-        loading={false}
+        loading={isLoading}
         onDelete={handleDelete}
         // onEdit={handleEdit}
         onView={handleView}

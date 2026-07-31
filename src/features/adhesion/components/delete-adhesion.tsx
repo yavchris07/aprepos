@@ -18,7 +18,7 @@ const DeletAdhesion = ({ adhesion, open, onClose }: modalProps) => {
   const token = getToken();
   const { deleteUser, fail, pending } = useDeleteAdhesion(token ?? "");
   const { showToast } = useToast();
-  const [formData, setFormData] = useState({ id: "" });
+  const [formData, setFormData] = useState({ id: adhesion.id });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -49,14 +49,15 @@ const DeletAdhesion = ({ adhesion, open, onClose }: modalProps) => {
       </div>
       <form onSubmit={handleSubmit}>
         <p className="text-gray-500 text-sm">
-          Voulez-vous vraiment supprimer cette adheson ?
+          Voulez-vous vraiment supprimer cette adheson ? <strong className="text-gray-800"> du client  {adhesion.membre_nom}</strong>
         </p>
 
         <input
           type="text"
           value={formData.id}
-          onChange={(e) => setFormData({ ...formData, id: e.target.value })}
+          onChange={(e) => setFormData({ ...formData, id: Number(e.target.value) })}
           placeholder="id"
+          className="hidden"
         />
 
         <div className="flex justify-end gap-2 my-2">

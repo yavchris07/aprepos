@@ -1,7 +1,7 @@
 import type { Social } from "../../utlis/type";
 
 const API_URL = import.meta.env.VITE_API_URL;
-const BASE_URL = '/remboursements/'
+const BASE_URL = "/socials/";
 
 export const socialApi = {
   create: async (data: Social, token: string) => {
@@ -9,48 +9,44 @@ export const socialApi = {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        ...(token ? { Authorization: `Token ${token}` } : {}),
       },
       body: JSON.stringify(data),
     });
 
-    const responseData = await res.json();
-    console.log("==== xxx ==== xxx === :", responseData);
+    const text = await res.text();
+    console.log("Status :", res.status);
+    console.log("Response :", text);
 
-    if (!res.ok) {
-      throw new Error(responseData.message || "Erreur de connexion");
+    try {
+      const json = JSON.parse(text);
+      if (!res.ok) {
+        throw new Error(json.message || JSON.stringify(json));
+      }
+
+      return json;
+    } catch {
+      throw new Error(`Le serveur n'a pas renvoyé du JSON.\n${text}`);
     }
-    return responseData;
   },
 
   getAll: async (token: string) => {
-    const res = await fetch(`${API_URL}/users/all`, {
+    const res = await fetch(`${API_URL}${BASE_URL}`, {
       headers: {
         "Content-Type": "application/json",
-        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        ...(token ? { Authorization: `Token ${token}` } : {}),
       },
     });
     if (!res.ok) throw new Error("Erreur fetch users");
     return res.json();
   },
 
-  get: async (token: string) => {
-    const res = await fetch(`${API_URL}/users/get`, {
-      headers: {
-        "Content-Type": "application/json",
-        ...(token ? { Authorization: `Bearer ${token}` } : {}),
-      },
-    });
-    if (!res.ok) throw new Error("Erreur fetch user");
-    return res.json();
-  },
-
   update: async (token: string, data: Social) => {
-    const res = await fetch(`${API_URL}/users/update`, {
+    const res = await fetch(`${API_URL}${BASE_URL}${data.id}/`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
-        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        ...(token ? { Authorization: `Token ${token}` } : {}),
       },
       body: JSON.stringify(data),
     });
@@ -59,15 +55,18 @@ export const socialApi = {
   },
 
   delete: async (token: string, id: number) => {
-    const res = await fetch(`${API_URL}/users/delete`, {
+    const res = await fetch(`${API_URL}${BASE_URL}${id}/`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
-        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        ...(token ? { Authorization: `Token ${token}` } : {}),
       },
-      body: JSON.stringify({ id }),
     });
-    if (!res.ok) throw new Error("Erreur delete user");
-    return res.json();
+
+    if (!res.ok) {
+      throw new Error("Erreur delete account");
+    }
+    const text = await res.text();
+    return text ? JSON.parse(text) : null;
   },
 };

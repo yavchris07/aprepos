@@ -2,7 +2,7 @@ import type { Member } from "../../utlis/type";
 
 // const API_URL = import.meta.env.BASE_URL;
 const API_URL = import.meta.env.VITE_API_URL;
-const BASE_URL = '/membres/'
+const BASE_URL = "/membres/";
 
 export const memberApi = {
   create: async (data: Member, token: string) => {
@@ -35,7 +35,7 @@ export const memberApi = {
     return res.json();
   },
 
-  get: async (token: string,id:number) => {
+  get: async (token: string, id: number) => {
     const res = await fetch(`${API_URL}${BASE_URL}/${id}/`, {
       headers: {
         "Content-Type": "application/json",
@@ -47,7 +47,7 @@ export const memberApi = {
   },
 
   update: async (token: string, data: Member) => {
-    const res = await fetch(`${API_URL}${BASE_URL}/${data.id}`, {
+    const res = await fetch(`${API_URL}${BASE_URL}${data.id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -60,15 +60,17 @@ export const memberApi = {
   },
 
   delete: async (token: string, id: number) => {
-    const res = await fetch(`${API_URL}${BASE_URL}/${id}/`, {
+    const res = await fetch(`${API_URL}${BASE_URL}${id}/`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
         ...(token ? { Authorization: `Token ${token}` } : {}),
       },
-      body: JSON.stringify({ id }),
     });
-    if (!res.ok) throw new Error("Erreur delete user");
-    return res.json();
+    // if (!res.ok) throw new Error("Erreur delete membre");
+    // return res.json();
+
+    const text = await res.text();
+    return text ? JSON.parse(text) : null;
   },
 };

@@ -13,7 +13,6 @@ const LoginForm = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      console.log('Payload :', formData)
       await login(formData);
       navigate("/dashboard");
       showToast("Connexion reussi avec succes !", "success");
@@ -35,7 +34,7 @@ const LoginForm = () => {
         <form className="my-4" onSubmit={handleSubmit}>
           <div className="flex flex-col my-2">
             <label className="text-sm text-gray-500">
-              E-mail
+              Nom utilisateur
             </label>
             <input
               type="text"

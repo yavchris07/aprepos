@@ -39,6 +39,7 @@ export type Kind = {
 export type Adhesion = {
   id: number;
   membre: number;
+  membre_nom?:string;
   annee: string;
   montant: number;
   devise : string,
@@ -81,10 +82,11 @@ export type Refund = {
 
 export type Social = {
   id: number;
-  membre: string;
+  membre: number;
+  membre_nom?:string;
   semaine: number;
   annee: string;
-  montant: string;
+  montant: number;
   date: string;
 };
 

@@ -1,4 +1,4 @@
-import { Eye, Pencil, Trash2 } from "lucide-react";
+import { Pencil, Trash2 } from "lucide-react";
 import type { Social } from "../../../utlis/type";
 import Loading from "../../../components/loading";
 
@@ -7,7 +7,7 @@ interface listSocialProps {
   loading: boolean;
   onDelete: (social: Social) => void;
   onEdit: (social: Social) => void;
-  onView: (social: Social) => void;
+  // onView: (social: Social) => void;
 }
 
 const ListSocial = ({
@@ -15,7 +15,7 @@ const ListSocial = ({
   loading,
   onDelete,
   onEdit,
-  onView,
+  // onView,
 }: listSocialProps) => {
   if (loading) return <Loading />;
   return (
@@ -65,7 +65,7 @@ const ListSocial = ({
                 <span className="font-medium">{social.id}</span>
               </td>
               <td className="whitespace-nowrap px-6 py-2">
-                <span className="font-medium">{social.membre}</span>
+                <span className="font-medium">{social.membre_nom}</span>
               </td>
               <td className="whitespace-nowrap px-6 py-2 font-medium text-gray-900">
                 <div className="flex items-center gap-2">
@@ -82,12 +82,12 @@ const ListSocial = ({
                 <span className="font-medium">{social.date}</span>
               </td>
               <td className="whitespace-nowrap px-6 py-2 font-medium flex gap-2 justify-center">
-                <button
+                {/* <button
                   onClick={() => onView(social)}
                   className=" hover:bg-gray-100 cursor-pointer"
                 >
                   <Eye size={16} />
-                </button>
+                </button> */}
                 <button
                   onClick={() => onEdit(social)}
                   className=" hover:bg-gray-100 cursor-pointer"

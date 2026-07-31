@@ -56,15 +56,17 @@ export const adhesionApi = {
   },
 
   delete: async (token: string, id: number) => {
-    const res = await fetch(`${API_URL}${BASE_URL}/${id}/`, {
+    const res = await fetch(`${API_URL}${BASE_URL}${id}/`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
         ...(token ? { Authorization: `Token ${token}` } : {}),
       },
-      body: JSON.stringify({ id }),
     });
-    if (!res.ok) throw new Error("Erreur delete user");
-    return res.json();
+    if (!res.ok) {
+      throw new Error("Erreur delete account");
+    }
+    const text = await res.text();
+    return text ? JSON.parse(text) : null;
   },
 };

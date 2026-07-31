@@ -9,20 +9,21 @@ import { useEditeAdhesion } from "../hooks/use-edit-adhesion";
 type modalProps = {
   open: string;
   onClose: () => void;
-  addhesion: Adhesion;
+  adhesion: Adhesion;
   members: Member[];
 };
 
-const EditAdhesion = ({ open, onClose, addhesion, members }: modalProps) => {
+const EditAdhesion = ({ open, onClose, adhesion, members }: modalProps) => {
   const token = getToken();
   const { editAdhesion, fail, pending } = useEditeAdhesion(token ?? "");
   const { showToast } = useToast();
   const [formData, setFormData] = useState({
-    id: addhesion.id,
-    membre: addhesion.membre,
-    montant: addhesion.montant,
-    annee: addhesion.annee,
-    date: addhesion.date,
+    id: adhesion.id,
+    membre: adhesion.membre,
+    montant: adhesion.montant,
+    devise: adhesion.devise,
+    annee: adhesion.annee,
+    date: adhesion.date,
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -43,8 +44,17 @@ const EditAdhesion = ({ open, onClose, addhesion, members }: modalProps) => {
     }
   };
 
+  const currency = [
+    { id: "usd", name: "USD" },
+    { id: "cdf", name: "CDF" },
+  ];
+
+  const handleDeviseChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setFormData({ ...formData, devise: event.target.value });
+  };
+
   const handleMembreChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setFormData({ ...formData, membre: event.target.value });
+    setFormData({ ...formData, membre: Number(event.target.value) });
   };
 
   if (!open) return null;
@@ -87,7 +97,21 @@ const EditAdhesion = ({ open, onClose, addhesion, members }: modalProps) => {
             className="border border-gray-400 text-black py-2 pl-2 rounded text-sm w-full"
           />
         </div>
-
+        <div className="w-full my-1">
+          <label className="text-gray-900 text-xs font-semibold">Devise</label>
+          <select
+            className="border border-gray-400 text-black py-2 pl-2 rounded text-sm w-full"
+            onChange={handleDeviseChange}
+            value={formData.devise}
+          >
+            <option value="">-- Devise --</option>
+            {currency.map((m) => (
+              <option key={m.id} value={m.id}>
+                {m.name}
+              </option>
+            ))}
+          </select>
+        </div>
         <div className="w-full my-1">
           <label className="text-gray-900 text-xs font-semibold">Année</label>
           <input

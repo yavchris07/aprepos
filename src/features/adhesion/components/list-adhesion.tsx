@@ -59,7 +59,7 @@ const ListAdhesion = ({
                 <span className="font-medium">{adh.id}</span>
               </td>
               <td className="whitespace-nowrap px-6 py-2">
-                <span className="font-medium">{adh.membre}</span>
+                <span className="font-medium">{adh.membre_nom}</span>
               </td>
               <td className="whitespace-nowrap px-6 py-2 font-medium text-gray-900">
                 <div className="flex items-center gap-2">
