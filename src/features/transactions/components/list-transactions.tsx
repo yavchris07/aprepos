@@ -62,7 +62,7 @@ const ListTransaction = ({
               className="hover:bg-gray-50 odd:bg-white even:bg-gray-50/50 transition-colors"
             >
               <td className="whitespace-nowrap px-6 py-2">
-                <span className="font-medium">{adh.id}</span>
+                <span className="font-medium">{adh.created_at.split("T")[0]}</span>
               </td>
               <td className="whitespace-nowrap px-6 py-2">
                 <span className="font-medium">{adh.compte}</span>

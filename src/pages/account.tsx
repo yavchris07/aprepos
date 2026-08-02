@@ -3,12 +3,13 @@ import RootLayout from "../components/root-layout";
 import ListAccount from "../features/account/components/list-account";
 import type { Account, Member } from "../utlis/type";
 import CreateAccount from "../features/account/components/create-account";
-import EditAccount from "../features/account/components/edit-account";
 import DeleteAccount from "../features/account/components/delete-account";
 import { ArrowBigLeft, ArrowBigRight } from "lucide-react";
 import { useMembers } from "../features/members/hooks/use-members";
 import { useAccounts } from "../features/account/hooks/use-accounts";
 import { getToken } from "../utlis/get-token";
+import AccountItem from "../features/account/components/account-item";
+import AccountPDF from "../components/pdf/accounts";
 
 const AccountPage = () => {
   const token = getToken();
@@ -77,10 +78,7 @@ const AccountPage = () => {
 
       <div className="flex justify-between items-center my-6 rounded">
         <div>
-          {" "}
-          <span className="bg-green-800 py-2 px-4 rounded text-xs text-white">
-            Liste compte epargne
-          </span>{" "}
+          <AccountPDF data={accounts} />
         </div>
         <input
           type="text"
@@ -130,13 +128,15 @@ const AccountPage = () => {
         />
       )}
       {modal === "view" && selectedItem && (
-        <EditAccount
+        <AccountItem
           account={selectedItem}
-          members={members}
+          // members={members}
           onClose={() => setModal(null)}
           open={modal}
         />
       )}
+
+
       {modal === "delete" && selectedItem && (
         <DeleteAccount
           account={selectedItem}

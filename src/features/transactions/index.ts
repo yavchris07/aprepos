@@ -1,13 +1,14 @@
 import type { Transaction } from "../../utlis/type";
-const API_URL = import.meta.env.BASE_URL;
+const API_URL = import.meta.env.VITE_API_URL;
+const BASE_URL = "/transactions/";
 
 export const transactionApi = {
   create: async (data: Transaction, token: string) => {
-    const res = await fetch(`${API_URL}/users/create`, {
+    const res = await fetch(`${API_URL}${BASE_URL}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        ...(token ? { Authorization: `Token ${token}` } : {}),
       },
       body: JSON.stringify(data),
     });
@@ -22,10 +23,10 @@ export const transactionApi = {
   },
 
   getAll: async (token: string) => {
-    const res = await fetch(`${API_URL}/users/all`, {
+    const res = await fetch(`${API_URL}${BASE_URL}`, {
       headers: {
         "Content-Type": "application/json",
-        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        ...(token ? { Authorization: `Token ${token}` } : {}),
       },
     });
     if (!res.ok) throw new Error("Erreur fetch users");
@@ -33,10 +34,10 @@ export const transactionApi = {
   },
 
   get: async (token: string) => {
-    const res = await fetch(`${API_URL}/users/get`, {
+    const res = await fetch(`${API_URL}${BASE_URL}`, {
       headers: {
         "Content-Type": "application/json",
-        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        ...(token ? { Authorization: `Token ${token}` } : {}),
       },
     });
     if (!res.ok) throw new Error("Erreur fetch user");
@@ -44,11 +45,11 @@ export const transactionApi = {
   },
 
   update: async (token: string, data: Transaction) => {
-    const res = await fetch(`${API_URL}/users/update`, {
+    const res = await fetch(`${API_URL}${BASE_URL}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
-        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        ...(token ? { Authorization: `Token ${token}` } : {}),
       },
       body: JSON.stringify(data),
     });
@@ -57,11 +58,11 @@ export const transactionApi = {
   },
 
   delete: async (token: string, id: number) => {
-    const res = await fetch(`${API_URL}/users/delete`, {
+    const res = await fetch(`${API_URL}${BASE_URL}${id}/`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
-        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        ...(token ? { Authorization: `Token ${token}` } : {}),
       },
       body: JSON.stringify({ id }),
     });

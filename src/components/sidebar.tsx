@@ -1,4 +1,3 @@
-import { User } from "lucide-react";
 // import { useEffect, useState } from "react";
 import SidebarItems from "./sidebar-items";
 import { getCurrentUser } from "../utlis/get-user";
@@ -22,8 +21,9 @@ const Sidebar = () => {
       <div className="bg-white border border-gray-200 rounded p-4">
         <div className="space-y-4">
           <div className="flex flex-col items-start justify-center">
-            <div className="w-22.5 h-22.5 rounded-full bg-green-800 flex items-center justify-center">
-              <User size={50} color="white" />
+            <div className="w-30 h-30 rounded-full flex items-center justify-center">
+              {/* <User size={50} color="white" /> */}
+              <img src="/logo.png" alt="User Image" />
             </div>
             <p className="text-xs py-3">
               <strong className="text-orange-800 text-xl">

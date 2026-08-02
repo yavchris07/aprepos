@@ -34,8 +34,8 @@ export const accountApi = {
     return res.json();
   },
 
-  get: async (token: string) => {
-    const res = await fetch(`${API_URL}${BASE_URL}`, {
+  get: async (token: string, id:number) => {
+    const res = await fetch(`${API_URL}${BASE_URL}?search=${id}`, {
       headers: {
         "Content-Type": "application/json",
         ...(token ? { Authorization: `Token ${token}` } : {}),
@@ -81,3 +81,6 @@ export const accountApi = {
     return text ? JSON.parse(text) : null;
   },
 };
+
+
+// https://ceparcrea.acedh-rdc.org/api/comptes/?search=1585 3745 2830 901

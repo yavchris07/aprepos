@@ -27,6 +27,7 @@ const CreateTransaction = ({ onClose, open }: createAccountProps) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
+      console.log('Payload transaction : ', formData)
       await create(formData);
       showToast("Création reussie !", "success");
       onClose();
@@ -75,6 +76,7 @@ const CreateTransaction = ({ onClose, open }: createAccountProps) => {
                 compte: account.id,
               }))
             }
+            token={token}
           />
           <div className="w-full my-1">
             <label className="text-gray-900 text-xs font-semibold">
@@ -87,7 +89,7 @@ const CreateTransaction = ({ onClose, open }: createAccountProps) => {
             >
               <option>-- Type de transaction</option>
               {movement.map((m) => (
-                <option value={m.id}>{m.name}</option>
+                <option value={m.id} key={m.id}>{m.name}</option>
               ))}
             </select>
           </div>
@@ -106,7 +108,7 @@ const CreateTransaction = ({ onClose, open }: createAccountProps) => {
               className="border border-gray-400 text-black py-2 pl-2 rounded text-sm w-full"
             />
           </div>
-          <div className="w-full my-1">
+          <div className="w-full my-1 hidden">
             <label className="text-gray-900 text-xs font-semibold">
               Reference
             </label>

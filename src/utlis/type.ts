@@ -61,6 +61,7 @@ export type Transaction = {
   montant: number;
   date: string;
   reference: string;
+  created_at?:string;
 };
 
 export type Loan = {

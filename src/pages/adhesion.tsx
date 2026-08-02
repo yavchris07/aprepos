@@ -14,13 +14,13 @@ import { useAdhesion } from "../features/adhesion/hooks/use-adhesions";
 
 const AdhesionPage = () => {
   const token = getToken();
-  const { data: mbs } = useMembers(token ?? '');
-  const { data, isLoading } = useAdhesion(token ?? '');
+  const { data: mbs } = useMembers(token ?? "");
+  const { data, isLoading } = useAdhesion(token ?? "");
   const members: Member[] = mbs?.members ?? [];
   const adhesions: Adhesion[] = data?.adhesions ?? [];
   const pagination = data?.pagination;
 
-  console.log('VVVVVVVVVVVVV ',pagination); 
+  console.log("VVVVVVVVVVVVV ", pagination);
 
   const [selectedItem, setSelectedItem] = useState<Adhesion | null>(null);
   const [modal, setModal] = useState<"open" | "edit" | "delete">(null);
@@ -51,8 +51,6 @@ const AdhesionPage = () => {
     // setCurrentPage(1);
   };
 
-  console.log("XXXXXXXXXXXXXXXXX : ", adhesions);
-
   return (
     <RootLayout>
       <div className="flex justify-between items-center my-3">
@@ -76,13 +74,22 @@ const AdhesionPage = () => {
             PDF
           </span>{" "}
         </div>
-        <input
-          type="text"
-          placeholder="Recherche par nom !"
-          className="border border-gray-400 py-2 pl-2 rounded"
-          value={searchQuery}
-          onChange={handleSearchChange}
-        />
+        <div className="flex gap-3">
+          <input
+            type="text"
+            placeholder="Recherche par nom !"
+            className="border border-gray-400 py-2 pl-2 rounded focus:outline-none focus:ring-2 focus:ring-green-700"
+            value={searchQuery}
+            onChange={handleSearchChange}
+          />
+          <input
+            type="text"
+            placeholder="Annee !"
+            className="border border-gray-400 py-2 pl-2 rounded focus:outline-none focus:ring-2 focus:ring-green-700"
+            value={searchQuery}
+            onChange={handleSearchChange}
+          />
+        </div>
       </div>
 
       <ListAdhesion

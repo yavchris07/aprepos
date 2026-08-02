@@ -1,68 +1,71 @@
 import { Search, Loader2 } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { accountApi } from "..";
+import type { Account } from "../../../utlis/type";
 
-type Account = {
-  id: number;
-  numero_compte: string;
-  membre: string;
-};
+// type Account = {
+//   id: number;
+//   numero_compte: string;
+//   membre: string;
+
+// };
 
 type Props = {
   value?: number;
   onChange: (account: Account) => void;
+  token: string;
 };
 
-const GetAccount = ({ value, onChange }: Props) => {
+// 959671516137521
+
+const GetAccount = ({ value, onChange, token }: Props) => {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<Account[]>([]);
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
-  const timeout = useRef<number | undefined>(undefined);
+  // const timeout = useRef<number | undefined>(undefined);
 
+  const shouldSearch = query.trim().length >= 2;
 
-const shouldSearch = query.trim().length >= 2;
+  //   useEffect(() => {
+  //     if (query.trim().length < 2) {
+  //       setResults([]);
+  //       return;
+  //     }
 
-//   useEffect(() => {
-//     if (query.trim().length < 2) {
-//       setResults([]);
-//       return;
-//     }
+  //     window.clearTimeout(timeout.current);
 
-//     window.clearTimeout(timeout.current);
+  //     timeout.current = window.setTimeout(async () => {
+  //       try {
+  //         setLoading(true);
+  //         // const { account } = useGetAccount(query);
+  //         const account = await accountApi.get(query);
+  //         setResults(account);
 
-//     timeout.current = window.setTimeout(async () => {
-//       try {
-//         setLoading(true);
-//         // const { account } = useGetAccount(query);
-//         const account = await accountApi.get(query);
-//         setResults(account);
+  //         setOpen(true);
+  //       } finally {
+  //         setLoading(false);
+  //       }
+  //     }, 300);
 
-//         setOpen(true);
-//       } finally {
-//         setLoading(false);
-//       }
-//     }, 300);
+  //     return () => window.clearTimeout(timeout.current);
+  //   }, [query]);
 
-//     return () => window.clearTimeout(timeout.current);
-//   }, [query]);
+  useEffect(() => {
+    if (!shouldSearch) return;
 
-useEffect(() => {
-  if (!shouldSearch) return;
-
-  const timer = setTimeout(async () => {
-    try {
-      setLoading(true);
-      const data = await accountApi.get(query);
-      setResults(data);
-      setOpen(true);
-    } finally {
-      setLoading(false);
-    }
-  }, 300);
-  return () => clearTimeout(timer);
-}, [query, shouldSearch]);
-
+    const timer = setTimeout(async () => {
+      try {
+        setLoading(true);
+        const data = await accountApi.get(token, Number(query));
+        setResults(data.results);
+        setOpen(data.results.length > 0);
+      } finally {
+        setLoading(false);
+      }
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [query, shouldSearch, token]);
 
   const handleSelect = (account: Account) => {
     setQuery(`${account.numero_compte} - ${account.membre}`);
@@ -100,7 +103,7 @@ useEffect(() => {
               onClick={() => handleSelect(account)}
               className="w-full text-left px-3 py-2 hover:bg-gray-100"
             >
-              <p className="font-medium text-sm">{account.membre}</p>
+              <p className="font-medium text-sm">{account.membre_nom}</p>
               <p className="text-xs text-gray-500">{account.numero_compte}</p>
             </button>
           ))}
@@ -111,6 +114,3 @@ useEffect(() => {
 };
 
 export default GetAccount;
-
- 
- 

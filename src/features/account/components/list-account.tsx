@@ -1,6 +1,7 @@
 import { Eye, Trash2 } from "lucide-react";
 import type { Account } from "../../../utlis/type";
 import Loading from "../../../components/loading";
+import { formatAccountNumber } from "../../../utlis/fomatted-number";
 
 interface accountProps {
   accounts: Account[];
@@ -56,7 +57,7 @@ const ListAccount = ({
               </td>
               <td className="whitespace-nowrap px-6 py-2 font-medium text-gray-900">
                 <div className="flex items-center gap-2">
-                  <span>{adh.numero_compte}</span>
+                  <span>{formatAccountNumber(adh.numero_compte)}</span>
                 </div>
               </td>
               <td className="whitespace-nowrap px-6 py-2">

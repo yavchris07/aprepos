@@ -1,10 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import { accountApi } from "..";
 
-export const useGetAccount = (id: string) => {
+export const useGetAccount = (token:string, id: number) => {
   const query = useQuery({
     queryKey: ["account", id],
-    queryFn: () => accountApi.get(id),
+    queryFn: () => accountApi.get(token,id),
     enabled: !!id, // n'exécute la requête que si un id existe
   });
 
