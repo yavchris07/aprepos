@@ -9,6 +9,7 @@ import { ArrowBigLeft, ArrowBigRight } from "lucide-react";
 import { getToken } from "../utlis/get-token";
 import { useMembers } from "../features/members/hooks/use-members";
 import { useKinds } from "../features/kind/hooks/use-kind";
+import MemberPDF from "../components/pdf/members";
 
 const MemberPage = () => {
   const [selectedItem, setSelectedItem] = useState<Member | null>(null);
@@ -80,10 +81,7 @@ const MemberPage = () => {
 
       <div className="flex justify-between items-center my-6 rounded">
         <div>
-          {" "}
-          <span className="bg-green-800 py-2 px-4 rounded text-xs text-white cursor-pointer">
-            Liste
-          </span>{" "}
+           <MemberPDF data={filteredData} />
         </div>
         <input
           type="text"

@@ -1,20 +1,21 @@
 import { Search, Loader2 } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { memberApi } from "..";
 import type { Member } from "../../../utlis/type";
 
 type Props = {
   value?: number;
   onChange: (member: Member) => void;
+  token: string;
 };
 
-const GetMember = ({ value,onChange }: Props) => {
+const GetMember = ({ value, onChange, token }: Props) => {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<Member[]>([]);
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
-  const timeout = useRef<number | undefined>(undefined);
 
+  // console.log(timeout)
   const shouldSearch = query.trim().length >= 2;
 
   useEffect(() => {
@@ -23,15 +24,15 @@ const GetMember = ({ value,onChange }: Props) => {
     const timer = setTimeout(async () => {
       try {
         setLoading(true);
-        const data = await memberApi.get(query);
-        setResults(data);
-        setOpen(true);
+        const data = await memberApi.get(token, query);
+        setResults(data.results);
+        setOpen(data.results.length > 0);
       } finally {
         setLoading(false);
       }
     }, 300);
     return () => clearTimeout(timer);
-  }, [query, shouldSearch]);
+  }, [query, shouldSearch, token]);
 
   const handleSelect = (member: Member) => {
     setQuery(`${member.nom_complet} - ${member.id}`);
@@ -70,8 +71,10 @@ const GetMember = ({ value,onChange }: Props) => {
               onClick={() => handleSelect(member)}
               className="w-full text-left px-3 py-2 hover:bg-gray-100"
             >
-              <p className="font-medium text-sm">{member.id}</p>
-              <p className="text-xs text-gray-500">{member.nom_complet}</p>
+              <p className="text-sm font-medium text-gray-500">
+                {member.nom_complet}
+              </p>
+              <p className="text-xs">{member.phone}</p>
             </button>
           ))}
         </div>

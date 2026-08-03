@@ -11,6 +11,7 @@ import CreateAdhesion from "../features/adhesion/components/create-adhesion";
 import { getToken } from "../utlis/get-token";
 import { useMembers } from "../features/members/hooks/use-members";
 import { useAdhesion } from "../features/adhesion/hooks/use-adhesions";
+import AdhesionPDF from "../components/pdf/adhesion";
 
 const AdhesionPage = () => {
   const token = getToken();
@@ -70,9 +71,7 @@ const AdhesionPage = () => {
       <div className="flex justify-between items-center my-6 rounded">
         <div>
           {" "}
-          <span className="bg-green-800 py-2 px-4 rounded text-xs text-white cursor-pointer">
-            PDF
-          </span>{" "}
+          <AdhesionPDF data={filteredData}/>
         </div>
         <div className="flex gap-3">
           <input
@@ -107,6 +106,7 @@ const AdhesionPage = () => {
           open={modal}
         />
       )} */}
+      
       {modal === "open" && (
         <CreateAdhesion
           onClose={() => setModal(null)}

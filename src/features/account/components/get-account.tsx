@@ -16,8 +16,6 @@ type Props = {
   token: string;
 };
 
-// 959671516137521
-
 const GetAccount = ({ value, onChange, token }: Props) => {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<Account[]>([]);

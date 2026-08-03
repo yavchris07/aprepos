@@ -30,7 +30,7 @@ const ListTransaction = ({
               Compte
             </th>
             <th scope="col" className="px-6 py-4 text-left">
-              Type operation
+              Type opération
             </th>
             <th
               scope="col"
@@ -42,7 +42,7 @@ const ListTransaction = ({
               scope="col"
               className="px-6 py-4 max-w-xs text-left md:max-w-md"
             >
-              Reference
+              Réference
             </th>
             <th
               scope="col"
@@ -62,23 +62,29 @@ const ListTransaction = ({
               className="hover:bg-gray-50 odd:bg-white even:bg-gray-50/50 transition-colors"
             >
               <td className="whitespace-nowrap px-6 py-2">
-                <span className="font-medium">{adh.created_at.split("T")[0]}</span>
+                <span className="font-medium">
+                  {adh.created_at.split("T")[0]}
+                </span>
               </td>
               <td className="whitespace-nowrap px-6 py-2">
                 <span className="font-medium">{adh.compte}</span>
               </td>
-              <td className="whitespace-nowrap px-6 py-2 font-medium text-gray-900">
-                <div className="flex items-center gap-2">
-                  <span>{adh.type_transaction}</span>
+              <td className="whitespace-nowrap px-6 py-2 font-medium">
+                <div
+                  className={`flex items-center gap-2 ${adh.type_transaction === "in" ? "text-green-600" : "text-red-600"}`}
+                >
+                  <span>
+                    {adh.type_transaction === "in" ? "Entrée" : "Sortie"}
+                  </span>
                 </div>
               </td>
               <td className="whitespace-nowrap px-6 py-2">
                 <span className="font-medium">{adh.montant}</span>
               </td>
-               <td className="whitespace-nowrap px-6 py-2">
+              <td className="whitespace-nowrap px-6 py-2">
                 <span className="font-medium">{adh.reference}</span>
               </td>
-               <td className="whitespace-nowrap px-6 py-2">
+              <td className="whitespace-nowrap px-6 py-2">
                 <span className="font-medium">{adh.date}</span>
               </td>
               <td className="whitespace-nowrap px-6 py-2 font-medium flex gap-2 justify-center">

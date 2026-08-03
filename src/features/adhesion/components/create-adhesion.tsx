@@ -3,17 +3,15 @@ import { Loader2 } from "lucide-react";
 import { useToast } from "../../../components/toast-context";
 import { getToken } from "../../../utlis/get-token";
 import { useCreateAdhesion } from "../hooks/use-create-adhesion";
-import type { Member } from "../../../utlis/type";
 import Modal from "../../../components/modal";
-// import GetMember from "../../members/components/get-member";
+import GetMember from "../../members/components/get-member";
 
 type createUserProps = {
   open: string;
   onClose: () => void;
-  members: Member[];
 };
 
-const CreateAdhesion = ({ open, onClose, members }: createUserProps) => {
+const CreateAdhesion = ({ open, onClose }: createUserProps) => {
   const token = getToken();
   const { create, fail, pending } = useCreateAdhesion(token ?? "");
 
@@ -35,6 +33,7 @@ const CreateAdhesion = ({ open, onClose, members }: createUserProps) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
+      console.log('DDDDDDDDD : ',formData)
       await create(formData);
       showToast("Création reussie !", "success");
       onClose();
@@ -48,13 +47,9 @@ const CreateAdhesion = ({ open, onClose, members }: createUserProps) => {
       }
     }
   };
-  
+
   const handleDeviseChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setFormData({ ...formData, devise: event.target.value });
-  };
-
-  const handleMembreChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setFormData({ ...formData, membre: Number(event.target.value) });
   };
 
   if (!open) return null;
@@ -71,31 +66,16 @@ const CreateAdhesion = ({ open, onClose, members }: createUserProps) => {
         Ajoute une adhesion avant de pouvoir poursuivre avec les autres etapes
       </p>
       <form onSubmit={handleSubmit} className="flex flex-col gap-0">
-        <div className="w-full my-1">
-          {/* <GetMember
-            value={formData.id}
-            onChange={(member) =>
-              setFormData((prev) => ({
-                ...prev,
-                compte: member.id,
-              }))
-            }
-          /> */}
-
-          <label className="text-gray-900 text-xs font-semibold">Membre</label>
-          <select
-            className="border border-gray-400 text-black py-2 pl-2 rounded text-sm w-full"
-            onChange={handleMembreChange}
-            value={formData.membre}
-          >
-            <option value="">-- Membre --</option>
-            {members.map((m) => (
-              <option key={m.id} value={m.id}>
-                {m.nom_complet}
-              </option>
-            ))}
-          </select>
-        </div>
+        <GetMember
+          value={formData.membre}
+          onChange={(member) =>
+            setFormData((prev) => ({
+              ...prev,
+              membre: member.id,
+            }))
+          }
+          token={token}
+        />
         <div className="w-full my-1">
           <label className="text-gray-900 text-xs font-semibold">Montant</label>
           <input

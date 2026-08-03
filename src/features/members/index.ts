@@ -35,8 +35,8 @@ export const memberApi = {
     return res.json();
   },
 
-  get: async (token: string, id: number) => {
-    const res = await fetch(`${API_URL}${BASE_URL}/${id}/`, {
+  get: async (token: string, id: string) => {
+    const res = await fetch(`${API_URL}${BASE_URL}/?=search=${id}/`, {
       headers: {
         "Content-Type": "application/json",
         ...(token ? { Authorization: `Token ${token}` } : {}),
