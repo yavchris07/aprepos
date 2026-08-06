@@ -7,7 +7,7 @@ import { useCreateLoan } from "../hooks/use-create-loan";
 import GetMember from "../../members/components/get-member";
 
 type createLoanProps = {
-  open: string;
+  open: boolean;
   onClose: () => void;
 };
 

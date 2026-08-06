@@ -154,20 +154,25 @@ const LoanPage = () => {
   ];
 
   const [selectedItem, setSelectedItem] = useState<Loan | null>(null);
-  const [modal, setModal] = useState<"open" | "edit" | "delete" | "view">(null);
+  const [modal, setModal] = useState(false);
+  const [deleteModal, setDeleteModal] = useState(false);
+  const [editModal, setEditModal] = useState(false);
+  const [viewModal, setViewModal] = useState(false);
 
   const handleDelete = (item: Loan) => {
     setSelectedItem(item);
-    setModal("delete");
+    setDeleteModal(true);
   };
   const handleEdit = (item: Loan) => {
     setSelectedItem(item);
-    setModal("edit");
+    setEditModal(true);
   };
   const handleView = (item: Loan) => {
     setSelectedItem(item);
-    setModal("view");
+    setViewModal(true);
   };
+
+  console.log(viewModal)
 
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -194,7 +199,7 @@ const LoanPage = () => {
 
   const totalPages = Math.ceil(ln.length / itemsPerPage);
 
-  console.log(totalPages)
+  console.log(totalPages);
 
   return (
     <RootLayout>
@@ -206,7 +211,7 @@ const LoanPage = () => {
 
         <span
           className="bg-green-800 text-white px-3 py-1 rounded cursor-pointer"
-          onClick={() => setModal("open")}
+          onClick={() => setModal(true)}
         >
           Nouvelle
         </span>
@@ -236,24 +241,19 @@ const LoanPage = () => {
         loans={currentloans}
       />
 
-      {modal === "open" && (
-        <CreateLoan
-          onClose={() => setModal(null)}
-          open='open'
-        />
-      )}
-      {modal === "edit" && selectedItem && (
+      {modal && <CreateLoan onClose={() => setModal(false)} open={modal} />}
+      {editModal && selectedItem && (
         <EditLoan
           members={members}
-          onClose={() => setModal(null)}
-          open='edit'
+          onClose={() => setEditModal(false)}
+          open={editModal}
           loan={selectedItem}
         />
       )}
-      {modal === "delete" && selectedItem && (
+      {deleteModal && selectedItem && (
         <DeleteLoan
           onClose={() => setModal(null)}
-          open='delete'
+          open={deleteModal}
           loan={selectedItem}
         />
       )}

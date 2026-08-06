@@ -6,7 +6,7 @@ import { useToast } from "../../../components/toast-context";
 import { getToken } from "../../../utlis/get-token";
 
 type editMemberProps = {
-  open: string;
+  open: boolean;
   onClose: () => void;
   member: Member;
   kinds: Kind[];

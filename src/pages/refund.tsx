@@ -154,20 +154,25 @@ const RefundPage = () => {
   ];
 
   const [selectedItem, setSelectedItem] = useState<Refund | null>(null);
-  const [modal, setModal] = useState<"open" | "edit" | "delete" | "view">(null);
+   const [modal, setModal] = useState(false);
+  const [deleteModal, setDeleteModal] = useState(false);
+  const [editModal, setEditModal] = useState(false);
+  const [viewModal, setViewModal] = useState(false)
 
   const handleDelete = (item: Refund) => {
     setSelectedItem(item);
-    setModal("delete");
+    setDeleteModal(true)
   };
   const handleEdit = (item: Refund) => {
     setSelectedItem(item);
-    setModal("edit");
+   setEditModal(true)
   };
   const handleView = (item: Refund) => {
     setSelectedItem(item);
-    setModal("view");
+   setViewModal(true)
   };
+
+  console.log(viewModal)
 
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -204,7 +209,7 @@ const RefundPage = () => {
 
         <span
           className="bg-green-800 text-white px-3 py-1 rounded cursor-pointer"
-          onClick={() => setModal("open")}
+          onClick={() => setModal(true)}
         >
           Nouveau
         </span>
@@ -256,24 +261,24 @@ const RefundPage = () => {
         </div>
       )}
 
-      {modal === "open" && (
+      {modal && (
         <CreateRefund
-          onClose={() => setModal(null)}
-          open='open'
+          onClose={() => setModal(false)}
+          open={modal}
         />
       )}
-      {modal == "edit" && selectedItem && (
+      {editModal && selectedItem && (
         <EditRefund
           members={members}
           onClose={() => setModal(null)}
-          open='edit'
+          open={editModal}
           refund={selectedItem}
         />
       )}
-      {modal == "delete" && selectedItem && (
+      {deleteModal && selectedItem && (
         <DeleteRefund
           onClose={() => setModal(null)}
-          open='delete'
+          open={deleteModal}
           refund={selectedItem}
         />
       )}

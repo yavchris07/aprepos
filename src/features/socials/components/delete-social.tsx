@@ -7,7 +7,7 @@ import Modal from "../../../components/modal";
 import { useDeleteSocial } from "../hooks/use-delete-social";
 
 type deleteSocialProps = {
-  open: string;
+  open: boolean;
   onClose: () => void;
   social: Social;
 };

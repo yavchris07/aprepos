@@ -7,7 +7,7 @@ import { useCreateAccount } from "../hooks/use-create-account";
 import Modal from "../../../components/modal";
 
 type editAccountProps = {
-  open: string;
+  open: boolean;
   onClose: () => void;
   members: Member[];
   account: Account;

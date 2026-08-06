@@ -7,7 +7,7 @@ import Modal from "../../../components/modal";
 import { Loader2 } from "lucide-react";
 
 type editKindMemeberProps = {
-  open: string;
+  open: boolean;
   onClose: () => void;
   kind: Kind;
 };

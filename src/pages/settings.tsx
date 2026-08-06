@@ -8,9 +8,9 @@ import { getToken } from "../utlis/get-token";
 import type { Kind } from "../utlis/type";
 
 const SettingPage = () => {
-  const [modal, setModal] = useState<"delete" | "open" | "edit">(null);
+  const [modal, setModal] = useState(false);
   const token = getToken();
-  const { data } = useKinds(token);
+  const { data } = useKinds(token ?? "");
 
   const kinds: Kind[] = data?.kinds ?? [];
   const pagination = data?.pagination;
@@ -42,7 +42,7 @@ const SettingPage = () => {
           <h1 className="font-semibold">Type de membre</h1>
           <span
             className="bg-orange-800 rounded-full w-6 h-6 cursor-pointer flex items-center justify-center"
-            onClick={() => setModal("open")}
+            onClick={() => setModal(true)}
           >
             <Plus size={15} className="text-white" />
           </span>
@@ -60,7 +60,7 @@ const SettingPage = () => {
           ))}
         </div>
       </div>
-      {<CreateKind onClose={() => setModal(null)} open={modal} />}
+      {modal && <CreateKind onClose={() => setModal(null)} open={modal} />}
     </RootLayout>
   );
 };

@@ -7,7 +7,7 @@ import Modal from "../../../components/modal";
 import { useDeleteLoan } from "../hooks/use-delete-loan";
 
 type deleteLoanProps = {
-  open: string;
+  open: boolean;
   onClose: () => void;
   loan: Loan;
 };

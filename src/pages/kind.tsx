@@ -3,12 +3,16 @@ import RootLayout from "../components/root-layout";
 
 const KindPage = () => {
   const [modal, setModal] = useState<"open" | "edit" | "delete" | "view">(null);
-  console.log(modal)
+  //   const [modal, setModal] = useState(false);
+  // const [deleteModal, setDeleteModal] = useState(false);
+  // const [editModal, setEditModal] = useState(false);
+  console.log(modal);
   return (
     <RootLayout>
       <div className="flex justify-between items-center my-3">
         <h1 className="text-gray-900 font-semibold text-sm">
-          Tableau de board / <span className="text-gray-500">Adhesion</span>{" "}
+          Tableau de board /{" "}
+          <span className="text-gray-500">Adhesion</span>{" "}
         </h1>
 
         <span

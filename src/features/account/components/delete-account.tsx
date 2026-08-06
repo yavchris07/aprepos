@@ -7,7 +7,7 @@ import Modal from "../../../components/modal";
 import { useDeleteAccount } from "../hooks/use-delete-account";
 
 type deleteAccountProps = {
-  open: string;
+  open: boolean;
   onClose: () => void;
   account: Account;
 };

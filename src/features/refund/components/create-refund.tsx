@@ -6,7 +6,7 @@ import { useCreateRefund } from "../hooks/use-create-refund";
 import GetMember from "../../members/components/get-member";
 
 type createSocialProps = {
-  open: string;
+  open: boolean;
   onClose: () => void;
 };
 

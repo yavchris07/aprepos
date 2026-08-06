@@ -6,7 +6,7 @@ import Modal from "../../../components/modal";
 import { useCreateKind } from "../hooks/use-create-kind";
 
 type createKindMemeberProps = {
-  open: string;
+  open: boolean;
   onClose: () => void;
 };
 

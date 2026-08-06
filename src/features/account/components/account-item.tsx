@@ -4,7 +4,7 @@ import type { Account } from "../../../utlis/type";
 import { formatAccountNumber } from "../../../utlis/fomatted-number";
 
 type accountItemProps = {
-  open: string;
+  open: boolean;
   onClose: () => void;
   account: Account;
 };

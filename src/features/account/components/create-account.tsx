@@ -6,7 +6,7 @@ import { useCreateAccount } from "../hooks/use-create-account";
 import GetMember from "../../members/components/get-member";
 
 type createAccountProps = {
-  open: string;
+  open: boolean;
   onClose: () => void;
 };
 

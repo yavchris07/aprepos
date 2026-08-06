@@ -7,7 +7,7 @@ import Modal from "../../../components/modal";
 import type { Kind } from "../../../utlis/type";
 
 type createMemberProps = {
-  open: string;
+  open: boolean;
   onClose: () => void;
   kinds : Kind[]
 };

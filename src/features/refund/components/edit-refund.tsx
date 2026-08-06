@@ -6,7 +6,7 @@ import type { Member, Refund } from "../../../utlis/type";
 import { useCreateRefund } from "../hooks/use-create-refund";
 
 type editSocialProps = {
-  open: string;
+  open: boolean;
   onClose: () => void;
   members: Member[];
   refund: Refund 

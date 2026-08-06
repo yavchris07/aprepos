@@ -8,7 +8,7 @@ import Modal from "../../../components/modal";
 import { useDeleteKind } from "../hooks/use-delete-kind";
 
 type deleteTypeMemberProps = {
-  open: string;
+  open: boolean;
   onClose: () => void;
   kind: Kind;
 };

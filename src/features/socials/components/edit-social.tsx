@@ -6,7 +6,7 @@ import type { Member, Social } from "../../../utlis/type";
 import { useEditeSocial } from "../hooks/use-edit-social";
 
 type createSocialProps = {
-  open: string;
+  open: boolean;
   onClose: () => void;
   members: Member[];
   social: Social;

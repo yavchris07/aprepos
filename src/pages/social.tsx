@@ -22,15 +22,17 @@ const SocialPage = () => {
   console.log(pagination);
 
   const [selectedItem, setSelectedItem] = useState<Social | null>(null);
-  const [modal, setModal] = useState<"open" | "edit" | "delete">(null);
+  const [modal, setModal] = useState(false);
+  const [deleteModal, setDeleteModal] = useState(false);
+  const [editModal, setEditModal] = useState(false);
 
   const handleDelete = (item: Social) => {
     setSelectedItem(item);
-    setModal("delete");
+    setDeleteModal(true)
   };
   const handleEdit = (item: Social) => {
     setSelectedItem(item);
-    setModal("edit");
+   setEditModal(true)
   };
 
   const [searchQuery, setSearchQuery] = useState("");
@@ -68,7 +70,7 @@ const SocialPage = () => {
 
         <span
           className="bg-green-800 text-white px-3 py-1 rounded cursor-pointer"
-          onClick={() => setModal("open")}
+          onClick={() => setModal(true)}
         >
           Nouveau
         </span>
@@ -97,25 +99,25 @@ const SocialPage = () => {
         socials={currentSocials}
       />
 
-      {modal === "open" && (
+      {modal && (
         <CreateSocial
           members={members}
           onClose={() => setModal(null)}
-          open="open"
+          open={modal}
         />
       )}
-      {modal === "edit" && selectedItem && (
+      {editModal && selectedItem && (
         <EditSocial
           members={members}
           onClose={() => setModal(null)}
-          open="edit"
+          open={editModal}
           social={selectedItem}
         />
       )}
-      {modal === "delete" && selectedItem && (
+      {deleteModal && selectedItem && (
         <DeleteSocial
           onClose={() => setModal(null)}
-          open="delete"
+          open={deleteModal}
           social={selectedItem}
         />
       )}

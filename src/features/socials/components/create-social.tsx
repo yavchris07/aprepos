@@ -8,7 +8,7 @@ import { getISOWeek, getISOWeekYear } from "date-fns";
 import GetMember from "../../members/components/get-member";
 
 type createSocialProps = {
-  open: string;
+  open: boolean;
   onClose: () => void;
   members: Member[];
 };

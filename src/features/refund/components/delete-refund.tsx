@@ -7,7 +7,7 @@ import Modal from "../../../components/modal";
 import { useDeleteRefund } from "../hooks/use-delete-refund";
 
 type deleteSocialProps = {
-  open: string;
+  open: boolean;
   onClose: () => void;
   refund: Refund;
 };

@@ -23,15 +23,17 @@ const AccountPage = () => {
   console.log(pagination);
 
   const [selectedItem, setSelectedItem] = useState<Account | null>(null);
-  const [modal, setModal] = useState<"open" | "delete" | "view">(null);
+  const [modal, setModal] = useState(false);
+  const [deleteModal, setDeleteModal] = useState(false);
+  const [editModal, setEditModal] = useState(false);
 
   const handleDelete = (item: Account) => {
     setSelectedItem(item);
-    setModal("delete");
+    setDeleteModal(true);
   };
   const handleView = (item: Account) => {
     setSelectedItem(item);
-    setModal("view");
+    setEditModal(true);
   };
 
   const [searchQuery, setSearchQuery] = useState("");
@@ -70,7 +72,7 @@ const AccountPage = () => {
 
         <span
           className="bg-green-800 text-white px-3 py-1 rounded cursor-pointer"
-          onClick={() => setModal("open")}
+          onClick={() => setModal(true)}
         >
           Nouveau
         </span>
@@ -120,28 +122,27 @@ const AccountPage = () => {
         </div>
       )}
 
-      {modal === "open" && (
+      {modal && (
         <CreateAccount
           // members={members}
           onClose={() => setModal(null)}
-          open='open'
+          open={modal}
         />
       )}
-      {modal === "view" && selectedItem && (
+      {editModal && selectedItem && (
         <AccountItem
           account={selectedItem}
           // members={members}
           onClose={() => setModal(null)}
-          open='view'
+          open={editModal}
         />
       )}
 
-
-      {modal === "delete" && selectedItem && (
+      {deleteModal && selectedItem && (
         <DeleteAccount
           account={selectedItem}
           onClose={() => setModal(null)}
-          open='delete'
+          open={deleteModal}
         />
       )}
     </RootLayout>

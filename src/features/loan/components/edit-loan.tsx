@@ -7,7 +7,7 @@ import type { Loan, Member } from "../../../utlis/type";
 import { useEditLoan } from "../hooks/use-edit-loans";
 
 type editLoanProps = {
-  open: string;
+  open: boolean;
   onClose: () => void;
   members : Member[]
   loan:Loan

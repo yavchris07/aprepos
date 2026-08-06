@@ -24,15 +24,17 @@ const AdhesionPage = () => {
   console.log("VVVVVVVVVVVVV ", pagination);
 
   const [selectedItem, setSelectedItem] = useState<Adhesion | null>(null);
-  const [modal, setModal] = useState<"open" | "edit" | "delete">(null);
+  const [modal, setModal] = useState(false);
+  const [deleteModal, setDeleteModal] = useState(false);
+  const [editModal, setEditModal] = useState(false);
 
   const handleDelete = (item: Adhesion) => {
     setSelectedItem(item);
-    setModal("delete");
+  setDeleteModal(true);
   };
   const handleEdit = (item: Adhesion) => {
     setSelectedItem(item);
-    setModal("edit");
+    setEditModal(true);
   };
 
   console.log(selectedItem);
@@ -62,7 +64,7 @@ const AdhesionPage = () => {
 
         <span
           className="bg-green-800 text-white px-3 py-1 rounded cursor-pointer"
-          onClick={() => setModal("open")}
+          onClick={() => setModal(true)}
         >
           Nouvelle
         </span>
@@ -107,13 +109,13 @@ const AdhesionPage = () => {
         />
       )} */}
       
-      {modal === "open" && (
+      {modal&& (
         <CreateAdhesion
           onClose={() => setModal(null)}
           open='open'
         />
       )}
-      {modal === "edit" && selectedItem && (
+      {editModal && selectedItem && (
         <EditAdhesion
           adhesion={selectedItem}
           onClose={() => setModal(null)}
@@ -121,7 +123,7 @@ const AdhesionPage = () => {
           open='edit'
         />
       )}
-      {modal === "delete" && selectedItem && (
+      {deleteModal && selectedItem && (
         <DeletAdhesion
           adhesion={selectedItem}
           onClose={() => setModal(null)}

@@ -13,15 +13,18 @@ import MemberPDF from "../components/pdf/members";
 
 const MemberPage = () => {
   const [selectedItem, setSelectedItem] = useState<Member | null>(null);
-  const [modal, setModal] = useState<"open" | "edit" | "delete">(null);
+    const [modal, setModal] = useState(false);
+  const [deleteModal, setDeleteModal] = useState(false);
+  const [editModal, setEditModal] = useState(false);
+
 
   const handleDelete = (item: Member) => {
     setSelectedItem(item);
-    setModal("delete");
+  setDeleteModal(true)
   };
   const handleEdit = (item: Member) => {
     setSelectedItem(item);
-    setModal("edit");
+    setEditModal(true)
   };
   // const handleView = (item: Member) => {
   //   setSelectedItem(item);
@@ -29,7 +32,7 @@ const MemberPage = () => {
   // };
 
   const token = getToken();
-  const { data, isLoading } = useMembers(token);
+  const { data, isLoading } = useMembers(token ?? "");
   const { data: types } = useKinds(token);
   const members: Member[] = data?.members ?? [];
   const kinds: Kind[] = types?.kinds ?? [];
@@ -73,7 +76,7 @@ const MemberPage = () => {
 
         <span
           className="bg-green-800 text-white px-3 py-1 rounded cursor-pointer"
-          onClick={() => setModal("open")}
+          onClick={() => setModal(true)}
         >
           Nouveau
         </span>
@@ -122,26 +125,26 @@ const MemberPage = () => {
         </div>
       )}
 
-      {modal == "open" && (
+      {modal && (
         <CreateMember
-          onClose={() => setModal(null)}
-          open='open'
+          onClose={() => setModal(false)}
+          open={modal}
           kinds={kinds}
         />
       )}
-      {modal === "edit" && selectedItem && (
+      {editModal && selectedItem && (
         <EditMember
           member={selectedItem}
-          onClose={() => setModal(null)}
-          open='edit'
+          onClose={() => setModal(false)}
+          open={editModal}
           kinds={kinds}
         />
       )}
-      {modal === "delete" && selectedItem && (
+      {deleteModal && selectedItem && (
         <DeleteMember
           member={selectedItem}
-          onClose={() => setModal(null)}
-          open='delete'
+          onClose={() => setModal(false)}
+          open={deleteModal}
         />
       )}
     </RootLayout>
