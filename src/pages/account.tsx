@@ -40,7 +40,7 @@ const AccountPage = () => {
   //Search
   const filteredData = useMemo(() => {
     return accounts.filter((item) =>
-      item.membre_nom.toLowerCase().includes(searchQuery.toLowerCase()),
+      item.membre_nom?.toLowerCase().includes(searchQuery.toLowerCase()),
     );
   }, [accounts, searchQuery]);
 
@@ -50,7 +50,7 @@ const AccountPage = () => {
   };
 
   // Pagination
-  const itemsPerPage = 18;
+  const itemsPerPage = 19;
 
   // Pagination logic
   const indexOfLastItem = currentPage * itemsPerPage;
@@ -124,7 +124,7 @@ const AccountPage = () => {
         <CreateAccount
           // members={members}
           onClose={() => setModal(null)}
-          open={modal}
+          open='open'
         />
       )}
       {modal === "view" && selectedItem && (
@@ -132,7 +132,7 @@ const AccountPage = () => {
           account={selectedItem}
           // members={members}
           onClose={() => setModal(null)}
-          open={modal}
+          open='view'
         />
       )}
 
@@ -141,7 +141,7 @@ const AccountPage = () => {
         <DeleteAccount
           account={selectedItem}
           onClose={() => setModal(null)}
-          open={modal}
+          open='delete'
         />
       )}
     </RootLayout>

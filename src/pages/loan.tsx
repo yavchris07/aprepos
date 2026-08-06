@@ -2,12 +2,10 @@ import { useMemo, useState } from "react";
 import RootLayout from "../components/root-layout";
 import type { Loan } from "../utlis/type";
 import CreateLoan from "../features/loan/components/create-loan";
-
 import ListLoans from "../features/loan/components/list-loan";
 import EditLoan from "../features/loan/components/edit-loan";
-
 import DeleteLoan from "../features/loan/components/delete-loan";
-import { ArrowBigLeft, ArrowBigRight } from "lucide-react";
+// import { ArrowBigLeft, ArrowBigRight } from "lucide-react";
 
 const LoanPage = () => {
   const ln = [

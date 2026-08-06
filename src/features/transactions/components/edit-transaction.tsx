@@ -22,7 +22,7 @@ const EditTransaction = ({ accounts, onClose, open , transaction}: createAccount
     compte: transaction.compte,
     type_transaction: transaction.type_transaction,
     montant: transaction.montant,
-    date:transaction.date,
+    created_at:transaction.created_at,
     reference:transaction.reference
   });
 
@@ -129,7 +129,7 @@ const EditTransaction = ({ accounts, onClose, open , transaction}: createAccount
               type="date"
               value={formData.montant}
               onChange={(e) =>
-                setFormData({ ...formData, date: e.target.value })
+                setFormData({ ...formData, created_at: e.target.value })
               }
               placeholder="Numéro ID"
               className="border border-gray-400 text-black py-2 pl-2 rounded text-sm w-full"

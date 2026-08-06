@@ -20,7 +20,7 @@ const CreateTransaction = ({ onClose, open }: createAccountProps) => {
     compte: 0,
     type_transaction: "",
     montant: 0,
-    date: "",
+    created_at: "",
     reference: "",
   });
 
@@ -126,9 +126,9 @@ const CreateTransaction = ({ onClose, open }: createAccountProps) => {
             <label className="text-gray-900 text-xs font-semibold">Date</label>
             <input
               type="date"
-              value={formData.date}
+              value={formData.created_at}
               onChange={(e) =>
-                setFormData({ ...formData, date: e.target.value })
+                setFormData({ ...formData, created_at: e.target.value })
               }
               placeholder="Numéro ID"
               className="border border-gray-400 text-black py-2 pl-2 rounded text-sm w-full"

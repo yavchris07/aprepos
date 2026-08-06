@@ -69,7 +69,7 @@ const TransactionStatement = ({
                 <span className="font-medium">{adh.reference}</span>
               </td>
               <td className="whitespace-nowrap px-6 py-2">
-                <span className="font-medium">{adh.date}</span>
+                <span className="font-medium">{adh.created_at}</span>
               </td>
             </tr>
           ))}
