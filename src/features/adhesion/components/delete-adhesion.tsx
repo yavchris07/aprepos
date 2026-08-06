@@ -9,7 +9,7 @@ import Modal from "../../../components/modal";
 import { useDeleteAdhesion } from "../hooks/use-delete-adhesion";
 
 type modalProps = {
-  open: string;
+  open: boolean;
   onClose: () => void;
   adhesion: Adhesion;
 };

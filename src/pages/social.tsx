@@ -102,21 +102,21 @@ const SocialPage = () => {
       {modal && (
         <CreateSocial
           members={members}
-          onClose={() => setModal(null)}
+          onClose={() => setModal(false)}
           open={modal}
         />
       )}
       {editModal && selectedItem && (
         <EditSocial
           members={members}
-          onClose={() => setModal(null)}
+          onClose={() => setEditModal(false)}
           open={editModal}
           social={selectedItem}
         />
       )}
       {deleteModal && selectedItem && (
         <DeleteSocial
-          onClose={() => setModal(null)}
+          onClose={() => setDeleteModal(false)}
           open={deleteModal}
           social={selectedItem}
         />

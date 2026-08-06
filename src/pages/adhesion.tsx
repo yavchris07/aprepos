@@ -45,7 +45,7 @@ const AdhesionPage = () => {
   //Search
   const filteredData = useMemo(() => {
     return adhesions.filter((item) =>
-      item?.membre_nom.toLowerCase().includes(searchQuery.toLowerCase()),
+      item?.membre_nom?.toLowerCase().includes(searchQuery.toLowerCase()),
     );
   }, [adhesions, searchQuery]);
 
@@ -111,23 +111,23 @@ const AdhesionPage = () => {
       
       {modal&& (
         <CreateAdhesion
-          onClose={() => setModal(null)}
-          open='open'
+          onClose={() => setModal(false)}
+          open={modal}
         />
       )}
       {editModal && selectedItem && (
         <EditAdhesion
           adhesion={selectedItem}
-          onClose={() => setModal(null)}
+          onClose={() => setEditModal(false)}
           members={members}
-          open='edit'
+          open={editModal}
         />
       )}
       {deleteModal && selectedItem && (
         <DeletAdhesion
           adhesion={selectedItem}
-          onClose={() => setModal(null)}
-          open='delete'
+          onClose={() => setDeleteModal(false)}
+          open={deleteModal}
         />
       )}
       {/* 

@@ -6,7 +6,7 @@ import { useCreateTransaction } from "../hooks/use-create-transaction";
 import GetAccount from "../../account/components/get-account";
 
 type createAccountProps = {
-  open: string;
+  open: boolean;
   onClose: () => void;
 };
 

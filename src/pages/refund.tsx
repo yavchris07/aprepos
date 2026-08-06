@@ -270,14 +270,14 @@ const RefundPage = () => {
       {editModal && selectedItem && (
         <EditRefund
           members={members}
-          onClose={() => setModal(null)}
+          onClose={() => setEditModal(false)}
           open={editModal}
           refund={selectedItem}
         />
       )}
       {deleteModal && selectedItem && (
         <DeleteRefund
-          onClose={() => setModal(null)}
+          onClose={() => setDeleteModal(false)}
           open={deleteModal}
           refund={selectedItem}
         />

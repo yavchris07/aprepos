@@ -6,7 +6,7 @@ import type { Account, Transaction } from "../../../utlis/type";
 import { useCreateTransaction } from "../hooks/use-create-transaction";
 
 type createAccountProps = {
-  open: string;
+  open: boolean;
   onClose: () => void;
   accounts: Account[];
   transaction : Transaction

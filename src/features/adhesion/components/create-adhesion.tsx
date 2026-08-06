@@ -7,7 +7,7 @@ import Modal from "../../../components/modal";
 import GetMember from "../../members/components/get-member";
 
 type createUserProps = {
-  open: string;
+  open: boolean;
   onClose: () => void;
 };
 

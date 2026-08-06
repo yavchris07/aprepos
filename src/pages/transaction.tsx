@@ -19,15 +19,17 @@ const TransactionPage = () => {
   console.log(pagination);
 
   const [selectedItem, setSelectedItem] = useState<Transaction | null>(null);
-  const [modal, setModal] = useState<"open" | "edit" | "delete">(null);
+  const [modal, setModal] = useState(false);
+  const [deleteModal, setDeleteModal] = useState(false);
+  const [editModal, setEditModal] = useState(false);
 
   const handleDelete = (item: Transaction) => {
     setSelectedItem(item);
-    setModal("delete");
+  setDeleteModal(true)
   };
   const handleEdit = (item: Transaction) => {
     setSelectedItem(item);
-    setModal("edit");
+   setEditModal(true)
   };
   // const handleView = (item: Transaction) => {
   //   setSelectedItem(item);
@@ -72,7 +74,7 @@ const TransactionPage = () => {
 
         <span
           className="bg-green-800 text-white px-3 py-1 rounded cursor-pointer"
-          onClick={() => setModal("open")}
+          onClick={() => setModal(true)}
         >
           Nouvelle
         </span>
@@ -102,22 +104,22 @@ const TransactionPage = () => {
         transactions={currentTransactions}
       />
 
-      {modal === "open" && (
-        <CreateTransaction onClose={() => setModal(null)} open='open' />
+      {modal && (
+        <CreateTransaction onClose={() => setModal(null)} open={modal} />
       )}
-      {modal === "edit" && selectedItem && (
+      {editModal && selectedItem && (
         <EditTransaction
           accounts={accounts}
-          onClose={() => setModal(null)}
+          onClose={() => setEditModal(false)}
           transaction={selectedItem}
-          open='edit'
+          open={editModal}
         />
       )}
-      {modal === "delete" && selectedItem && (
+      {deleteModal&& selectedItem && (
         <DeleteTransaction
           transaction={selectedItem}
-          onClose={() => setModal(null)}
-          open='delete'
+          onClose={() => setDeleteModal(false)}
+          open={deleteModal}
         />
       )}
     </RootLayout>

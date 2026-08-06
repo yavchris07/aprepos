@@ -2,8 +2,7 @@ import { useState } from "react";
 import RootLayout from "../components/root-layout";
 
 const KindPage = () => {
-  const [modal, setModal] = useState<"open" | "edit" | "delete" | "view">(null);
-  //   const [modal, setModal] = useState(false);
+  const [modal, setModal] = useState(false);
   // const [deleteModal, setDeleteModal] = useState(false);
   // const [editModal, setEditModal] = useState(false);
   console.log(modal);
@@ -17,7 +16,7 @@ const KindPage = () => {
 
         <span
           className="bg-green-800 text-white px-3 py-1 rounded cursor-pointer"
-          onClick={() => setModal("open")}
+          onClick={() => setModal(true)}
         >
           Nouvelle
         </span>

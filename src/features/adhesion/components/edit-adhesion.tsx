@@ -7,7 +7,7 @@ import { Loader2 } from "lucide-react";
 import { useEditeAdhesion } from "../hooks/use-edit-adhesion";
 
 type modalProps = {
-  open: string;
+  open: boolean;
   onClose: () => void;
   adhesion: Adhesion;
   members: Member[];

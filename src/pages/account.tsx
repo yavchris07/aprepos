@@ -125,7 +125,7 @@ const AccountPage = () => {
       {modal && (
         <CreateAccount
           // members={members}
-          onClose={() => setModal(null)}
+          onClose={() => setModal(false)}
           open={modal}
         />
       )}
@@ -133,7 +133,7 @@ const AccountPage = () => {
         <AccountItem
           account={selectedItem}
           // members={members}
-          onClose={() => setModal(null)}
+          onClose={() => setEditModal(false)}
           open={editModal}
         />
       )}
@@ -141,7 +141,7 @@ const AccountPage = () => {
       {deleteModal && selectedItem && (
         <DeleteAccount
           account={selectedItem}
-          onClose={() => setModal(null)}
+          onClose={() => setDeleteModal(false)}
           open={deleteModal}
         />
       )}
