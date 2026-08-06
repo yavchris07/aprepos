@@ -2,16 +2,15 @@ import React, { useState } from "react";
 import { Loader2 } from "lucide-react";
 import { useToast } from "../../../components/toast-context";
 import { getToken } from "../../../utlis/get-token";
-import type { Member } from "../../../utlis/type";
 import { useCreateRefund } from "../hooks/use-create-refund";
+import GetMember from "../../members/components/get-member";
 
 type createSocialProps = {
   open: string;
   onClose: () => void;
-  members: Member[];
 };
 
-const CreateRefund = ({ members, onClose, open }: createSocialProps) => {
+const CreateRefund = ({ onClose, open }: createSocialProps) => {
   const token = getToken();
   const { create, fail, pending } = useCreateRefund(token ?? "");
   const { showToast } = useToast();
@@ -39,9 +38,6 @@ const CreateRefund = ({ members, onClose, open }: createSocialProps) => {
     }
   };
 
-  const handleMembreChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setFormData({ ...formData, emprumt: Number(event.target.value) });
-  };
 
   if (!open) return null;
 
@@ -58,23 +54,16 @@ const CreateRefund = ({ members, onClose, open }: createSocialProps) => {
           Ajouter un paiement de social.
         </p>
         <form onSubmit={handleSubmit} className="flex flex-col gap-0">
-          <div className="w-full my-1">
-            <label className="text-gray-900 text-xs font-semibold">
-              Membre
-            </label>
-            <select
-              className="border border-gray-400 text-black py-2 pl-2 rounded text-sm w-full"
-              onChange={handleMembreChange}
-              value={formData.emprumt}
-            >
-              <option value="">-- Membre --</option>
-              {members.map((m) => (
-                <option key={m.id} value={m.id}>
-                  {m.nom_complet}
-                </option>
-              ))}
-            </select>
-          </div>
+          <GetMember
+            value={formData.emprumt}
+            onChange={(member) =>
+              setFormData((prev) => ({
+                ...prev,
+                emprumt: member.id,
+              }))
+            }
+            token={token}
+          />
           <div className="w-full my-1">
             <label className="text-gray-900 text-xs font-semibold">
               Montant

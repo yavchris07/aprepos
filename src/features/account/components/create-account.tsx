@@ -2,16 +2,15 @@ import React, { useState } from "react";
 import { Loader2 } from "lucide-react";
 import { useToast } from "../../../components/toast-context";
 import { getToken } from "../../../utlis/get-token";
-import type { Member } from "../../../utlis/type";
 import { useCreateAccount } from "../hooks/use-create-account";
+import GetMember from "../../members/components/get-member";
 
 type createAccountProps = {
   open: string;
   onClose: () => void;
-  members: Member[];
 };
 
-const CreateAccount = ({ members, onClose, open }: createAccountProps) => {
+const CreateAccount = ({ onClose, open }: createAccountProps) => {
   const token = getToken();
   const { create, fail, pending } = useCreateAccount(token ?? "");
 
@@ -40,10 +39,6 @@ const CreateAccount = ({ members, onClose, open }: createAccountProps) => {
     }
   };
 
-  const handleMembreChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setFormData({ ...formData, membre: Number(event.target.value) });
-  };
-
   if (!open) return null;
   return (
     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
@@ -55,26 +50,20 @@ const CreateAccount = ({ members, onClose, open }: createAccountProps) => {
           </span>
         </div>
         <p className="text-gray-500 text-xs font-medium my-3">
-          Ajouter un compte épargne pour permettre aux membres d'épargner et de prendre de crédit.
+          Ajouter un compte épargne pour permettre aux membres d'épargner et de
+          prendre de crédit.
         </p>
         <form onSubmit={handleSubmit} className="flex flex-col gap-0">
-          <div className="w-full my-1">
-            <label className="text-gray-900 text-xs font-semibold">
-              Membre
-            </label>
-            <select
-              className="border border-gray-400 text-black py-2 pl-2 rounded text-sm w-full"
-              onChange={handleMembreChange}
-              value={formData.membre}
-            >
-              <option value="">-- Membre --</option>
-              {members.map((m) => (
-                <option key={m.id} value={m.id}>
-                  {m.nom_complet}
-                </option>
-              ))}
-            </select>
-          </div>
+          <GetMember
+            value={formData.membre}
+            onChange={(member) =>
+              setFormData((prev) => ({
+                ...prev,
+                membre: member.id,
+              }))
+            }
+            token={token}
+          />
           <div className="w-full my-1 hidden">
             <label className="text-gray-900 text-xs font-semibold">
               Numéro compte

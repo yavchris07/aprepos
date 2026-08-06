@@ -5,6 +5,7 @@ import { getToken } from "../../../utlis/get-token";
 import type { Member } from "../../../utlis/type";
 import { useCreateSocial } from "../hooks/use-create-social";
 import { getISOWeek, getISOWeekYear } from "date-fns";
+import GetMember from "../../members/components/get-member";
 
 type createSocialProps = {
   open: string;
@@ -12,7 +13,7 @@ type createSocialProps = {
   members: Member[];
 };
 
-const CreateSocial = ({ members, onClose, open }: createSocialProps) => {
+const CreateSocial = ({ onClose, open }: createSocialProps) => {
   const token = getToken();
   const { create, fail, pending } = useCreateSocial(token ?? "");
   const { showToast } = useToast();
@@ -63,10 +64,6 @@ const CreateSocial = ({ members, onClose, open }: createSocialProps) => {
     setFormData({ ...formData, devise: event.target.value });
   };
 
-  const handleMembreChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setFormData({ ...formData, membre: Number(event.target.value) });
-  };
-
   if (!open) return null;
   return (
     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
@@ -81,23 +78,16 @@ const CreateSocial = ({ members, onClose, open }: createSocialProps) => {
           Ajouter un paiement de social, dans la ceparcrea.
         </p>
         <form onSubmit={handleSubmit} className="flex flex-col gap-0">
-          <div className="w-full my-1">
-            <label className="text-gray-900 text-xs font-semibold">
-              Membre
-            </label>
-            <select
-              className="border border-gray-400 text-black py-2 pl-2 rounded text-sm w-full"
-              onChange={handleMembreChange}
-              value={formData.membre}
-            >
-              <option value="">-- Membre --</option>
-              {members.map((m) => (
-                <option key={m.id} value={m.id}>
-                  {m.nom_complet}
-                </option>
-              ))}
-            </select>
-          </div>
+          <GetMember
+            value={formData.membre}
+            onChange={(member) =>
+              setFormData((prev) => ({
+                ...prev,
+                membre: member.id,
+              }))
+            }
+            token={token}
+          />
           <div className="w-full my-1">
             <label className="text-gray-900 text-xs font-semibold">
               Montant
@@ -131,7 +121,10 @@ const CreateSocial = ({ members, onClose, open }: createSocialProps) => {
           </div>
           <div className="w-full my-1">
             <label className="text-gray-900 text-xs font-semibold">Date</label>
-            <p className="text-xs text-red-500 italic">Mettez uniquement la date de samedi ou du jour choisit pour payer le cas social</p>
+            <p className="text-xs text-red-500 italic my-1">
+              Mettez uniquement la date de samedi ou du jour choisit pour payer
+              le cas social
+            </p>
             <input
               type="date"
               value={formData.date}

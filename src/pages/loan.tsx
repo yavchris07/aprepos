@@ -236,31 +236,8 @@ const LoanPage = () => {
         loans={currentloans}
       />
 
-      {ln.length > 18 && (
-        <div className="flex gap-2 text-gray-500 w-max px-4 py-2 rounded mt-2 ">
-          <button
-            disabled={currentPage === 1}
-            onClick={() => setCurrentPage((prev) => prev - 1)}
-            className="bg-green-700 text-white p-2 rounded-full cursor-pointer hover:bg-green-600 transition disabled:bg-gray-400 disabled:cursor-not-allowed"
-          >
-            <ArrowBigLeft size={10} />
-          </button>
-          <span>
-            Page {currentPage} / {totalPages}
-          </span>
-          <button
-            disabled={currentPage === totalPages}
-            onClick={() => setCurrentPage((prev) => prev + 1)}
-            className="bg-green-700 text-white p-2 rounded-full cursor-pointer hover:bg-green-600 transition disabled:bg-gray-400 disabled:cursor-not-allowed"
-          >
-            <ArrowBigRight size={10} />
-          </button>
-        </div>
-      )}
-
       {modal === "open" && (
         <CreateLoan
-          members={members}
           onClose={() => setModal(null)}
           open={modal}
         />

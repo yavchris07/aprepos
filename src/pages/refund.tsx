@@ -258,7 +258,6 @@ const RefundPage = () => {
 
       {modal === "open" && (
         <CreateRefund
-          members={members}
           onClose={() => setModal(null)}
           open={modal}
         />

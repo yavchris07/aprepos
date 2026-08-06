@@ -35,7 +35,7 @@ const GetMember = ({ value, onChange, token }: Props) => {
   }, [query, shouldSearch, token]);
 
   const handleSelect = (member: Member) => {
-    setQuery(`${member.nom_complet} - ${member.id}`);
+    setQuery(`${member.nom_complet} - ${member.phone}`);
     setOpen(false);
     onChange(member);
   };

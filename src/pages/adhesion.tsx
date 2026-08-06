@@ -111,7 +111,6 @@ const AdhesionPage = () => {
         <CreateAdhesion
           onClose={() => setModal(null)}
           open={modal}
-          members={members}
         />
       )}
       {modal === "edit" && selectedItem && (

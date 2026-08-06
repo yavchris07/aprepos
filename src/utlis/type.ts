@@ -25,7 +25,7 @@ export type Member = {
   nom_complet: string;
   phone: string;
   adresse: string;
-  type_member: number;
+  type_member?: number;
   status: string;
   type_member_detail?: { id: number, nom: string, description: string }
 };

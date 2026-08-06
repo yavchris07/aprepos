@@ -4,15 +4,14 @@ import { useToast } from "../../../components/toast-context";
 import { getToken } from "../../../utlis/get-token";
 import Modal from "../../../components/modal";
 import { useCreateLoan } from "../hooks/use-create-loan";
-import type { Member } from "../../../utlis/type";
+import GetMember from "../../members/components/get-member";
 
 type createLoanProps = {
   open: string;
   onClose: () => void;
-  members : Member[]
 };
 
-const CreateLoan = ({ onClose, open, members }: createLoanProps) => {
+const CreateLoan = ({ onClose, open }: createLoanProps) => {
   const token = getToken();
   const { create, fail, pending } = useCreateLoan(token ?? "");
 
@@ -44,10 +43,6 @@ const CreateLoan = ({ onClose, open, members }: createLoanProps) => {
     }
   };
 
-  const handleMembreChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setFormData({ ...formData, membre: Number(event.target.value) });
-  };
-
   if (!open) return null;
 
   return (
@@ -62,21 +57,16 @@ const CreateLoan = ({ onClose, open, members }: createLoanProps) => {
         Ajouter un emprunt ou credit.
       </p>
       <form onSubmit={handleSubmit} className="flex flex-col gap-0">
-        <div className="w-full my-1">
-          <label className="text-gray-900 text-xs font-semibold">Membre</label>
-          <select
-            className="border border-gray-400 text-black py-2 pl-2 rounded text-sm w-full"
-            onChange={handleMembreChange}
-            value={formData.membre}
-          >
-            <option value="">-- Membre --</option>
-            {members.map((m) => (
-              <option key={m.id} value={m.id}>
-                {m.nom_complet}
-              </option>
-            ))}
-          </select>
-        </div>
+        <GetMember
+          value={formData.membre}
+          onChange={(member) =>
+            setFormData((prev) => ({
+              ...prev,
+              membre: member.id,
+            }))
+          }
+          token={token}
+        />
         <div className="w-full my-1">
           <label className="text-gray-900 text-xs font-semibold">Montant</label>
           <input
