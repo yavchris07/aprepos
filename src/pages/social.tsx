@@ -41,7 +41,7 @@ const SocialPage = () => {
   //Search
   const filteredData = useMemo(() => {
     return socials.filter((item) =>
-      item.membre_nom.toLowerCase().includes(searchQuery.toLowerCase()),
+      item?.membre_nom?.toLowerCase().includes(searchQuery.toLowerCase()),
     );
   }, [searchQuery, socials]);
 

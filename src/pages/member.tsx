@@ -33,7 +33,7 @@ const MemberPage = () => {
 
   const token = getToken();
   const { data, isLoading } = useMembers(token ?? "");
-  const { data: types } = useKinds(token);
+  const { data: types } = useKinds(token ?? "");
   const members: Member[] = data?.members ?? [];
   const kinds: Kind[] = types?.kinds ?? [];
   const pagination = data?.pagination;

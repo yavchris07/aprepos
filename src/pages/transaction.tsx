@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import RootLayout from "../components/root-layout";
-import type { Transaction } from "../utlis/type";
+import type { Account, Transaction } from "../utlis/type";
 import ListTransaction from "../features/transactions/components/list-transactions";
 import EditTransaction from "../features/transactions/components/edit-transaction";
 import DeleteTransaction from "../features/transactions/components/delete-transaction";
@@ -12,7 +12,7 @@ const TransactionPage = () => {
   const token = getToken();
   const { data } = useTransactions(token ?? "");
 
-  const accounts = []
+  const accounts : Account[] = []
 
   const transactions: Transaction[] = data?.transactions ?? [];
   const pagination = data?.pagination;
@@ -105,7 +105,7 @@ const TransactionPage = () => {
       />
 
       {modal && (
-        <CreateTransaction onClose={() => setModal(null)} open={modal} />
+        <CreateTransaction onClose={() => setModal(false)} open={modal} />
       )}
       {editModal && selectedItem && (
         <EditTransaction

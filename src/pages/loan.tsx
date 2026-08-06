@@ -252,7 +252,7 @@ const LoanPage = () => {
       )}
       {deleteModal && selectedItem && (
         <DeleteLoan
-          onClose={() => setModal(null)}
+          onClose={() => setDeleteModal(false)}
           open={deleteModal}
           loan={selectedItem}
         />

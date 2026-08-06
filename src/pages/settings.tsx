@@ -60,7 +60,7 @@ const SettingPage = () => {
           ))}
         </div>
       </div>
-      {modal && <CreateKind onClose={() => setModal(null)} open={modal} />}
+      {modal && <CreateKind onClose={() => setModal(false)} open={modal} />}
     </RootLayout>
   );
 };
