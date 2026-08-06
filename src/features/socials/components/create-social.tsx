@@ -86,7 +86,7 @@ const CreateSocial = ({ onClose, open }: createSocialProps) => {
                 membre: member.id,
               }))
             }
-            token={token}
+            token={token ?? ""}
           />
           <div className="w-full my-1">
             <label className="text-gray-900 text-xs font-semibold">

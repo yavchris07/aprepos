@@ -39,10 +39,10 @@ const AccountPDF = ({ data }: dataSets) => {
       const body = data.map((item) => {
          
         return [
-          item.id,
-          item.membre_nom,
-          item.numero_compte,
-          item.balance
+          item.id ?? "",
+          item.membre_nom ?? "",
+          item.numero_compte ?? "",
+          item.balance ?? 0
         ];
       });
 

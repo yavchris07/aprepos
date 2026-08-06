@@ -29,7 +29,7 @@ const MemberPage = () => {
   // };
 
   const token = getToken();
-  const { data } = useMembers(token);
+  const { data, isLoading } = useMembers(token);
   const { data: types } = useKinds(token);
   const members: Member[] = data?.members ?? [];
   const kinds: Kind[] = types?.kinds ?? [];
@@ -93,7 +93,7 @@ const MemberPage = () => {
       </div>
 
       <ListMember
-        loading={false}
+        loading={isLoading}
         members={currentMembers}
         onDelete={handleDelete}
         onEdit={handleEdit}
@@ -125,7 +125,7 @@ const MemberPage = () => {
       {modal == "open" && (
         <CreateMember
           onClose={() => setModal(null)}
-          open={modal}
+          open='open'
           kinds={kinds}
         />
       )}
@@ -133,7 +133,7 @@ const MemberPage = () => {
         <EditMember
           member={selectedItem}
           onClose={() => setModal(null)}
-          open={modal}
+          open='edit'
           kinds={kinds}
         />
       )}
@@ -141,7 +141,7 @@ const MemberPage = () => {
         <DeleteMember
           member={selectedItem}
           onClose={() => setModal(null)}
-          open={modal}
+          open='delete'
         />
       )}
     </RootLayout>

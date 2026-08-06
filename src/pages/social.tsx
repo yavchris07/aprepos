@@ -11,15 +11,15 @@ import { useMembers } from "../features/members/hooks/use-members";
 import { getToken } from "../utlis/get-token";
 
 const SocialPage = () => {
-   const token = getToken();
-   const { data: mb } = useMembers(token ?? "");
-   const { data, isLoading } = useSocials(token ?? "");
- 
-   const members: Member[] = mb?.members ?? [];
-   const socials: Social[] = data?.socials ?? [];
-   const pagination = data?.pagination;
- 
-   console.log(pagination);
+  const token = getToken();
+  const { data: mb } = useMembers(token ?? "");
+  const { data, isLoading } = useSocials(token ?? "");
+
+  const members: Member[] = mb?.members ?? [];
+  const socials: Social[] = data?.socials ?? [];
+  const pagination = data?.pagination;
+
+  console.log(pagination);
 
   const [selectedItem, setSelectedItem] = useState<Social | null>(null);
   const [modal, setModal] = useState<"open" | "edit" | "delete">(null);
@@ -57,7 +57,7 @@ const SocialPage = () => {
   const currentSocials = filteredData.slice(indexOfFirstItem, indexOfLastItem);
 
   const totalPages = Math.ceil(socials.length / itemsPerPage);
-  console.log(totalPages)
+  console.log(totalPages);
 
   return (
     <RootLayout>
@@ -101,21 +101,21 @@ const SocialPage = () => {
         <CreateSocial
           members={members}
           onClose={() => setModal(null)}
-          open={modal}
+          open="open"
         />
       )}
       {modal === "edit" && selectedItem && (
         <EditSocial
           members={members}
           onClose={() => setModal(null)}
-          open={modal}
+          open="edit"
           social={selectedItem}
         />
       )}
       {modal === "delete" && selectedItem && (
         <DeleteSocial
           onClose={() => setModal(null)}
-          open={modal}
+          open="delete"
           social={selectedItem}
         />
       )}

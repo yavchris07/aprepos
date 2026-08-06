@@ -54,12 +54,12 @@ const MemberPDF = ({ data }: dataSets) => {
 
       const body = data.map((item) => {
         return [
-          item.id,
-          item.nom_complet,
-          item.phone,
-          item.adresse,
-          item.type_member,
-          item.status,
+          item.id ?? "",
+          item.nom_complet ?? "",
+          item.phone ?? "",
+          item.adresse ?? "",
+          item.type_member ?? "",
+          item.status ?? "",
         ];
       });
 

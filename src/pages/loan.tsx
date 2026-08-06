@@ -196,6 +196,8 @@ const LoanPage = () => {
 
   const totalPages = Math.ceil(ln.length / itemsPerPage);
 
+  console.log(totalPages)
+
   return (
     <RootLayout>
       <div className="flex justify-between items-center my-3">
@@ -239,21 +241,21 @@ const LoanPage = () => {
       {modal === "open" && (
         <CreateLoan
           onClose={() => setModal(null)}
-          open={modal}
+          open='open'
         />
       )}
       {modal === "edit" && selectedItem && (
         <EditLoan
           members={members}
           onClose={() => setModal(null)}
-          open={modal}
+          open='edit'
           loan={selectedItem}
         />
       )}
       {modal === "delete" && selectedItem && (
         <DeleteLoan
           onClose={() => setModal(null)}
-          open={modal}
+          open='delete'
           loan={selectedItem}
         />
       )}

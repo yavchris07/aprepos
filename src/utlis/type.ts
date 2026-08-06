@@ -59,7 +59,6 @@ export type Transaction = {
   compte: number;
   type_transaction: string;
   montant: number;
-  date: string;
   reference: string;
   created_at?:string;
 };

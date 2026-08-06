@@ -110,7 +110,7 @@ const AdhesionPage = () => {
       {modal === "open" && (
         <CreateAdhesion
           onClose={() => setModal(null)}
-          open={modal}
+          open='open'
         />
       )}
       {modal === "edit" && selectedItem && (
@@ -118,14 +118,14 @@ const AdhesionPage = () => {
           adhesion={selectedItem}
           onClose={() => setModal(null)}
           members={members}
-          open={modal}
+          open='edit'
         />
       )}
       {modal === "delete" && selectedItem && (
         <DeletAdhesion
           adhesion={selectedItem}
           onClose={() => setModal(null)}
-          open={modal}
+          open='delete'
         />
       )}
       {/* 

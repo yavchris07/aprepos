@@ -51,7 +51,12 @@ const AdhesionPDF = ({ data }: dataSets) => {
       const head = [["ID", "Noms", "Montant", "Année", "Date"]];
 
       const body = data.map((item) => {
-        return [item.id, item.membre_nom, item.montant, item.date];
+        return [
+          item.id ?? "",
+          item.membre_nom ?? "",
+          item.montant ?? "",
+          item.date ?? "",
+        ];
       });
 
       autoTable(doc, {
@@ -92,7 +97,7 @@ const AdhesionPDF = ({ data }: dataSets) => {
           2: { halign: "left" }, // Libellé
           3: { halign: "center" }, // Type
           4: { halign: "right" }, // Montant
-          5: { halign: "right" }, // Solde
+          // 5: { halign: "right" }, // Solde
         },
 
         didParseCell(data) {

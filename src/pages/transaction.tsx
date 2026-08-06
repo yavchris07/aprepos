@@ -103,21 +103,21 @@ const TransactionPage = () => {
       />
 
       {modal === "open" && (
-        <CreateTransaction onClose={() => setModal(null)} open={modal} />
+        <CreateTransaction onClose={() => setModal(null)} open='open' />
       )}
       {modal === "edit" && selectedItem && (
         <EditTransaction
           accounts={accounts}
           onClose={() => setModal(null)}
           transaction={selectedItem}
-          open={modal}
+          open='edit'
         />
       )}
       {modal === "delete" && selectedItem && (
         <DeleteTransaction
           transaction={selectedItem}
           onClose={() => setModal(null)}
-          open={modal}
+          open='delete'
         />
       )}
     </RootLayout>
