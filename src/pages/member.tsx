@@ -13,18 +13,17 @@ import MemberPDF from "../components/pdf/members";
 
 const MemberPage = () => {
   const [selectedItem, setSelectedItem] = useState<Member | null>(null);
-    const [modal, setModal] = useState(false);
+  const [modal, setModal] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
   const [editModal, setEditModal] = useState(false);
 
-
   const handleDelete = (item: Member) => {
     setSelectedItem(item);
-  setDeleteModal(true)
+    setDeleteModal(true);
   };
   const handleEdit = (item: Member) => {
     setSelectedItem(item);
-    setEditModal(true)
+    setEditModal(true);
   };
   // const handleView = (item: Member) => {
   //   setSelectedItem(item);
@@ -34,10 +33,10 @@ const MemberPage = () => {
   const token = getToken();
   const { data, isLoading } = useMembers(token ?? "");
   const { data: types } = useKinds(token ?? "");
-  const members: Member[] = data?.members ?? [];
+  const members: Member[] = useMemo(() => data?.members ?? [], [data?.members]);
   const kinds: Kind[] = types?.kinds ?? [];
   const pagination = data?.pagination;
-  console.log("MMMMM : ", members);
+  // console.log("MMMMM : ", members);
   console.log("YYYYYYY : ", pagination);
 
   const [searchQuery, setSearchQuery] = useState("");
@@ -84,7 +83,7 @@ const MemberPage = () => {
 
       <div className="flex justify-between items-center my-6 rounded">
         <div>
-           <MemberPDF data={filteredData} />
+          <MemberPDF data={filteredData} />
         </div>
         <input
           type="text"
@@ -132,18 +131,20 @@ const MemberPage = () => {
           kinds={kinds}
         />
       )}
+
       {editModal && selectedItem && (
         <EditMember
           member={selectedItem}
-          onClose={() => setModal(false)}
+          onClose={() => setEditModal(false)}
           open={editModal}
           kinds={kinds}
         />
       )}
+
       {deleteModal && selectedItem && (
         <DeleteMember
           member={selectedItem}
-          onClose={() => setModal(false)}
+          onClose={() => setDeleteModal(false)}
           open={deleteModal}
         />
       )}

@@ -16,7 +16,7 @@ const SocialPage = () => {
   const { data, isLoading } = useSocials(token ?? "");
 
   const members: Member[] = mb?.members ?? [];
-  const socials: Social[] = data?.socials ?? [];
+  const socials: Social[] = useMemo(() => data?.socials ?? [], [data?.socials]);
   const pagination = data?.pagination;
 
   console.log(pagination);
@@ -28,11 +28,11 @@ const SocialPage = () => {
 
   const handleDelete = (item: Social) => {
     setSelectedItem(item);
-    setDeleteModal(true)
+    setDeleteModal(true);
   };
   const handleEdit = (item: Social) => {
     setSelectedItem(item);
-   setEditModal(true)
+    setEditModal(true);
   };
 
   const [searchQuery, setSearchQuery] = useState("");

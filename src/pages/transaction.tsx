@@ -12,9 +12,13 @@ const TransactionPage = () => {
   const token = getToken();
   const { data } = useTransactions(token ?? "");
 
-  const accounts : Account[] = []
+  const accounts: Account[] = [];
 
-  const transactions: Transaction[] = data?.transactions ?? [];
+  const transactions: Transaction[] = useMemo(
+    () => data?.transactions ?? [],
+    [data?.transactions],
+  );
+  // const transactions =  => data ?? [], [data]);
   const pagination = data?.pagination;
   console.log(pagination);
 
@@ -25,11 +29,11 @@ const TransactionPage = () => {
 
   const handleDelete = (item: Transaction) => {
     setSelectedItem(item);
-  setDeleteModal(true)
+    setDeleteModal(true);
   };
   const handleEdit = (item: Transaction) => {
     setSelectedItem(item);
-   setEditModal(true)
+    setEditModal(true);
   };
   // const handleView = (item: Transaction) => {
   //   setSelectedItem(item);
@@ -41,7 +45,9 @@ const TransactionPage = () => {
 
   //Search
   const filteredData = useMemo(() => {
-    return transactions.filter((item) => String(item.compte).includes(searchQuery));
+    return transactions.filter((item) =>
+      String(item.compte).includes(searchQuery),
+    );
     // item?.compte.includes(searchQuery)
   }, [searchQuery, transactions]);
 
@@ -62,7 +68,7 @@ const TransactionPage = () => {
   );
 
   const totalPages = Math.ceil(transactions.length / itemsPerPage);
-  console.log(totalPages)
+  console.log(totalPages);
 
   return (
     <RootLayout>
@@ -115,7 +121,7 @@ const TransactionPage = () => {
           open={editModal}
         />
       )}
-      {deleteModal&& selectedItem && (
+      {deleteModal && selectedItem && (
         <DeleteTransaction
           transaction={selectedItem}
           onClose={() => setDeleteModal(false)}

@@ -21,7 +21,7 @@ const DeleteMember = ({ onClose, open, member }: deleteMemberProps) => {
     e.preventDefault();
     try {
       await deleteMember(member.id);
-      showToast("Suppression membre reussie !", "success");
+      showToast("Suppression membre reussie !", "error");
       onClose();
     } catch (e) {
       if (e instanceof Error) {
@@ -34,7 +34,8 @@ const DeleteMember = ({ onClose, open, member }: deleteMemberProps) => {
     }
   };
 
-  if (open === null) return null;
+  if (!open) return null;
+
   return (
     <Modal>
       <div className="flex justify-between items-center my-2">

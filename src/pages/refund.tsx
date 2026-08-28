@@ -2,187 +2,51 @@ import { useMemo, useState } from "react";
 import RootLayout from "../components/root-layout";
 import CreateRefund from "../features/refund/components/create-refund";
 import ListRefund from "../features/refund/components/list-refund";
-import type { Refund } from "../utlis/type";
+import type { Member, Refund } from "../utlis/type";
 import EditRefund from "../features/refund/components/edit-refund";
 import DeleteRefund from "../features/refund/components/delete-refund";
 import { ArrowBigLeft, ArrowBigRight } from "lucide-react";
+import { getToken } from "../utlis/get-token";
+import { useRefunds } from "../features/refund/hooks/use-refunds";
+import { useMembers } from "../features/members/hooks/use-members";
 
 const RefundPage = () => {
-  const rf = [
-    {
-      id: 1,
-      emprumt: 1,
-      montant: 200,
-      date: "2026-01-20",
-    },
-    {
-      id: 2,
-      emprumt: 1,
-      montant: 150,
-      date: "2026-02-15",
-    },
-    {
-      id: 3,
-      emprumt: 2,
-      montant: 200,
-      date: "2026-02-05",
-    },
-    {
-      id: 4,
-      emprumt: 3,
-      montant: 300,
-      date: "2026-02-20",
-    },
-    {
-      id: 5,
-      emprumt: 3,
-      montant: 510,
-      date: "2026-03-15",
-    },
-    {
-      id: 6,
-      emprumt: 4,
-      montant: 100,
-      date: "2026-03-01",
-    },
-    {
-      id: 7,
-      emprumt: 4,
-      montant: 100,
-      date: "2026-03-28",
-    },
-    {
-      id: 8,
-      emprumt: 5,
-      montant: 400,
-      date: "2026-03-20",
-    },
-    {
-      id: 9,
-      emprumt: 6,
-      montant: 150,
-      date: "2026-04-01",
-    },
-    {
-      id: 10,
-      emprumt: 7,
-      montant: 200,
-      date: "2026-04-18",
-    },
-    {
-      id: 11,
-      emprumt: 7,
-      montant: 200,
-      date: "2026-05-10",
-    },
-    {
-      id: 12,
-      emprumt: 8,
-      montant: 250,
-      date: "2026-05-05",
-    },
-    {
-      id: 13,
-      emprumt: 8,
-      montant: 250,
-      date: "2026-06-02",
-    },
-    {
-      id: 14,
-      emprumt: 9,
-      montant: 300,
-      date: "2026-06-15",
-    },
-    {
-      id: 15,
-      emprumt: 10,
-      montant: 500,
-      date: "2026-07-01",
-    },
-  ];
-
-  const members = [
-    {
-      id: 1,
-      nom_complet: "Jean Mukendi",
-      phone: "+243975123456",
-      adresse: "Commune d'Ibanda, Bukavu",
-      status: "Actif",
-    },
-    {
-      id: 2,
-      nom_complet: "Grace Bahati",
-      phone: "+243991234567",
-      adresse: "Commune de Kadutu, Bukavu",
-      status: "Actif",
-    },
-    {
-      id: 3,
-      nom_complet: "Patrick Kabeya",
-      phone: "+243812345678",
-      adresse: "Commune de Bagira, Bukavu",
-      status: "Inactif",
-    },
-    {
-      id: 4,
-      nom_complet: "Aline Kasereka",
-      phone: "+243998765432",
-      adresse: "Goma, Quartier Les Volcans",
-      status: "Suspendu",
-    },
-    {
-      id: 5,
-      nom_complet: "Samuel Nyembo",
-      phone: "+243971112233",
-      adresse: "Uvira, Centre-ville",
-      status: "Actif",
-    },
-    {
-      id: 6,
-      nom_complet: "Esther Ilunga",
-      phone: "+243995556677",
-      adresse: "Butembo, Quartier Vulamba",
-      status: "En attente",
-    },
-    {
-      id: 7,
-      nom_complet: "David Mumbere",
-      phone: "+243810001122",
-      adresse: "Beni, Quartier Mambango",
-      status: "Actif",
-    },
-  ];
+  const token = getToken();
+  const { data } = useRefunds(token ?? "");
+  const { data: mb } = useMembers(token ?? "");
+  const refunds: Refund[] = useMemo(() => data?.refunds ?? [], [data?.refunds]);
+  const members: Member[] = mb?.members ?? [];
 
   const [selectedItem, setSelectedItem] = useState<Refund | null>(null);
-   const [modal, setModal] = useState(false);
+  const [modal, setModal] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
   const [editModal, setEditModal] = useState(false);
-  const [viewModal, setViewModal] = useState(false)
+  const [viewModal, setViewModal] = useState(false);
 
   const handleDelete = (item: Refund) => {
     setSelectedItem(item);
-    setDeleteModal(true)
+    setDeleteModal(true);
   };
   const handleEdit = (item: Refund) => {
     setSelectedItem(item);
-   setEditModal(true)
+    setEditModal(true);
   };
   const handleView = (item: Refund) => {
     setSelectedItem(item);
-   setViewModal(true)
+    setViewModal(true);
   };
 
-  console.log(viewModal)
+  console.log(viewModal);
 
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
 
   //Search
   const filteredData = useMemo(() => {
-    return rf.filter((item) =>
+    return refunds.filter((item) =>
       String(item.emprumt).toLowerCase().includes(searchQuery.toLowerCase()),
     );
-  }, [rf, searchQuery]);
+  }, [refunds, searchQuery]);
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
@@ -197,7 +61,7 @@ const RefundPage = () => {
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentRefunds = filteredData.slice(indexOfFirstItem, indexOfLastItem);
 
-  const totalPages = Math.ceil(rf.length / itemsPerPage);
+  const totalPages = Math.ceil(refunds.length / itemsPerPage);
 
   return (
     <RootLayout>
@@ -239,7 +103,7 @@ const RefundPage = () => {
         refunds={currentRefunds}
       />
 
-      {rf.length > 18 && (
+      {refunds.length > 18 && (
         <div className="flex gap-2 text-gray-500 w-max px-4 py-2 rounded mt-6">
           <button
             disabled={currentPage === 1}
@@ -261,12 +125,7 @@ const RefundPage = () => {
         </div>
       )}
 
-      {modal && (
-        <CreateRefund
-          onClose={() => setModal(false)}
-          open={modal}
-        />
-      )}
+      {modal && <CreateRefund onClose={() => setModal(false)} open={modal} />}
       {editModal && selectedItem && (
         <EditRefund
           members={members}

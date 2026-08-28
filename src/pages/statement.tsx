@@ -9,7 +9,10 @@ import type { Transaction } from "../utlis/type";
 const StatementPage = () => {
   const token = getToken();
   const { data } = useTransactions(token ?? "");
-  const transactions: Transaction[] = data?.transactions ?? [];
+  const transactions: Transaction[] = useMemo(
+    () => data?.transactions ?? [],
+    [data?.transactions],
+  );
 
   const [searchQuery, setSearchQuery] = useState("");
 
