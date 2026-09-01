@@ -1,3 +1,4 @@
+import type { LucideProps } from "lucide-react";
 import type { ReactNode } from "react";
 
 export const ADMN = "";
@@ -27,7 +28,8 @@ export type Member = {
   adresse: string;
   type_member?: number;
   status: string;
-  type_member_detail?: { id: number, nom: string, description: string }
+  type_member_detail?: { id: number; nom: string; description: string };
+  type_member_nom: string;
 };
 
 export type Kind = {
@@ -39,10 +41,10 @@ export type Kind = {
 export type Adhesion = {
   id: number;
   membre: number;
-  membre_nom?:string;
+  membre_nom?: string;
   annee: string;
   montant: number;
-  devise : string,
+  devise: string;
   date: string;
 };
 
@@ -51,7 +53,7 @@ export type Account = {
   membre: number;
   numero_compte: string;
   balance: number;
-  membre_nom?: string,
+  membre_nom?: string;
 };
 
 export type Transaction = {
@@ -60,7 +62,7 @@ export type Transaction = {
   type_transaction: string;
   montant: number;
   reference: string;
-  created_at:string;
+  created_at: string;
 };
 
 export type Loan = {
@@ -83,7 +85,7 @@ export type Refund = {
 export type Social = {
   id: number;
   membre: number;
-  membre_nom?:string;
+  membre_nom?: string;
   semaine: number;
   annee: string;
   montant: number;
@@ -98,4 +100,22 @@ export type Pagination = {
 
 export type LoginData = { username: string; password: string };
 
+export type Operation = {
+  title: string;
+  description: string;
+  value: string;
+  icon: React.ForwardRefExoticComponent<
+    Omit<LucideProps, "ref"> & React.RefAttributes<SVGSVGElement>
+  >;
+  iconBg: string;
+  iconColor: string;
+};
+
+export interface Stats {
+  somme_totale_compte_epargne: number;
+  somme_totale_social: number;
+  somme_totale_emprunt: number;
+  somme_totale_remboursement: number;
+  somme_totale_adhesion: number;
+}
 

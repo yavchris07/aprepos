@@ -7,6 +7,7 @@ import MemberPage from "../pages/member";
 import RefundPage from "../pages/refund";
 import SettingPage from "../pages/settings";
 import SocialPage from "../pages/social";
+import SplashScreenPage from "../pages/splash-screen";
 import StatementPage from "../pages/statement";
 import TransactionPage from "../pages/transaction";
 import type { router } from "./type";
@@ -14,6 +15,10 @@ import type { router } from "./type";
 export const routers: router[] = [
   {
     path: "/",
+    element: <SplashScreenPage />,
+  },
+  {
+    path: "/login",
     element: <LoginPage />,
   },
   {

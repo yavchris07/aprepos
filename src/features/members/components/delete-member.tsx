@@ -25,7 +25,7 @@ const DeleteMember = ({ onClose, open, member }: deleteMemberProps) => {
       onClose();
     } catch (e) {
       if (e instanceof Error) {
-        console.log(e.message);
+        console.log('Error : ',e.message);
         showToast(fail, "error");
       } else {
         console.log("error");

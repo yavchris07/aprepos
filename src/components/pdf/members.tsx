@@ -52,9 +52,9 @@ const MemberPDF = ({ data }: dataSets) => {
         ["ID", "Nom complet", "Téléphone", "Adresse", "Type", "Etat"],
       ];
 
-      const body = data.map((item) => {
+      const body = data.map((item,i) => {
         return [
-          item.id ?? "",
+          i+1,
           item.nom_complet ?? "",
           item.phone ?? "",
           item.adresse ?? "",

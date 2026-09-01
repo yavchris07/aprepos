@@ -1,6 +1,5 @@
 import type { Member } from "../../utlis/type";
 
-// const API_URL = import.meta.env.BASE_URL;
 const API_URL = import.meta.env.VITE_API_URL;
 const BASE_URL = "/membres/";
 
@@ -24,19 +23,23 @@ export const memberApi = {
     return responseData;
   },
 
-  getAll: async (token: string) => {
-    const res = await fetch(`${API_URL}${BASE_URL}`, {
+
+  getAll: async (token: string, page = 1) => {
+    const response = await fetch(`${API_URL}${BASE_URL}?page=${page}`, {
       headers: {
-        "Content-Type": "application/json",
-        ...(token ? { Authorization: `Token ${token}` } : {}),
+        Authorization: `Token ${token}`,
       },
     });
-    if (!res.ok) throw new Error("Erreur fetch users");
-    return res.json();
+
+    if (!response.ok) {
+      throw new Error("Erreur lors de la récupération des membres");
+    }
+
+    return response.json();
   },
 
   get: async (token: string, id: string) => {
-    const res = await fetch(`${API_URL}${BASE_URL}/?=search=${id}/`, {
+    const res = await fetch(`${API_URL}${BASE_URL}?=search=${id}/`, {
       headers: {
         "Content-Type": "application/json",
         ...(token ? { Authorization: `Token ${token}` } : {}),
@@ -69,6 +72,10 @@ export const memberApi = {
     });
     // if (!res.ok) throw new Error("Erreur delete membre");
     // return res.json();
+
+     if (!res.ok) {
+      throw new Error("Erreur delete account");
+    }
 
     const text = await res.text();
     return text ? JSON.parse(text) : null;

@@ -2,6 +2,7 @@
 import {
   ArrowRightLeft,
   ChartCandlestick,
+  ChevronRight,
   CircleUserRound,
   Coins,
   FileChartColumn,
@@ -16,97 +17,139 @@ import { Link, useLocation } from "react-router";
 // import { getCurrentUser } from "../utlis/get-user";
 
 const SidebarItems = () => {
-  //   const pathname = usePathname();
   const location = useLocation();
 
-  // Combine user data and mounting state into one cohesive state object
-  // const [hydrationProfile, setHydrationProfile] = useState<{
-  //   isMounted: boolean;
-  //   user: User | null;
-  // }>({
-  //   isMounted: false,
-  //   user: null,
-  // });
+  const sections = [
+    {
+      title: "Vue d'ensemble",
+      items: [
+        {
+          path: "/dashboard",
+          name: "Tableau de bord",
+          icon: <LayoutDashboard size={17} />,
+        },
+      ],
+    },
 
-  // useEffect(() => {
-  //   const newProfile = {
-  //     isMounted: true,
-  //     user: getCurrentUser(),
-  //   };
+    {
+      title: "Opérations financières",
+      items: [
+        {
+          path: "/transactions",
+          name: "Transactions",
+          icon: <ArrowRightLeft size={17} />,
+        },
+        {
+          path: "/loans",
+          name: "Emprunts",
+          icon: <Coins size={17} />,
+        },
+        {
+          path: "/refunds",
+          name: "Remboursements",
+          icon: <ChartCandlestick size={17} />,
+        },
+        {
+          path: "/statement",
+          name: "Relevé de compte",
+          icon: <FileChartColumn size={17} />,
+        },
+      ],
+    },
 
-  // Defer update to avoid synchronous setState inside the effect.
-  //   Promise.resolve().then(() => {
-  //     setHydrationProfile((prev) => {
-  //       if (
-  //         prev?.isMounted === newProfile.isMounted &&
-  //         prev?.user === newProfile.user
-  //       ) {
-  //         return prev;
-  //       }
-  //       return newProfile;
-  //     });
-  //   });
-  // }, []);
+    {
+      title: "Membres & épargne",
+      items: [
+        {
+          path: "/members",
+          name: "Membres",
+          icon: <UserIcon size={17} />,
+        },
+        {
+          path: "/accounts",
+          name: "Comptes épargne",
+          icon: <CircleUserRound size={17} />,
+        },
+        {
+          path: "/adhesions",
+          name: "Adhésions",
+          icon: <ReceiptText size={17} />,
+        },
+        {
+          path: "/socials",
+          name: "Social",
+          icon: <Repeat2 size={17} />,
+        },
+      ],
+    },
 
-  const itemsAdmin = [
     {
-      path: "/dashboard",
-      name: "Tableau de bord",
-      icon: <LayoutDashboard size={17} />,
+      title: "Administration",
+      items: [
+        {
+          path: "/settings",
+          name: "Paramètres",
+          icon: <SettingsIcon size={17} />,
+        },
+      ],
     },
-    {
-      path: "/transactions",
-      name: "Transactions",
-      icon: <ArrowRightLeft size={17} />,
-    },
-    { path: "/socials", name: "Social", icon: <Repeat2 size={17} /> },
-    { path: "/loans", name: "Emprunts", icon: <Coins size={17} /> },
-    {
-      path: "/refunds",
-      name: "Remboursement",
-      icon: <ChartCandlestick size={17} />,
-    },
-    {
-      path: "/statement",
-      name: "Relevé de compte",
-      icon: <FileChartColumn size={17} />,
-    },
-    { path: "/members", name: "Membres", icon: <UserIcon size={17} /> },
-    { path: "/accounts", name: "Comptes", icon: <CircleUserRound size={17} /> },
-    { path: "/adhesions", name: "Adhesions", icon: <ReceiptText size={17} /> },
-    { path: "/settings", name: "Parametres", icon: <SettingsIcon size={17} /> },
   ];
 
-  //
-
-  // const { isMounted, user } = hydrationProfile;
-  // if (!isMounted) {
-  //   return <div className="animate-pulse bg-transparent h-20 w-full" />;
-  // }
-
-  // const items = user?.role === ADMN ? itemsAdmin : null;
-
   return (
-    <div className="space-y-1">
-      {itemsAdmin.map((item) => {
-        const isActive = location.pathname === item.path;
+    <nav className="space-y-5">
+      {sections.map((section) => (
+        <div key={section.title}>
+          {/* Titre section */}
 
-        return (
-          <Link
-            to={item.path}
-            key={item.path}
-            className={`flex items-center gap-2 p-2 rounded transition ${
-              isActive
-                ? "bg-green-800 text-white font-medium"
-                : "text-black hover:bg-green-100"
-            }`}
-          >
-            <div className="shrink-0">{item.icon}</div>
-            <span>{item.name}</span>
-          </Link>
-        );
-      })}
-    </div>
+          <p className="mb-2 px-2 text-[10px] font-semibold uppercase tracking-wider text-gray-400">
+            {section.title}
+          </p>
+
+          {/* Items */}
+
+          <div className="space-y-0.5">
+            {section.items.map((item) => {
+              const isActive =
+                location.pathname === item.path ||
+                location.pathname.startsWith(`${item.path}/`);
+
+              return (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  className={`group flex items-center justify-between rounded-lg px-3 py-2.5 text-sm transition-all duration-150 ${
+                    isActive
+                      ? "bg-green-700 font-medium text-white shadow-sm"
+                      : "text-gray-600 hover:bg-green-50 hover:text-green-800"
+                  }`}
+                >
+                  <div className="flex min-w-0 items-center gap-3">
+                    <span
+                      className={`shrink-0 ${
+                        isActive
+                          ? "text-white"
+                          : "text-gray-400 group-hover:text-green-700"
+                      }`}
+                    >
+                      {item.icon}
+                    </span>
+
+                    <span className="truncate">{item.name}</span>
+                  </div>
+
+                  {isActive && (
+                    <ChevronRight
+                      size={14}
+                      className="shrink-0 text-white/70"
+                    />
+                  )}
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+      ))}
+    </nav>
   );
 };
 

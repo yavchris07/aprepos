@@ -1,10 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import { adhesionApi } from "..";
 
-export const useAdhesion = (token: string) => {
+export const useAdhesion = (token: string,page: number) => {
   return useQuery({
-    queryKey: ["adhesions"],
-    queryFn: async () => adhesionApi.getAll(token),
+    queryKey: ["adhesions", page],
+    queryFn: async () => adhesionApi.getAll(token, page),
     select: (data) => ({
       adhesions: data.results,
       pagination: {
@@ -15,4 +15,6 @@ export const useAdhesion = (token: string) => {
     }),
   });
 };
+
+
 

@@ -31,8 +31,8 @@ export const adhesionApi = {
     }
   },
 
-  getAll: async (token: string) => {
-    const res = await fetch(`${API_URL}${BASE_URL}`, {
+  getAll: async (token: string, page: number) => {
+    const res = await fetch(`${API_URL}${BASE_URL}?page=${page}`, {
       headers: {
         "Content-Type": "application/json",
         ...(token ? { Authorization: `Token ${token}` } : {}),
@@ -43,7 +43,7 @@ export const adhesionApi = {
   },
 
   update: async (token: string, data: Adhesion) => {
-    const res = await fetch(`${API_URL}${BASE_URL}/${data.id}/`, {
+    const res = await fetch(`${API_URL}${BASE_URL}${data.id}/`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -64,7 +64,7 @@ export const adhesionApi = {
       },
     });
     if (!res.ok) {
-      throw new Error("Erreur delete account");
+      throw new Error("Erreur delete addhesion");
     }
     const text = await res.text();
     return text ? JSON.parse(text) : null;

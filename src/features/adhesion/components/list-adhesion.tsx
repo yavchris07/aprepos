@@ -50,13 +50,13 @@ const ListAdhesion = ({
           </tr>
         </thead>
         <tbody className="divide-y divide-gray-200 text-gray-600 text-xs">
-          {adhesions.map((adh) => (
+          {adhesions.map((adh,i:number) => (
             <tr
               key={adh.id}
               className="hover:bg-gray-50 odd:bg-white even:bg-gray-50/50 transition-colors"
             >
               <td className="whitespace-nowrap px-6 py-2">
-                <span className="font-medium">{adh.id}</span>
+                <span className="font-medium">{i+1}</span>
               </td>
               <td className="whitespace-nowrap px-6 py-2">
                 <span className="font-medium">{adh.membre_nom}</span>
