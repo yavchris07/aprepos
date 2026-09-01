@@ -29,7 +29,7 @@ export type Member = {
   type_member?: number;
   status: string;
   type_member_detail?: { id: number; nom: string; description: string };
-  type_member_nom: string;
+  type_member_nom?: string;
 };
 
 export type Kind = {

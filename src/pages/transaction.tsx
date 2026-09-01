@@ -37,6 +37,7 @@ const TransactionPage = () => {
   );
 
   const pagination = data?.pagination;
+  console.log(pagination)
 
   const [selectedItem, setSelectedItem] = useState<Transaction | null>(null);
 
@@ -109,7 +110,7 @@ const TransactionPage = () => {
 
   const deposits = useMemo(() => {
     return transactions.filter((item) =>
-      String(item.type ?? item.operation ?? "")
+      String(item.type_transaction ?? item.type_transaction ?? "")
         .toLowerCase()
         .includes("depot"),
     );
@@ -117,7 +118,7 @@ const TransactionPage = () => {
 
   const withdrawals = useMemo(() => {
     return transactions.filter((item) =>
-      String(item.type ?? item.operation ?? "")
+      String(item.type_transaction ?? item.type_transaction ?? "")
         .toLowerCase()
         .includes("retrait"),
     );
@@ -126,7 +127,7 @@ const TransactionPage = () => {
   const totalDeposits = useMemo(() => {
     return deposits.reduce(
       (total, item) =>
-        total + Number(item.montant ?? item.amount ?? item.credit ?? 0),
+        total + Number(item.montant ?? item.montant ?? item.type_transaction === "depot" ? 0 : 0),
       0,
     );
   }, [deposits]);
@@ -134,7 +135,7 @@ const TransactionPage = () => {
   const totalWithdrawals = useMemo(() => {
     return withdrawals.reduce(
       (total, item) =>
-        total + Number(item.montant ?? item.amount ?? item.debit ?? 0),
+        total + Number(item.montant ?? item.montant ?? item.type_transaction === "retrait" ? 0 : 0),
       0,
     );
   }, [withdrawals]);
@@ -397,7 +398,7 @@ const TransactionPage = () => {
                   <ArrowBigLeft size={15} />
                 </button>
 
-                <span className="min-w-[90px] rounded-lg bg-green-50 px-3 py-2 text-center text-xs font-semibold text-green-700">
+                <span className="min-w-22.5 rounded-lg bg-green-50 px-3 py-2 text-center text-xs font-semibold text-green-700">
                   Page {currentPage} / {totalPages}
                 </span>
 
