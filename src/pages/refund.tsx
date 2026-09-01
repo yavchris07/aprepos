@@ -5,7 +5,18 @@ import ListRefund from "../features/refund/components/list-refund";
 import type { Member, Refund } from "../utlis/type";
 import EditRefund from "../features/refund/components/edit-refund";
 import DeleteRefund from "../features/refund/components/delete-refund";
-import { ArrowBigLeft, ArrowBigRight, Banknote, Calculator, CalendarDays, FileDown, Plus, RefreshCcw, Search, X } from "lucide-react";
+import {
+  ArrowBigLeft,
+  ArrowBigRight,
+  Banknote,
+  Calculator,
+  CalendarDays,
+  FileDown,
+  Plus,
+  RefreshCcw,
+  Search,
+  X,
+} from "lucide-react";
 import { getToken } from "../utlis/get-token";
 import { useRefunds } from "../features/refund/hooks/use-refunds";
 import { useMembers } from "../features/members/hooks/use-members";
@@ -127,7 +138,7 @@ import RefundItem from "../features/refund/components/refund-item";
 //       )}
 
 //       {modal && <CreateRefund onClose={() => setModal(false)} open={modal} />}
-        
+
 //       {editModal && selectedItem && (
 //         <EditRefund
 //           members={members}
@@ -147,30 +158,24 @@ import RefundItem from "../features/refund/components/refund-item";
 //   );
 // };
 
-
 const RefundPage = () => {
   const token = getToken();
+  const [searchQuery, setSearchQuery] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
 
   const { data, isLoading } = useRefunds(token ?? "");
-  const { data: mb } = useMembers(token ?? "");
+  const { data: mb } = useMembers(token ?? "", currentPage);
 
-  const refunds: Refund[] = useMemo(
-    () => data?.refunds ?? [],
-    [data?.refunds],
-  );
+  const refunds: Refund[] = useMemo(() => data?.refunds ?? [], [data?.refunds]);
 
   const members: Member[] = mb?.members ?? [];
 
-  const [selectedItem, setSelectedItem] =
-    useState<Refund | null>(null);
+  const [selectedItem, setSelectedItem] = useState<Refund | null>(null);
 
   const [modal, setModal] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
   const [editModal, setEditModal] = useState(false);
   const [viewModal, setViewModal] = useState(false);
-
-  const [searchQuery, setSearchQuery] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
 
   // ============================
   // ACTIONS
@@ -209,9 +214,7 @@ const RefundPage = () => {
     );
   }, [refunds, searchQuery]);
 
-  const handleSearchChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-  ) => {
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
     setCurrentPage(1);
   };
@@ -222,20 +225,13 @@ const RefundPage = () => {
 
   const itemsPerPage = 18;
 
-  const totalPages = Math.ceil(
-    filteredData.length / itemsPerPage,
-  );
+  const totalPages = Math.ceil(filteredData.length / itemsPerPage);
 
-  const indexOfLastItem =
-    currentPage * itemsPerPage;
+  const indexOfLastItem = currentPage * itemsPerPage;
 
-  const indexOfFirstItem =
-    indexOfLastItem - itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
 
-  const currentRefunds = filteredData.slice(
-    indexOfFirstItem,
-    indexOfLastItem,
-  );
+  const currentRefunds = filteredData.slice(indexOfFirstItem, indexOfLastItem);
 
   // ============================
   // STATISTIQUES
@@ -246,11 +242,12 @@ const RefundPage = () => {
   const totalAmount = useMemo(() => {
     return refunds.reduce(
       (total, item) =>
-        total + Number(
-          item.montant ??
-          item.amount ??
-          item.montant_remboursement ??
-          0,
+        total +
+        Number(
+          // item.montant ??
+          // item.amount ??
+          // item.montant_remboursement ??
+          item.montant ?? item.emprumt ?? item.montant ?? 0,
         ),
       0,
     );
@@ -259,12 +256,8 @@ const RefundPage = () => {
   const displayedAmount = useMemo(() => {
     return filteredData.reduce(
       (total, item) =>
-        total + Number(
-          item.montant ??
-          item.amount ??
-          item.montant_remboursement ??
-          0,
-        ),
+        total +
+        Number(item.montant ?? item.emprumt ?? item.emprumt ?? 0),
       0,
     );
   }, [filteredData]);
@@ -273,18 +266,14 @@ const RefundPage = () => {
     <RootLayout>
       <div className="min-h-screen bg-gray-50/60">
         <div className="space-y-5">
-
           {/* ================= HEADER ================= */}
 
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-
             <div>
               <div className="flex items-center gap-2 text-xs text-gray-400">
                 <span>Tableau de bord</span>
                 <span>/</span>
-                <span className="text-gray-600">
-                  Remboursements
-                </span>
+                <span className="text-gray-600">Remboursements</span>
               </div>
 
               <div className="mt-1">
@@ -306,18 +295,15 @@ const RefundPage = () => {
               <Plus size={17} />
               Nouveau remboursement
             </button>
-
           </div>
 
           {/* ================= KPI ================= */}
 
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-
             {/* Nombre */}
 
             <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
               <div className="flex items-center justify-between">
-
                 <div>
                   <p className="text-xs font-medium uppercase tracking-wide text-gray-400">
                     Total remboursements
@@ -335,7 +321,6 @@ const RefundPage = () => {
                 <div className="rounded-lg bg-green-50 p-3 text-green-700">
                   <RefreshCcw size={20} />
                 </div>
-
               </div>
             </div>
 
@@ -343,7 +328,6 @@ const RefundPage = () => {
 
             <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
               <div className="flex items-center justify-between">
-
                 <div>
                   <p className="text-xs font-medium uppercase tracking-wide text-gray-400">
                     Montant remboursé
@@ -353,15 +337,12 @@ const RefundPage = () => {
                     {totalAmount.toLocaleString("fr-FR")}
                   </p>
 
-                  <p className="mt-1 text-xs text-gray-400">
-                    montant total
-                  </p>
+                  <p className="mt-1 text-xs text-gray-400">montant total</p>
                 </div>
 
                 <div className="rounded-lg bg-blue-50 p-3 text-blue-600">
                   <Banknote size={20} />
                 </div>
-
               </div>
             </div>
 
@@ -369,7 +350,6 @@ const RefundPage = () => {
 
             <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
               <div className="flex items-center justify-between">
-
                 <div>
                   <p className="text-xs font-medium uppercase tracking-wide text-gray-400">
                     Résultat actuel
@@ -379,30 +359,23 @@ const RefundPage = () => {
                     {displayedAmount.toLocaleString("fr-FR")}
                   </p>
 
-                  <p className="mt-1 text-xs text-gray-400">
-                    après filtrage
-                  </p>
+                  <p className="mt-1 text-xs text-gray-400">après filtrage</p>
                 </div>
 
                 <div className="rounded-lg bg-orange-50 p-3 text-orange-600">
                   <Calculator size={20} />
                 </div>
-
               </div>
             </div>
-
           </div>
 
           {/* ================= TOOLBAR ================= */}
 
           <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
-
             <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-
               {/* Recherche */}
 
               <div className="relative w-full lg:w-auto">
-
                 <Search
                   size={17}
                   className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
@@ -425,13 +398,11 @@ const RefundPage = () => {
                     <X size={15} />
                   </button>
                 )}
-
               </div>
 
               {/* Actions */}
 
               <div className="flex flex-wrap items-center gap-2">
-
                 <button
                   type="button"
                   className="inline-flex h-10 items-center gap-2 rounded-lg border border-gray-200 px-4 text-sm font-medium text-gray-700 transition hover:bg-gray-50"
@@ -447,15 +418,12 @@ const RefundPage = () => {
                   <FileDown size={16} />
                   Relevé
                 </button>
-
               </div>
-
             </div>
 
             {/* Résultats */}
 
             <div className="mt-4 flex items-center justify-between border-t border-gray-100 pt-3">
-
               <p className="text-xs text-gray-500">
                 <span className="font-semibold text-gray-700">
                   {filteredData.length}
@@ -472,14 +440,12 @@ const RefundPage = () => {
                   Effacer la recherche
                 </button>
               )}
-
             </div>
           </div>
 
           {/* ================= LISTE ================= */}
 
           <div className="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
-
             <ListRefund
               loading={isLoading}
               onDelete={handleDelete}
@@ -487,14 +453,12 @@ const RefundPage = () => {
               onView={handleView}
               refunds={currentRefunds}
             />
-
           </div>
 
           {/* ================= PAGINATION ================= */}
 
           {totalPages > 1 && (
             <div className="flex flex-col gap-3 rounded-xl border border-gray-200 bg-white px-4 py-3 shadow-sm sm:flex-row sm:items-center sm:justify-between">
-
               <p className="text-xs text-gray-500">
                 Total :{" "}
                 <span className="font-semibold text-gray-700">
@@ -504,14 +468,11 @@ const RefundPage = () => {
               </p>
 
               <div className="flex items-center gap-2">
-
                 <button
                   type="button"
                   disabled={currentPage === 1}
                   onClick={() =>
-                    setCurrentPage((prev) =>
-                      Math.max(1, prev - 1),
-                    )
+                    setCurrentPage((prev) => Math.max(1, prev - 1))
                   }
                   className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-gray-200 text-gray-600 transition hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40"
                 >
@@ -526,30 +487,21 @@ const RefundPage = () => {
                   type="button"
                   disabled={currentPage === totalPages}
                   onClick={() =>
-                    setCurrentPage((prev) =>
-                      Math.min(totalPages, prev + 1),
-                    )
+                    setCurrentPage((prev) => Math.min(totalPages, prev + 1))
                   }
                   className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-gray-200 text-gray-600 transition hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40"
                 >
                   <ArrowBigRight size={15} />
                 </button>
-
               </div>
             </div>
           )}
-
         </div>
       </div>
 
       {/* ================= MODALES ================= */}
 
-      {modal && (
-        <CreateRefund
-          onClose={() => setModal(false)}
-          open={modal}
-        />
-      )}
+      {modal && <CreateRefund onClose={() => setModal(false)} open={modal} />}
 
       {editModal && selectedItem && (
         <EditRefund
@@ -576,23 +528,17 @@ const RefundPage = () => {
 
       {viewModal && selectedItem && (
         <RefundItem
-          refund={selectedItem}
-          onClose={() => {
-            setViewModal(false);
-            setSelectedItem(null);
-          }}
-          open={viewModal}
+          // refund={selectedItem}
+          // onClose={() => {
+          //   setViewModal(false);
+          //   setSelectedItem(null);
+          // }}
+          // open={viewModal}
+          item={selectedItem}
         />
       )}
-
     </RootLayout>
   );
 };
-
-
-
-
-
-
 
 export default RefundPage;

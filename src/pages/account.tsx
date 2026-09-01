@@ -156,6 +156,7 @@ const AccountPage = () => {
 
   const { data, isLoading } = useAccounts(token ?? "");
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const accounts: Account[] = data?.accounts ?? [];
   const pagination = data?.pagination;
 
@@ -196,7 +197,7 @@ const AccountPage = () => {
   const totalBalance = useMemo(() => {
     return accounts.reduce(
       (total, account) =>
-        total + Number(account.solde ?? account.balance ?? 0),
+        total + Number(account.balance ?? account.balance ?? 0),
       0,
     );
   }, [accounts]);

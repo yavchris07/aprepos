@@ -182,7 +182,7 @@ const LoginForm = () => {
       {/* Footer */}
 
       <p className="mt-8 text-center text-[10px] text-gray-400">
-        © {new Date().getFullYear()} CEPARCREA — Tous droits réservés.
+        © {new Date().getFullYear()} CEPARCREA — Tous droits réservés. | <span className="font-semibold text-green-700">alt space</span> 
       </p>
     </div>
   );

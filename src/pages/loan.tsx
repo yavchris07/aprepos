@@ -8,7 +8,19 @@ import DeleteLoan from "../features/loan/components/delete-loan";
 import { useLoans } from "../features/loan/hooks/use-loans";
 import { getToken } from "../utlis/get-token";
 import { useMembers } from "../features/members/hooks/use-members";
-import { Plus, Landmark, Banknote, TrendingUp, Clock3, Search, X, CalendarDays, FileDown, ArrowBigLeft, ArrowBigRight } from "lucide-react";
+import {
+  Plus,
+  Landmark,
+  Banknote,
+  TrendingUp,
+  Clock3,
+  Search,
+  X,
+  CalendarDays,
+  FileDown,
+  ArrowBigLeft,
+  ArrowBigRight,
+} from "lucide-react";
 import LoanItem from "../features/loan/components/loan-item";
 // import { ArrowBigLeft, ArrowBigRight } from "lucide-react";
 
@@ -130,22 +142,15 @@ import LoanItem from "../features/loan/components/loan-item";
 //   );
 // };
 
-
-
-
 const LoanPage = () => {
   const token = getToken();
 
   const { data, isLoading } = useLoans(token ?? "");
   const { data: members } = useMembers(token ?? "", 1);
 
-  const loans: Loan[] = useMemo(
-    () => data?.loans ?? [],
-    [data?.loans],
-  );
+  const loans: Loan[] = useMemo(() => data?.loans ?? [], [data?.loans]);
 
-  const [selectedItem, setSelectedItem] =
-    useState<Loan | null>(null);
+  const [selectedItem, setSelectedItem] = useState<Loan | null>(null);
 
   const [modal, setModal] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
@@ -192,9 +197,7 @@ const LoanPage = () => {
     );
   }, [loans, searchQuery]);
 
-  const handleSearchChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-  ) => {
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
     setCurrentPage(1);
   };
@@ -205,20 +208,13 @@ const LoanPage = () => {
 
   const itemsPerPage = 18;
 
-  const totalPages = Math.ceil(
-    filteredData.length / itemsPerPage,
-  );
+  const totalPages = Math.ceil(filteredData.length / itemsPerPage);
 
-  const indexOfLastItem =
-    currentPage * itemsPerPage;
+  const indexOfLastItem = currentPage * itemsPerPage;
 
-  const indexOfFirstItem =
-    indexOfLastItem - itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
 
-  const currentLoans = filteredData.slice(
-    indexOfFirstItem,
-    indexOfLastItem,
-  );
+  const currentLoans = filteredData.slice(indexOfFirstItem, indexOfLastItem);
 
   // ============================
   // STATISTIQUES
@@ -231,10 +227,10 @@ const LoanPage = () => {
       (total, item) =>
         total +
         Number(
-          item.montant ??
-          item.amount ??
-          item.montant_emprunt ??
-          0,
+          // item.montant ??
+          // item.amount ??
+          // item.montant_emprunt ??
+          item.montant ?? item.balance ?? item.total_a_payer ?? 0,
         ),
       0,
     );
@@ -243,14 +239,14 @@ const LoanPage = () => {
   const totalRemaining = useMemo(() => {
     return loans.reduce(
       (total, item) =>
-        total +
-        Number(
-          item.reste ??
-          item.solde ??
-          item.montant_restant ??
-          0,
-        ),
-      0,
+        total + Number(
+          // item.reste ?? 
+          // item.solde ?? 
+          // item.montant_restant ?? 0),
+          item.balance ?? 
+          item.montant ?? 
+          item.total_a_payer ?? 0),
+      0, 
     );
   }, [loans]);
 
@@ -262,18 +258,14 @@ const LoanPage = () => {
     <RootLayout>
       <div className="min-h-screen bg-gray-50/60">
         <div className="space-y-5">
-
           {/* ================= HEADER ================= */}
 
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-
             <div>
               <div className="flex items-center gap-2 text-xs text-gray-400">
                 <span>Tableau de bord</span>
                 <span>/</span>
-                <span className="text-gray-600">
-                  Emprunts
-                </span>
+                <span className="text-gray-600">Emprunts</span>
               </div>
 
               <div className="mt-1">
@@ -282,7 +274,8 @@ const LoanPage = () => {
                 </h1>
 
                 <p className="mt-1 text-sm text-gray-500">
-                  Suivez les emprunts, les remboursements et les soldes restants.
+                  Suivez les emprunts, les remboursements et les soldes
+                  restants.
                 </p>
               </div>
             </div>
@@ -295,18 +288,15 @@ const LoanPage = () => {
               <Plus size={17} />
               Nouvel emprunt
             </button>
-
           </div>
 
           {/* ================= KPI ================= */}
 
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-
             {/* Nombre emprunts */}
 
             <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
               <div className="flex items-center justify-between">
-
                 <div>
                   <p className="text-xs font-medium uppercase tracking-wide text-gray-400">
                     Emprunts
@@ -324,7 +314,6 @@ const LoanPage = () => {
                 <div className="rounded-lg bg-green-50 p-3 text-green-700">
                   <Landmark size={20} />
                 </div>
-
               </div>
             </div>
 
@@ -332,7 +321,6 @@ const LoanPage = () => {
 
             <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
               <div className="flex items-center justify-between">
-
                 <div>
                   <p className="text-xs font-medium uppercase tracking-wide text-gray-400">
                     Montant accordé
@@ -350,7 +338,6 @@ const LoanPage = () => {
                 <div className="rounded-lg bg-blue-50 p-3 text-blue-600">
                   <Banknote size={20} />
                 </div>
-
               </div>
             </div>
 
@@ -358,7 +345,6 @@ const LoanPage = () => {
 
             <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
               <div className="flex items-center justify-between">
-
                 <div>
                   <p className="text-xs font-medium uppercase tracking-wide text-gray-400">
                     Remboursé
@@ -376,7 +362,6 @@ const LoanPage = () => {
                 <div className="rounded-lg bg-green-50 p-3 text-green-700">
                   <TrendingUp size={20} />
                 </div>
-
               </div>
             </div>
 
@@ -384,7 +369,6 @@ const LoanPage = () => {
 
             <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
               <div className="flex items-center justify-between">
-
                 <div>
                   <p className="text-xs font-medium uppercase tracking-wide text-gray-400">
                     Reste à payer
@@ -394,30 +378,23 @@ const LoanPage = () => {
                     {totalRemaining.toLocaleString("fr-FR")}
                   </p>
 
-                  <p className="mt-1 text-xs text-gray-400">
-                    solde restant
-                  </p>
+                  <p className="mt-1 text-xs text-gray-400">solde restant</p>
                 </div>
 
                 <div className="rounded-lg bg-orange-50 p-3 text-orange-600">
                   <Clock3 size={20} />
                 </div>
-
               </div>
             </div>
-
           </div>
 
           {/* ================= TOOLBAR ================= */}
 
           <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
-
             <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-
               {/* Recherche */}
 
               <div className="relative w-full lg:w-auto">
-
                 <Search
                   size={17}
                   className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
@@ -440,13 +417,11 @@ const LoanPage = () => {
                     <X size={15} />
                   </button>
                 )}
-
               </div>
 
               {/* Actions */}
 
               <div className="flex flex-wrap items-center gap-2">
-
                 <button
                   type="button"
                   className="inline-flex h-10 items-center gap-2 rounded-lg border border-gray-200 px-4 text-sm font-medium text-gray-700 transition hover:bg-gray-50"
@@ -462,15 +437,12 @@ const LoanPage = () => {
                   <FileDown size={16} />
                   Relevé
                 </button>
-
               </div>
-
             </div>
 
             {/* Résultats */}
 
             <div className="mt-4 flex items-center justify-between border-t border-gray-100 pt-3">
-
               <p className="text-xs text-gray-500">
                 <span className="font-semibold text-gray-700">
                   {filteredData.length}
@@ -487,14 +459,12 @@ const LoanPage = () => {
                   Effacer la recherche
                 </button>
               )}
-
             </div>
           </div>
 
           {/* ================= LISTE ================= */}
 
           <div className="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
-
             <ListLoans
               loading={isLoading}
               onDelete={handleDelete}
@@ -502,14 +472,12 @@ const LoanPage = () => {
               onView={handleView}
               loans={currentLoans}
             />
-
           </div>
 
           {/* ================= PAGINATION ================= */}
 
           {totalPages > 1 && (
             <div className="flex flex-col gap-3 rounded-xl border border-gray-200 bg-white px-4 py-3 shadow-sm sm:flex-row sm:items-center sm:justify-between">
-
               <p className="text-xs text-gray-500">
                 Total :{" "}
                 <span className="font-semibold text-gray-700">
@@ -519,21 +487,18 @@ const LoanPage = () => {
               </p>
 
               <div className="flex items-center gap-2">
-
                 <button
                   type="button"
                   disabled={currentPage === 1}
                   onClick={() =>
-                    setCurrentPage((prev) =>
-                      Math.max(1, prev - 1),
-                    )
+                    setCurrentPage((prev) => Math.max(1, prev - 1))
                   }
                   className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-gray-200 text-gray-600 transition hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40"
                 >
                   <ArrowBigLeft size={15} />
                 </button>
 
-                <span className="min-w-[90px] rounded-lg bg-green-50 px-3 py-2 text-center text-xs font-semibold text-green-700">
+                <span className="min-w-22.5 rounded-lg bg-green-50 px-3 py-2 text-center text-xs font-semibold text-green-700">
                   Page {currentPage} / {totalPages}
                 </span>
 
@@ -541,30 +506,21 @@ const LoanPage = () => {
                   type="button"
                   disabled={currentPage === totalPages}
                   onClick={() =>
-                    setCurrentPage((prev) =>
-                      Math.min(totalPages, prev + 1),
-                    )
+                    setCurrentPage((prev) => Math.min(totalPages, prev + 1))
                   }
                   className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-gray-200 text-gray-600 transition hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40"
                 >
                   <ArrowBigRight size={15} />
                 </button>
-
               </div>
             </div>
           )}
-
         </div>
       </div>
 
       {/* ================= MODALES ================= */}
 
-      {modal && (
-        <CreateLoan
-          onClose={() => setModal(false)}
-          open={modal}
-        />
-      )}
+      {modal && <CreateLoan onClose={() => setModal(false)} open={modal} />}
 
       {editModal && selectedItem && (
         <EditLoan
@@ -591,19 +547,23 @@ const LoanPage = () => {
 
       {viewModal && selectedItem && (
         <LoanItem
-          loan={selectedItem}
-          onClose={() => {
-            setViewModal(false);
-            setSelectedItem(null);
-          }}
-          open={viewModal}
+           item={selectedItem}
         />
+
+
+        // <LoanItem
+        //   {...({
+        //     loan: selectedItem,
+        //     onClose: () => {
+        //       setViewModal(false);
+        //       setSelectedItem(null);
+        //     },
+        //     open: viewModal,
+        //   } as any)}
+        // />
       )}
     </RootLayout>
   );
 };
-
-
-
 
 export default LoanPage;

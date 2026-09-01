@@ -1,77 +1,167 @@
-import { jsPDF } from "jspdf";
+import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import type { Member } from "../../utlis/type";
 
-interface dataSets {
+
+interface DataSets {
   data: Member[];
 }
+
 interface JsPDFWithAutoTable extends jsPDF {
   lastAutoTable?: {
     finalY: number;
   };
 }
 
-const MemberPDF = ({ data }: dataSets) => {
+const MemberPDF = ({ data }: DataSets) => {
   const year = new Date().getFullYear();
 
   const generateReportPDF = () => {
-    const doc = new jsPDF();
+    const doc = new jsPDF({
+      orientation: "portrait",
+      unit: "mm",
+      format: "a4",
+    });
+
+    const COLORS = {
+      primary: [5, 85, 39] as [number, number, number],
+      secondary: [71, 22, 36] as [number, number, number],
+      light: [243, 247, 244] as [number, number, number],
+      border: [220, 225, 221] as [number, number, number],
+      text: [45, 45, 45] as [number, number, number],
+      muted: [110, 110, 110] as [number, number, number],
+      white: [255, 255, 255] as [number, number, number],
+      success: [220, 247, 231] as [number, number, number],
+      successText: [22, 101, 52] as [number, number, number],
+      danger: [254, 226, 226] as [number, number, number],
+      dangerText: [185, 28, 28] as [number, number, number],
+    };
 
     const img = new Image();
     img.src = "/logo.png";
-    const COLORS = {
-      primary: [5, 85, 39] as [number, number, number], // Vert CEPARCREA
-      secondary: [71, 22, 36] as [number, number, number], // Bordeaux
-      light: [243, 247, 244] as [number, number, number], // Fond des lignes
-      border: [211, 215, 210] as [number, number, number], // Bordures
-      text: [40, 40, 40] as [number, number, number], // Texte
-      white: [255, 255, 255] as [number, number, number], // Blanc
-    };
 
     img.onload = () => {
+      /* =========================================================
+         HEADER
+      ========================================================= */
+
       // Logo
-      doc.addImage(img, "PNG", 15, 10, 27, 27);
+      doc.addImage(img, "PNG", 15, 10, 25, 25);
 
-      // Texte après le logo
-      doc.setFontSize(10);
-      doc.text("CEPARCREA / Goma", 15, 45);
-      doc.text("Coopérative", 15, 49);
+      // Nom de l'organisation
+      doc.setTextColor(...COLORS.primary);
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(13);
 
-      doc.setFontSize(10);
-      doc.text("LISTE DE MEMBRES", 105, 45, { align: "center" });
+      doc.text("CEPARCREA", 45, 17);
+
+      // Description
+      doc.setFont("helvetica", "normal");
       doc.setFontSize(8);
+      doc.setTextColor(...COLORS.muted);
 
-      doc.setFillColor(...COLORS.primary);
-      doc.rect(15, 51, 181, 1, "F");
-      doc.setFillColor(...COLORS.light);
-      doc.rect(15, 52, 181, 1, "F");
-      doc.setFillColor(...COLORS.secondary);
-      doc.rect(15, 53, 181, 1, "F");
-      // ID			Adresse	Type de membre	Etat
-      const head = [
-        ["ID", "Nom complet", "Téléphone", "Adresse", "Type", "Etat"],
-      ];
+      doc.text(
+        "Coopérative d'épargne et crédit de l'amitié",
+        45,
+        23,
+      );
 
-      const body = data.map((item,i) => {
-        return [
-          i+1,
-          item.nom_complet ?? "",
-          item.phone ?? "",
-          item.adresse ?? "",
-          item.type_member ?? "",
-          item.status ?? "",
-        ];
+      doc.text("Goma — République Démocratique du Congo", 45, 28);
+
+
+      /* =========================================================
+         TITRE
+      ========================================================= */
+
+      doc.setTextColor(...COLORS.secondary);
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(14);
+
+      doc.text("LISTE DES MEMBRES", 105, 45, {
+        align: "center",
       });
 
+
+      /* =========================================================
+         INFORMATIONS DU RAPPORT
+      ========================================================= */
+
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(8);
+      doc.setTextColor(...COLORS.muted);
+
+      doc.text(
+        `Année : ${year}`,
+        15,
+        51,
+      );
+
+      doc.text(
+        `Nombre de membres : ${data.length}`,
+        195,
+        51,
+        {
+          align: "right",
+        },
+      );
+
+
+      /* =========================================================
+         LIGNE DE COULEURS
+      ========================================================= */
+
+      doc.setFillColor(...COLORS.primary);
+      doc.rect(15, 55, 181, 1.2, "F");
+
+      doc.setFillColor(...COLORS.light);
+      doc.rect(15, 56.2, 181, 1, "F");
+
+      doc.setFillColor(...COLORS.secondary);
+      doc.rect(15, 57.2, 181, 1, "F");
+
+
+      /* =========================================================
+         TABLEAU
+      ========================================================= */
+
+      const head = [
+        [
+          "#",
+          "Nom complet",
+          "Téléphone",
+          "Adresse",
+          "Type",
+          "État",
+        ],
+      ];
+
+      const body = data.map((item, index) => [
+        index + 1,
+        item.nom_complet ?? "—",
+        item.phone ?? "—",
+        item.adresse ?? "—",
+        item.type_member_nom ?? "—",
+        item.status ?? "—",
+      ]);
+
+
       autoTable(doc, {
-        startY: 55,
+        startY: 62,
+
         head,
         body,
+
         theme: "grid",
 
+        margin: {
+          left: 15,
+          right: 15,
+        },
+
         styles: {
-          fontSize: 8,
-          cellPadding: 3,
+          font: "helvetica",
+          fontSize: 7.5,
+          cellPadding: 2.5,
           textColor: COLORS.text,
           lineColor: COLORS.border,
           lineWidth: 0.2,
@@ -82,9 +172,10 @@ const MemberPDF = ({ data }: dataSets) => {
           fillColor: COLORS.primary,
           textColor: COLORS.white,
           fontStyle: "bold",
+          fontSize: 8,
           halign: "center",
           valign: "middle",
-          fontSize: 9,
+          cellPadding: 3,
         },
 
         bodyStyles: {
@@ -96,73 +187,186 @@ const MemberPDF = ({ data }: dataSets) => {
         },
 
         columnStyles: {
-          0: { halign: "center" }, // Date
-          1: { halign: "center" }, // Numéro
-          2: { halign: "left" }, // Libellé
-          3: { halign: "center" }, // Type
-          4: { halign: "right" }, // Montant
-          5: { halign: "right" }, // Solde
+          0: {
+            halign: "center",
+            cellWidth: 10,
+          },
+
+          1: {
+            halign: "left",
+            cellWidth: 40,
+            fontStyle: "bold",
+          },
+
+          2: {
+            halign: "left",
+            cellWidth: 28,
+          },
+
+          3: {
+            halign: "left",
+            cellWidth: 42,
+          },
+
+          4: {
+            halign: "center",
+            cellWidth: 30,
+          },
+
+          5: {
+            halign: "center",
+            cellWidth: 25,
+          },
         },
 
-        didParseCell(data) {
-          // Mettre en évidence la colonne Montant
-          if (data.section === "body" && data.column.index === 4) {
-            data.cell.styles.fontStyle = "bold";
-            data.cell.styles.textColor = COLORS.secondary;
-          }
 
-          // Mettre encore plus en évidence le Solde
-          if (data.section === "body" && data.column.index === 5) {
-            data.cell.styles.fontStyle = "bold";
-            data.cell.styles.textColor = COLORS.primary;
+        /* =======================================================
+           PERSONNALISATION DES CELLULES
+        ======================================================= */
+
+        didParseCell(cellData) {
+
+          if (
+            cellData.section === "body" &&
+            cellData.column.index === 5
+          ) {
+            const value = String(cellData.cell.raw).toLowerCase();
+
+            if (
+              value === "actif" ||
+              value === "active"
+            ) {
+              cellData.cell.styles.fillColor = COLORS.success;
+              cellData.cell.styles.textColor =
+                COLORS.successText;
+
+              cellData.cell.styles.fontStyle = "bold";
+            }
+
+            if (
+              value === "inactif" ||
+              value === "inactive"
+            ) {
+              cellData.cell.styles.fillColor = COLORS.danger;
+              cellData.cell.styles.textColor =
+                COLORS.dangerText;
+
+              cellData.cell.styles.fontStyle = "bold";
+            }
           }
+        },
+
+
+        /* =======================================================
+           FOOTER DE CHAQUE PAGE
+        ======================================================= */
+
+        didDrawPage: () => {
+
+          const pageHeight =
+            doc.internal.pageSize.height;
+
+          const pageWidth =
+            doc.internal.pageSize.width;
+
+          doc.setDrawColor(...COLORS.border);
+
+          doc.line(
+            15,
+            pageHeight - 15,
+            pageWidth - 15,
+            pageHeight - 15,
+          );
+
+          doc.setFont("helvetica", "normal");
+          doc.setFontSize(7);
+          doc.setTextColor(...COLORS.muted);
+
+          doc.text(
+            `© ${year} — CEPARCREA`,
+            15,
+            pageHeight - 9,
+          );
+
+          doc.text(
+            `Page ${doc.getNumberOfPages()}`,
+            pageWidth - 15,
+            pageHeight - 9,
+            {
+              align: "right",
+            },
+          );
         },
       });
 
-      // const total = data.reduce((sum, d) => sum + Number(d.montant), 0);
-      const lastAutoTable = (doc as JsPDFWithAutoTable).lastAutoTable;
-      const finalY = (lastAutoTable?.finalY ?? 75) + 20;
 
-      // new
+      /* =========================================================
+         RÉSUMÉ
+      ========================================================= */
 
-      doc.setFont("helvetica", "bold");
-      // doc.text("Résumé des totaux :", 60, finalY);
+      const lastAutoTable =
+        (doc as JsPDFWithAutoTable).lastAutoTable;
 
-      autoTable(doc, {
-        startY: finalY + 10,
-        margin: { left: 60 },
-        theme: "plain",
-        styles: { fontSize: 10 },
-        body: [],
-        didParseCell: function (data) {
-          const raw = data.row.raw;
-          if (Array.isArray(raw) && String(raw[0]) === "Solde :") {
-            data.cell.styles.fontSize = 11;
-            data.cell.styles.fontStyle = "bold";
-          }
-        },
-      });
+      const finalY =
+        (lastAutoTable?.finalY ?? 75) + 10;
 
-      // === PIED DE PAGE ===
-      const pageHeight = doc.internal.pageSize.height;
-      doc.setFontSize(7);
-      doc.setTextColor(120);
-      doc.text(`© ${year} — CEPARCREA | Alt Space`, 75, pageHeight - 20);
 
-      doc.save(`list_compte_epargne.pdf`);
+      // Vérifier qu'il reste suffisamment de place
+      if (
+        finalY <
+        doc.internal.pageSize.height - 35
+      ) {
+
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(9);
+        doc.setTextColor(...COLORS.primary);
+
+        doc.text(
+          "Résumé",
+          15,
+          finalY,
+        );
+
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(8);
+        doc.setTextColor(...COLORS.muted);
+
+        doc.text(
+          `Total des membres enregistrés : ${data.length}`,
+          15,
+          finalY + 6,
+        );
+      }
+
+
+      /* =========================================================
+         EXPORT
+      ========================================================= */
+
+      doc.save(
+        `liste_membres_${year}.pdf`,
+      );
     };
+
+
     img.onerror = () => {
-      console.error("Impossible de charger le logo.");
+      console.error(
+        "Impossible de charger le logo.",
+      );
     };
   };
+
+
   return (
-    <span
-      className="bg-green-800 py-2 px-4 rounded text-xs text-white cursor-pointer"
+    <button
+      type="button"
       onClick={generateReportPDF}
+      className="inline-flex items-center rounded-lg bg-green-800 px-4 py-2 text-xs font-medium text-white transition hover:bg-green-900 active:scale-95"
     >
       PDF
-    </span>
+    </button>
   );
 };
 
 export default MemberPDF;
+
