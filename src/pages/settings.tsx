@@ -1,72 +1,3 @@
-// import RootLayout from "../components/root-layout";
-// import icon from "../assets/logo.png";
-// import { Dot, Eye, Plus } from "lucide-react";
-// import { useState } from "react";
-// import CreateKind from "../features/kind/components/create-kind";
-// import { useKinds } from "../features/kind/hooks/use-kind";
-// import { getToken } from "../utlis/get-token";
-// import type { Kind } from "../utlis/type";
-
-// // const SettingPage = () => {
-// //   const [modal, setModal] = useState(false);
-// //   const token = getToken();
-// //   const { data } = useKinds(token ?? "");
-
-// //   const kinds: Kind[] = data?.kinds ?? [];
-// //   const pagination = data?.pagination;
-// //   console.log("YY : ", pagination);
-
-// //   return (
-// //     <RootLayout>
-// //       <div className="flex justify-between">
-// //         <p>Paramètres général</p>
-// //       </div>
-
-// //       <div className="my-5 flex justify-between items-center rounded px-2">
-// //         <div className="w-30 h-30 rounded-full bg-green-200 flex items-center justify-center text-green-700">
-// //           <img src={icon} alt="logo-site" className="w-full h-full" />
-// //         </div>
-// //         <div className="">
-// //           <h1 className="text-orange-800 font-semibold">Admin</h1>
-// //           <span className="text-orange-800">admin@ceparcrea.org</span>
-// //         </div>
-// //       </div>
-
-// //       <div className="flex flex-col bg-zinc-100 px-2 my-5 gap-3">
-// //         <h1 className="font-semibold">Taut d'intérêt</h1>
-// //         <p className="text-gray-500">4%</p>
-// //       </div>
-
-// //       <div className="flex flex-col justify-between bg-zinc-100 px-2 my-5 gap-3 py-1.5">
-// //         <div className="flex justify-between w-full">
-// //           <h1 className="font-semibold">Type de membre</h1>
-// //           <span
-// //             className="bg-orange-800 rounded-full w-6 h-6 cursor-pointer flex items-center justify-center"
-// //             onClick={() => setModal(true)}
-// //           >
-// //             <Plus size={15} className="text-white" />
-// //           </span>
-// //         </div>
-
-// //         <div>
-// //           {kinds.map((kind) => (
-// //             <div className="flex justify-between items-center" key={kind.id}>
-// //               <div className="flex gap-0.5">
-// //                 <Dot color="gray" />
-// //                 <p className="text-orange-800 text-sm">{kind.nom}</p>
-// //               </div>
-// //               <Eye size={17}/>
-// //             </div>
-// //           ))}
-// //         </div>
-// //       </div>
-// //       {modal && <CreateKind onClose={() => setModal(false)} open={modal} />}
-// //     </RootLayout>
-// //   );
-// // };
-
-// export default SettingPage;
-
 import RootLayout from "../components/root-layout";
 import icon from "../assets/logo.png";
 import {
@@ -80,12 +11,12 @@ import {
   Database,
   ChevronRight,
   Plus,
-  Eye,
   Pencil,
   Lock,
   WalletCards,
   FileText,
   Settings2,
+  Trash2,
 } from "lucide-react";
 import { useState } from "react";
 
@@ -93,9 +24,24 @@ import CreateKind from "../features/kind/components/create-kind";
 import { useKinds } from "../features/kind/hooks/use-kind";
 import { getToken } from "../utlis/get-token";
 import type { Kind } from "../utlis/type";
+import DeleteKind from "../features/kind/components/delete-kind";
+import EditKind from "../features/kind/components/edit-kind";
 
 const SettingPage = () => {
   const [modal, setModal] = useState(false);
+  const [deleteModal, setDeleteModal] = useState(false);
+  const [editModal, setEditModal] = useState(false);
+  const [selectedKind, setSelectedKind] = useState<Kind | null>(null);
+
+  const handleDeleteKind = (kind: Kind) => {
+    setSelectedKind(kind);
+    setDeleteModal(true);
+  };
+
+  const handleEditKind = (kind: Kind) => {
+    setSelectedKind(kind);
+    setEditModal(true);
+  };
 
   const token = getToken();
   const { data } = useKinds(token ?? "");
@@ -399,16 +345,18 @@ const SettingPage = () => {
 
                         <button
                           type="button"
-                          className="rounded-lg p-2 text-gray-400 transition hover:bg-gray-100 hover:text-gray-700"
+                          className="rounded-lg p-2 text-gray-400 transition  hover:bg-green-200 hover:text-green-700 cursor-pointer"
+                          onClick={() => handleEditKind(kind)}
                         >
-                          <Eye size={16} />
+                          <Pencil size={16} />
                         </button>
 
                         <button
                           type="button"
-                          className="rounded-lg p-2 text-gray-400 transition hover:bg-gray-100 hover:text-gray-700"
+                          className="rounded-lg p-2 text-gray-400 transition hover:bg-red-300 hover:text-red-700 cursor-pointer"
+                          onClick={() => handleDeleteKind(kind)}
                         >
-                          <Pencil size={15} />
+                          <Trash2 size={15} />
                         </button>
 
                       </div>
@@ -608,6 +556,22 @@ const SettingPage = () => {
         <CreateKind
           onClose={() => setModal(false)}
           open={modal}
+        />
+      )}
+
+      {deleteModal && selectedKind && (
+        <DeleteKind
+          kind={selectedKind}
+          onClose={() => setDeleteModal(false)}
+          open={deleteModal}
+        />
+      )}
+
+      {editModal && selectedKind && (
+        <EditKind
+          kind={selectedKind}
+          onClose={() => setEditModal(false)}
+          open={editModal}
         />
       )}
 

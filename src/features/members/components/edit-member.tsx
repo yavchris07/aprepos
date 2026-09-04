@@ -43,7 +43,6 @@ const EditMember = ({ onClose, open, member, kinds }: editMemberProps) => {
 
     try {
       await editMember(formData);
-
       showToast("Membre modifié avec succès !", "success");
       onClose();
     } catch (e) {

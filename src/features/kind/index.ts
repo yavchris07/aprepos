@@ -46,7 +46,7 @@ export const kindApi = {
   },
 
   update: async (token: string, data: Kind) => {
-    const res = await fetch(`${API_URL}${BASE_URL}`, {
+    const res = await fetch(`${API_URL}${BASE_URL}${data.id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -59,13 +59,13 @@ export const kindApi = {
   },
 
   delete: async (token: string, id: number) => {
-    const res = await fetch(`${API_URL}${BASE_URL}`, {
+    const res = await fetch(`${API_URL}${BASE_URL}${id}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
         ...(token ? { Authorization: `Token ${token}` } : {}),
       },
-      body: JSON.stringify({ id }),
+      // body: JSON.stringify({ id }),
     });
     if (!res.ok) throw new Error("Erreur delete user");
     return res.json();
