@@ -239,14 +239,14 @@ const LoanPage = () => {
   const totalRemaining = useMemo(() => {
     return loans.reduce(
       (total, item) =>
-        total + Number(
-          // item.reste ?? 
-          // item.solde ?? 
+        total +
+        Number(
+          // item.reste ??
+          // item.solde ??
           // item.montant_restant ?? 0),
-          item.balance ?? 
-          item.montant ?? 
-          item.total_a_payer ?? 0),
-      0, 
+          item.balance ?? item.montant ?? item.total_a_payer ?? 0,
+        ),
+      0,
     );
   }, [loans]);
 
@@ -292,7 +292,7 @@ const LoanPage = () => {
 
           {/* ================= KPI ================= */}
 
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-6">
             {/* Nombre emprunts */}
 
             <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
@@ -386,79 +386,83 @@ const LoanPage = () => {
                 </div>
               </div>
             </div>
-          </div>
 
-          {/* ================= TOOLBAR ================= */}
+            {/* ================= TOOLBAR ================= */}
+            <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
+              <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+                {/* Recherche */}
 
-          <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
-            <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-              {/* Recherche */}
+                <div className="relative w-full lg:w-auto">
+                  <Search
+                    size={17}
+                    className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+                  />
 
-              <div className="relative w-full lg:w-auto">
-                <Search
-                  size={17}
-                  className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
-                />
+                  <input
+                    type="text"
+                    placeholder="Rechercher..."
+                    className="h-10 w-full rounded-lg border border-gray-200 bg-gray-50 pl-9 pr-10 text-sm text-gray-700 outline-none transition placeholder:text-gray-400 focus:border-green-600 focus:bg-white focus:ring-2 focus:ring-green-100 lg:w-54"
+                    onChange={handleSearchChange}
+                    value={searchQuery}
+                  />
 
-                <input
-                  type="text"
-                  placeholder="Rechercher par membre..."
-                  className="h-10 w-full rounded-lg border border-gray-200 bg-gray-50 pl-9 pr-10 text-sm text-gray-700 outline-none transition placeholder:text-gray-400 focus:border-green-600 focus:bg-white focus:ring-2 focus:ring-green-100 lg:w-80"
-                  onChange={handleSearchChange}
-                  value={searchQuery}
-                />
+                  {searchQuery && (
+                    <button
+                      type="button"
+                      onClick={() => setSearchQuery("")}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                    >
+                      <X size={15} />
+                    </button>
+                  )}
+                </div>
+              </div>
+
+              {/* Résultats */}
+
+              <div className="mt-4 flex items-center justify-between border-t border-gray-100 pt-3">
+                <p className="text-xs text-gray-500">
+                  <span className="font-semibold text-gray-700">
+                    {filteredData.length}
+                  </span>{" "}
+                  emprunt(s) affiché(s)
+                </p>
 
                 {searchQuery && (
                   <button
                     type="button"
                     onClick={() => setSearchQuery("")}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                    className="text-xs font-medium text-green-700 hover:text-green-800"
                   >
-                    <X size={15} />
+                    Effacer la recherche
                   </button>
                 )}
               </div>
-
-              {/* Actions */}
-
-              <div className="flex flex-wrap items-center gap-2">
-                <button
-                  type="button"
-                  className="inline-flex h-10 items-center gap-2 rounded-lg border border-gray-200 px-4 text-sm font-medium text-gray-700 transition hover:bg-gray-50"
-                >
-                  <CalendarDays size={16} />
-                  Période
-                </button>
-
-                <button
-                  type="button"
-                  className="inline-flex h-10 items-center gap-2 rounded-lg border border-gray-200 px-4 text-sm font-medium text-gray-700 transition hover:bg-gray-50"
-                >
-                  <FileDown size={16} />
-                  Relevé
-                </button>
-              </div>
             </div>
 
-            {/* Résultats */}
+            {/* ================= PDF ================= */}
+            <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
+              <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+                {/* Actions */}
 
-            <div className="mt-4 flex items-center justify-between border-t border-gray-100 pt-3">
-              <p className="text-xs text-gray-500">
-                <span className="font-semibold text-gray-700">
-                  {filteredData.length}
-                </span>{" "}
-                emprunt(s) affiché(s)
-              </p>
+                <div className="flex flex-wrap items-center gap-2">
+                  <button
+                    type="button"
+                    className="inline-flex w-full h-10 items-center gap-2 rounded-lg border border-gray-200 px-4 text-sm font-medium text-gray-700 transition hover:bg-green-700 hover:text-white"
+                  >
+                    <CalendarDays size={16} />
+                    Période
+                  </button>
 
-              {searchQuery && (
-                <button
-                  type="button"
-                  onClick={() => setSearchQuery("")}
-                  className="text-xs font-medium text-green-700 hover:text-green-800"
-                >
-                  Effacer la recherche
-                </button>
-              )}
+                  <button
+                    type="button"
+                    className="inline-flex w-full h-10 items-center gap-2 rounded-lg border border-gray-200 px-4 text-sm font-medium text-gray-700 transition hover:bg-green-700 hover:text-white cursor-pointer"
+                  >
+                    <FileDown size={16} />
+                    Relevé
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -546,10 +550,7 @@ const LoanPage = () => {
       )}
 
       {viewModal && selectedItem && (
-        <LoanItem
-           item={selectedItem}
-        />
-
+        <LoanItem item={selectedItem} />
 
         // <LoanItem
         //   {...({

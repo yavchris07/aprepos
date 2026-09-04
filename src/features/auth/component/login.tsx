@@ -59,7 +59,7 @@ const LoginForm = () => {
         <p className="text-sm font-medium text-green-700">Espace sécurisé</p>
 
         <h2 className="mt-2 text-3xl font-bold tracking-tight text-gray-900">
-          Bienvenue 👋
+          Bienvenue
         </h2>
 
         <p className="mt-2 text-sm leading-6 text-gray-500">

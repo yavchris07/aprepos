@@ -4,7 +4,15 @@ import ListAccount from "../features/account/components/list-account";
 import type { Account } from "../utlis/type";
 import CreateAccount from "../features/account/components/create-account";
 import DeleteAccount from "../features/account/components/delete-account";
-import { ArrowBigLeft, ArrowBigRight, Banknote, Plus, Search, Users, Wallet } from "lucide-react";
+import {
+  ArrowBigLeft,
+  ArrowBigRight,
+  Banknote,
+  Plus,
+  Search,
+  Users,
+  Wallet,
+} from "lucide-react";
 // import { useMembers } from "../features/members/hooks/use-members";
 import { useAccounts } from "../features/account/hooks/use-accounts";
 import { getToken } from "../utlis/get-token";
@@ -149,8 +157,6 @@ import AccountPDF from "../components/pdf/accounts";
 //   );
 // };
 
-
-
 const AccountPage = () => {
   const token = getToken();
 
@@ -178,18 +184,14 @@ const AccountPage = () => {
     setEditModal(true);
   };
 
-  const handleSearchChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-  ) => {
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
   };
 
   // Recherche
   const filteredData = useMemo(() => {
     return accounts.filter((item) =>
-      item.membre_nom
-        ?.toLowerCase()
-        .includes(searchQuery.toLowerCase()),
+      item.membre_nom?.toLowerCase().includes(searchQuery.toLowerCase()),
     );
   }, [accounts, searchQuery]);
 
@@ -208,17 +210,13 @@ const AccountPage = () => {
     <RootLayout>
       <div className="min-h-screen bg-gray-50/60">
         <div className="space-y-5">
-
           {/* HEADER */}
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-
             <div>
               <div className="flex items-center gap-2 text-xs text-gray-400">
                 <span>Tableau de bord</span>
                 <span>/</span>
-                <span className="text-gray-600">
-                  Comptes épargne
-                </span>
+                <span className="text-gray-600">Comptes épargne</span>
               </div>
 
               <div className="mt-1">
@@ -243,12 +241,10 @@ const AccountPage = () => {
           </div>
 
           {/* STATISTIQUES */}
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {/* Total comptes */}
             <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
               <div className="flex items-center justify-between">
-
                 <div>
                   <p className="text-xs font-medium uppercase tracking-wide text-gray-400">
                     Total comptes
@@ -272,7 +268,6 @@ const AccountPage = () => {
             {/* Solde */}
             <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
               <div className="flex items-center justify-between">
-
                 <div>
                   <p className="text-xs font-medium uppercase tracking-wide text-gray-400">
                     Solde affiché
@@ -296,7 +291,6 @@ const AccountPage = () => {
             {/* Membres */}
             <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
               <div className="flex items-center justify-between">
-
                 <div>
                   <p className="text-xs font-medium uppercase tracking-wide text-gray-400">
                     Comptes actifs
@@ -316,73 +310,66 @@ const AccountPage = () => {
                 </div>
               </div>
             </div>
-          </div>
 
-          {/* OUTILS */}
-          <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
+            {/* OUTILS */}
+            <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
+              <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+                {/* Recherche */}
+                <div className="relative">
+                  <Search
+                    size={17}
+                    className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+                  />
 
-            <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+                  <input
+                    type="text"
+                    placeholder="Rechercher un membre..."
+                    className="h-10 w-full rounded-lg border border-gray-200 bg-gray-50 pl-9 pr-3 text-sm text-gray-700 outline-none transition placeholder:text-gray-400 focus:border-green-600 focus:bg-white focus:ring-2 focus:ring-green-100 sm:w-67"
+                    onChange={handleSearchChange}
+                    value={searchQuery}
+                  />
+                </div>
 
-              {/* Recherche */}
-              <div className="relative">
-
-                <Search
-                  size={17}
-                  className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
-                />
-
-                <input
-                  type="text"
-                  placeholder="Rechercher un membre..."
-                  className="h-10 w-full rounded-lg border border-gray-200 bg-gray-50 pl-9 pr-3 text-sm text-gray-700 outline-none transition placeholder:text-gray-400 focus:border-green-600 focus:bg-white focus:ring-2 focus:ring-green-100 sm:w-72"
-                  onChange={handleSearchChange}
-                  value={searchQuery}
-                />
+                {/* Export */}
+                <div>
+                  <AccountPDF data={filteredData} />
+                </div>
               </div>
 
-              {/* Export */}
-              <div>
-                <AccountPDF data={filteredData} />
+              <div className="mt-2 flex items-center justify-between border-t border-gray-100 pt-1">
+                <p className="text-xs text-gray-500">
+                  <span className="font-semibold text-gray-700">
+                    {filteredData.length}
+                  </span>{" "}
+                  compte(s) affiché(s)
+                </p>
+
+                {searchQuery && (
+                  <button
+                    type="button"
+                    onClick={() => setSearchQuery("")}
+                    className="text-xs font-medium text-green-700 hover:text-green-800"
+                  >
+                    Effacer la recherche
+                  </button>
+                )}
               </div>
-            </div>
-
-            <div className="mt-4 flex items-center justify-between border-t border-gray-100 pt-3">
-
-              <p className="text-xs text-gray-500">
-                <span className="font-semibold text-gray-700">
-                  {filteredData.length}
-                </span>{" "}
-                compte(s) affiché(s)
-              </p>
-
-              {searchQuery && (
-                <button
-                  type="button"
-                  onClick={() => setSearchQuery("")}
-                  className="text-xs font-medium text-green-700 hover:text-green-800"
-                >
-                  Effacer la recherche
-                </button>
-              )}
             </div>
           </div>
 
           {/* LISTE */}
-          <div className="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
+          {/* <div className="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm"> */}
 
-            <ListAccount
-              accounts={filteredData}
-              loading={isLoading}
-              onDelete={handleDelete}
-              onView={handleView}
-            />
-
-          </div>
+          <ListAccount
+            accounts={filteredData}
+            loading={isLoading}
+            onDelete={handleDelete}
+            onView={handleView}
+          />
 
           {/* PAGINATION */}
           {(pagination?.next || pagination?.previous) && (
             <div className="flex items-center justify-between rounded-xl border border-gray-200 bg-white px-4 py-3 shadow-sm">
-
               <p className="text-xs text-gray-500">
                 Total :{" "}
                 <span className="font-semibold text-gray-700">
@@ -392,7 +379,6 @@ const AccountPage = () => {
               </p>
 
               <div className="flex items-center gap-2">
-
                 <button
                   disabled={!pagination?.previous || isLoading}
                   className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-gray-200 text-gray-600 transition hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40"
@@ -410,7 +396,6 @@ const AccountPage = () => {
                 >
                   <ArrowBigRight size={15} />
                 </button>
-
               </div>
             </div>
           )}
@@ -418,12 +403,7 @@ const AccountPage = () => {
       </div>
 
       {/* CRÉATION */}
-      {modal && (
-        <CreateAccount
-          onClose={() => setModal(false)}
-          open={modal}
-        />
-      )}
+      {modal && <CreateAccount onClose={() => setModal(false)} open={modal} />}
 
       {/* DÉTAILS */}
       {editModal && selectedItem && (

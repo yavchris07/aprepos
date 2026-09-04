@@ -109,7 +109,7 @@ const StatementPage = () => {
 
           {/* ================= KPI ================= */}
 
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-6">
             {/* Transactions */}
 
             <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
@@ -203,86 +203,91 @@ const StatementPage = () => {
                 </div>
               </div>
             </div>
-          </div>
 
-          {/* ================= FILTRES ================= */}
+            {/* ================= FILTRES ================= */}
 
-          <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
-            <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-              <div className="relative w-full lg:w-auto">
-                <Search
-                  size={17}
-                  className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
-                />
+            <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
+              <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+                <div className="relative w-full lg:w-auto">
+                  <Search
+                    size={17}
+                    className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+                  />
 
-                <input
-                  type="text"
-                  placeholder="Rechercher par compte..."
-                  className="h-10 w-full rounded-lg border border-gray-200 bg-gray-50 pl-9 pr-10 text-sm text-gray-700 outline-none transition placeholder:text-gray-400 focus:border-green-600 focus:bg-white focus:ring-2 focus:ring-green-100 lg:w-80"
-                  value={searchQuery}
-                  onChange={handleSearchChange}
-                />
+                  <input
+                    type="text"
+                    placeholder="Rechercher par compte..."
+                    className="h-10 w-full rounded-lg border border-gray-200 bg-gray-50 pl-9 pr-10 text-sm text-gray-700 outline-none transition placeholder:text-gray-400 focus:border-green-600 focus:bg-white focus:ring-2 focus:ring-green-100 lg:w-53"
+                    value={searchQuery}
+                    onChange={handleSearchChange}
+                  />
+
+                  {searchQuery && (
+                    <button
+                      type="button"
+                      onClick={() => setSearchQuery("")}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                    >
+                      <X size={15} />
+                    </button>
+                  )}
+                </div>
+              </div>
+
+              {/* Résultats */}
+
+              <div className="mt-2 flex items-center justify-between border-t border-gray-100 pt-1">
+                <p className="text-xs text-gray-500">
+                  <span className="font-semibold text-gray-700">
+                    {filteredData.length}
+                  </span>{" "}
+                  mouvement(s) affiché(s)
+                </p>
 
                 {searchQuery && (
                   <button
                     type="button"
                     onClick={() => setSearchQuery("")}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                    className="text-xs font-medium text-green-700 hover:text-green-800"
                   >
-                    <X size={15} />
+                    Effacer la recherche
                   </button>
                 )}
               </div>
-
-              <div className="flex items-center gap-2">
-                <button
-                  type="button"
-                  className="inline-flex h-10 items-center gap-2 rounded-lg border border-gray-200 px-4 text-sm font-medium text-gray-700 transition hover:bg-gray-50"
-                >
-                  <CalendarDays size={16} />
-                  Période
-                </button>
-
-                <button
-                  type="button"
-                  className="inline-flex h-10 items-center gap-2 rounded-lg border border-gray-200 px-4 text-sm font-medium text-gray-700 transition hover:bg-gray-50"
-                >
-                  <Download size={16} />
-                  Exporter
-                </button>
-              </div>
             </div>
 
-            {/* Résultats */}
+            {/* ================= PERIODE ================= */}
+            <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
+              <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    className="inline-flex h-8 items-center gap-2 rounded-lg border border-gray-200 px-2 text-sm font-medium text-gray-700 transition hover:bg-gray-50"
+                  >
+                    <CalendarDays size={16} />
+                    Période
+                  </button>
 
-            <div className="mt-4 flex items-center justify-between border-t border-gray-100 pt-3">
-              <p className="text-xs text-gray-500">
-                <span className="font-semibold text-gray-700">
-                  {filteredData.length}
-                </span>{" "}
-                mouvement(s) affiché(s)
-              </p>
-
-              {searchQuery && (
-                <button
-                  type="button"
-                  onClick={() => setSearchQuery("")}
-                  className="text-xs font-medium text-green-700 hover:text-green-800"
-                >
-                  Effacer la recherche
-                </button>
-              )}
+                  <button
+                    type="button"
+                    className="inline-flex h-8 items-center gap-2 rounded-lg border border-gray-200 px-2 text-sm font-medium text-gray-700 transition hover:bg-gray-50"
+                  >
+                    <Download size={16} />
+                    Exporter
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
 
           {/* ================= RELEVÉ ================= */}
 
-          <div className="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
+           
             <TransactionStatement
               loading={isLoading}
               transactions={filteredData}
             />
-          </div>
+          {/* </div> */}
         </div>
       </div>
     </RootLayout>

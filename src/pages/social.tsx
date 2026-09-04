@@ -20,7 +20,7 @@ import {
   ArrowBigLeft,
   ArrowBigRight,
 } from "lucide-react";
- 
+
 const SocialPage = () => {
   const token = getToken();
   const [searchQuery, setSearchQuery] = useState("");
@@ -34,7 +34,7 @@ const SocialPage = () => {
   const socials: Social[] = useMemo(() => data?.socials ?? [], [data?.socials]);
 
   const pagination = data?.pagination;
-  console.log(pagination)
+  console.log(pagination);
 
   const [selectedItem, setSelectedItem] = useState<Social | null>(null);
 
@@ -152,7 +152,7 @@ const SocialPage = () => {
 
           {/* ================= KPI ================= */}
 
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
             {/* Nombre */}
 
             <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
@@ -220,45 +220,44 @@ const SocialPage = () => {
                 </div>
               </div>
             </div>
-          </div>
 
-          {/* ================= TOOLBAR ================= */}
+            {/* ================= TOOLBAR ================= */}
+            <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
+              <div className="flex flex-row gap-4 lg:flex-row lg:items-center lg:justify-between">
+                {/* Search */}
 
-          <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
-            <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-              {/* Search */}
+                <div className="relative lg:w-auto">
+                  <Search
+                    size={17}
+                    className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+                  />
 
-              <div className="relative w-full lg:w-auto">
-                <Search
-                  size={17}
-                  className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
-                />
+                  <input
+                    type="text"
+                    placeholder="Rechercher..."
+                    className="h-10 rounded-lg border border-gray-200 bg-gray-50 pl-9 pr-10 text-sm text-gray-700 outline-none transition placeholder:text-gray-400 focus:border-green-600 focus:bg-white focus:ring-2 focus:ring-green-100 lg:w-65"
+                    onChange={handleSearchChange}
+                    value={searchQuery}
+                  />
 
-                <input
-                  type="text"
-                  placeholder="Rechercher par membre..."
-                  className="h-10 w-full rounded-lg border border-gray-200 bg-gray-50 pl-9 pr-10 text-sm text-gray-700 outline-none transition placeholder:text-gray-400 focus:border-green-600 focus:bg-white focus:ring-2 focus:ring-green-100 lg:w-80"
-                  onChange={handleSearchChange}
-                  value={searchQuery}
-                />
+                  {searchQuery && (
+                    <button
+                      type="button"
+                      onClick={() => setSearchQuery("")}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                    >
+                      <X size={15} />
+                    </button>
+                  )}
+                </div>
 
-                {searchQuery && (
-                  <button
-                    type="button"
-                    onClick={() => setSearchQuery("")}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                  >
-                    <X size={15} />
-                  </button>
-                )}
+                {/* Actions */}
               </div>
-
-              {/* Actions */}
-
-              <div className="flex flex-wrap items-center gap-2">
+              {/* 
+              <div className="flex items-center gap-2 my-1">
                 <button
                   type="button"
-                  className="inline-flex h-10 items-center gap-2 rounded-lg border border-gray-200 px-4 text-sm font-medium text-gray-700 transition hover:bg-gray-50"
+                  className="inline-flex h-7 items-center gap-2 rounded-lg border border-gray-200 px-4 text-sm font-medium text-gray-700 transition hover:bg-gray-50"
                 >
                   <CalendarDays size={16} />
                   Période
@@ -266,33 +265,54 @@ const SocialPage = () => {
 
                 <button
                   type="button"
-                  className="inline-flex h-10 items-center gap-2 rounded-lg border border-gray-200 px-4 text-sm font-medium text-gray-700 transition hover:bg-gray-50"
+                  className="inline-flex h-7 items-center gap-2 rounded-lg border border-gray-200 px-4 text-sm font-medium text-gray-700 transition hover:bg-gray-50"
+                >
+                  <FileDown size={16} />
+                  Relevé
+                </button>
+              </div> */}
+
+              {/* Informations */}
+
+              <div className="mt-2 flex items-center justify-between border-t border-gray-100 pt-3">
+                <p className="text-xs text-gray-500">
+                  <span className="font-semibold text-gray-700">
+                    {filteredData.length}
+                  </span>{" "}
+                  opération(s) affichée(s)
+                </p>
+
+                {searchQuery && (
+                  <button
+                    type="button"
+                    onClick={() => setSearchQuery("")}
+                    className="text-xs font-medium text-green-700 hover:text-green-800"
+                  >
+                    Effacer la recherche
+                  </button>
+                )}
+              </div>
+            </div>
+
+            {/* ================= PDF ================= */}
+            <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
+              <div className="flex flex-wrap gap-2 sm:flex-row sm:items-center sm:justify-between">
+                <button
+                  type="button"
+                  className="inline-flex w-full h-10 items-center gap-2 rounded-lg border border-gray-200 px-4 text-sm font-medium text-gray-700 transition hover:bg-green-700 hover:text-white"
+                >
+                  <CalendarDays size={16} />
+                  Période
+                </button>
+
+                <button
+                  type="button"
+                  className="inline-flex w-full h-10 items-center gap-2 rounded-lg border border-gray-200 px-4 text-sm font-medium text-gray-700 transition hover:bg-green-700 hover:text-white cursor-pointer"
                 >
                   <FileDown size={16} />
                   Relevé
                 </button>
               </div>
-            </div>
-
-            {/* Informations */}
-
-            <div className="mt-4 flex items-center justify-between border-t border-gray-100 pt-3">
-              <p className="text-xs text-gray-500">
-                <span className="font-semibold text-gray-700">
-                  {filteredData.length}
-                </span>{" "}
-                opération(s) affichée(s)
-              </p>
-
-              {searchQuery && (
-                <button
-                  type="button"
-                  onClick={() => setSearchQuery("")}
-                  className="text-xs font-medium text-green-700 hover:text-green-800"
-                >
-                  Effacer la recherche
-                </button>
-              )}
             </div>
           </div>
 

@@ -1,9 +1,11 @@
 import React, { useState } from "react";
-import { Loader2 } from "lucide-react";
+import { CalendarDays, Loader2, Pencil, X } from "lucide-react";
 import { useToast } from "../../../components/toast-context";
 import { getToken } from "../../../utlis/get-token";
 import type { Member, Social } from "../../../utlis/type";
 import { useEditeSocial } from "../hooks/use-edit-social";
+import Modal from "../../../components/modal";
+import { getISOWeek, getISOWeekYear } from "date-fns";
 
 type createSocialProps = {
   open: boolean;
@@ -23,7 +25,13 @@ const EditSocial = ({ members, onClose, open, social }: createSocialProps) => {
     annee: social.annee,
     montant: social.montant,
     date: social.date,
+    // devise: social.,
   });
+
+  const currency = [
+    { id: "usd", name: "USD" },
+    { id: "cdf", name: "CDF" },
+  ];
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -42,32 +50,111 @@ const EditSocial = ({ members, onClose, open, social }: createSocialProps) => {
     }
   };
 
-  const handleMembreChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setFormData({ ...formData, membre: Number(event.target.value) });
+
+
+  const handleDateChange = (date: string) => {
+    if (!date) {
+      setFormData((prev) => ({
+        ...prev,
+        date: "",
+        semaine: 0,
+        annee: "",
+      }));
+      return;
+    }
+
+    const d = new Date(`${date}T00:00:00`);
+
+    setFormData((prev) => ({
+      ...prev,
+      date,
+      semaine: getISOWeek(d),
+      annee: getISOWeekYear(d).toString(),
+    }));
+  };
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+  ) => {
+    const { name, value } = e.target;
+
+    setFormData((prev) => ({
+      ...prev,
+      [name]: name === "type_member" ? Number(value) : value,
+    }));
   };
 
   if (!open) return null;
+
   return (
-    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-      <div className="bg-zinc-50 p-4 rounded w-112.5 shadow-sm">
-        <div className="flex justify-between items-center my-2">
-          <h2 className="text-black font-semibold">Editer social</h2>
-          <span onClick={onClose} className="text-gray-600 cursor-pointer">
-            x
-          </span>
+    <Modal>
+      <div className="w-full max-w-md">
+        {/* Header */}
+        <div className="flex items-start justify-between pb-4 border-b border-gray-200">
+          <div className="flex items-center gap-3">
+            <div className="flex items-center justify-center w-10 h-10 rounded-full bg-green-100">
+              <Pencil size={18} className="text-green-800" />
+            </div>
+
+            <div>
+              <h2 className="text-gray-900 font-semibold">
+                Modifier le social
+              </h2>
+
+              <p className="text-gray-500 text-xs mt-1">
+                Modifiez les informations de la contribution sociale.
+              </p>
+            </div>
+          </div>
+
+          <button
+            type="button"
+            onClick={onClose}
+            className="
+              flex items-center justify-center
+              w-8 h-8 rounded-full
+              text-gray-400
+              hover:text-gray-700
+              hover:bg-gray-100
+              transition
+              cursor-pointer
+            "
+            aria-label="Fermer"
+          >
+            <X size={18} />
+          </button>
         </div>
-        <p className="text-gray-500 text-xs font-medium my-3">
-          Editer le paiement de social en cas d'erreur.
-        </p>
-        <form onSubmit={handleSubmit} className="flex flex-col gap-0">
-          <div className="w-full my-1">
-            <label className="text-gray-900 text-xs font-semibold">
-              Membre
+
+        {/* Form */}
+        <form onSubmit={handleSubmit} className="py-4">
+          {/* Type membre */}
+          <div className="mb-3">
+            <label
+              htmlFor="type_member"
+              className="block mb-1.5 text-xs font-semibold text-gray-700"
+            >
+              Type de membre
             </label>
+
             <select
-              className="border border-gray-400 text-black py-2 pl-2 rounded text-sm w-full"
-              onChange={handleMembreChange}
+              id="type_member"
+              name="type_member"
               value={formData.membre}
+              onChange={handleChange}
+              required
+              className="
+                w-full
+                rounded-lg
+                border border-gray-300
+                bg-white
+                px-3 py-2.5
+                text-xs text-gray-900
+                outline-none
+                transition
+                focus:border-green-700
+                focus:ring-2
+                focus:ring-green-100
+              "
             >
               <option value="">-- Membre --</option>
               {members.map((m) => (
@@ -77,81 +164,152 @@ const EditSocial = ({ members, onClose, open, social }: createSocialProps) => {
               ))}
             </select>
           </div>
-          <div className="w-full my-1">
-            <label className="text-gray-900 text-xs font-semibold">
-              Montant
-            </label>
-            <input
-              type="text"
-              value={formData.montant}
-              onChange={(e) =>
-                setFormData({ ...formData, montant: Number(e.target.value) })
-              }
-              placeholder="Numéro compte"
-              className="border border-gray-400 text-black py-2 pl-2 rounded text-sm w-full"
-            />
+
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <label className="block text-xs font-semibold text-gray-700 mb-1.5">
+                Montant
+              </label>
+
+              <input
+                type="number"
+                min="0"
+                step="0.01"
+                value={formData.montant || ""}
+                onChange={(e) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    montant: Number(e.target.value),
+                  }))
+                }
+                placeholder="0.00"
+                className="w-full border border-gray-300 text-gray-900
+                             py-2.5 px-3 rounded-lg text-sm
+                             outline-none transition
+                             focus:border-green-700 focus:ring-2
+                             focus:ring-green-100"
+              />
+            </div>
+
+            <div>
+              <label className="block text-xs font-semibold text-gray-700 mb-1.5">
+                Devise
+              </label>
+
+              <select
+                value={formData.annee}
+                onChange={(e) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    devise: e.target.value,
+                  }))
+                }
+                className="w-full border border-gray-300 text-gray-900
+                             py-2.5 px-3 rounded-lg text-sm bg-white
+                             outline-none transition
+                             focus:border-green-700 focus:ring-2
+                             focus:ring-green-100"
+              >
+                <option value="">Devise</option>
+
+                {currency.map((item) => (
+                  <option key={item.id} value={item.id}>
+                    {item.name}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
 
-          <div className="w-full my-1">
-            <label className="text-gray-900 text-xs font-semibold">
-              Semaine
+          <div>
+            <label className="block text-xs font-semibold text-gray-700 mb-1.5">
+              Date du paiement
             </label>
-            <input
-              type="text"
-              value={formData.semaine}
-              onChange={(e) =>
-                setFormData({ ...formData, semaine: Number(e.target.value) })
-              }
-              placeholder="Numéro ID"
-              className="border border-gray-400 text-black py-2 pl-2 rounded text-sm w-full"
-            />
+
+            <div className="relative">
+              <CalendarDays
+                size={17}
+                className="absolute left-3 top-1/2
+                             -translate-y-1/2 text-gray-400"
+              />
+
+              <input
+                type="date"
+                value={formData.date}
+                onChange={(e) => handleDateChange(e.target.value)}
+                className="w-full border border-gray-300 text-gray-900
+                             py-2.5 pl-10 pr-3 rounded-lg text-sm
+                             outline-none transition
+                             focus:border-green-700 focus:ring-2
+                             focus:ring-green-100"
+              />
+            </div>
+
+            <div className="mt-2 rounded-lg bg-amber-50 border border-amber-100 p-3">
+              <p className="text-[11px] text-amber-700 leading-relaxed">
+                Le paiement social est généralement effectué le samedi.
+                Sélectionnez la date correspondant au jour réel du paiement.
+              </p>
+            </div>
           </div>
-          <div className="w-full my-1">
-            <label className="text-gray-900 text-xs font-semibold">Annee</label>
-            <input
-              type="text"
-              value={formData.annee}
-              onChange={(e) =>
-                setFormData({ ...formData, annee:  e.target.value })
-              }
-              placeholder="Numéro ID"
-              className="border border-gray-400 text-black py-2 pl-2 rounded text-sm w-full"
-            />
-          </div>
-          <div className="w-full my-1">
-            <label className="text-gray-900 text-xs font-semibold">Date</label>
-            <input
-              type="date"
-              value={formData.date}
-              onChange={(e) =>
-                setFormData({ ...formData, date: e.target.value })
-              }
-              placeholder="Numéro ID"
-              className="border border-gray-400 text-black py-2 pl-2 rounded text-sm w-full"
-            />
-          </div>
-          <div className="flex justify-end gap-2 my-2">
-            <span
-              className="hover:bg-gray-100 border border-gray-300 text-gray-900 text-xs py-2 px-6 rounded font-semibold cursor-pointer"
+
+          {/* Actions */}
+          <div className="flex justify-end gap-2 pt-4 border-t border-gray-200">
+            <button
+              type="button"
               onClick={onClose}
+              disabled={pending}
+              className="
+                px-4 py-2
+                rounded-lg
+                border border-gray-300
+                bg-white
+                text-gray-700
+                text-xs font-semibold
+                hover:bg-gray-50
+                transition
+                cursor-pointer
+                disabled:opacity-50
+                disabled:cursor-not-allowed
+              "
             >
               Annuler
-            </span>
+            </button>
+
             <button
               type="submit"
-              className="bg-green-800 text-white text-xs py-2 px-6 rounded cursor-pointer font-semibold flex justify-center"
               disabled={pending}
+              className="
+                flex items-center justify-center gap-2
+                min-w-28
+                px-4 py-2
+                rounded-lg
+                bg-green-800
+                text-white
+                text-xs font-semibold
+                hover:bg-green-900
+                transition
+                cursor-pointer
+                disabled:opacity-60
+                disabled:cursor-not-allowed
+              "
             >
               {pending ? (
-                <Loader2 className="animate-spin" size={14} />
+                <>
+                  <Loader2 size={14} className="animate-spin" />
+                  Modification...
+                </>
               ) : (
-                "Editer"
+                <>
+                  <Pencil size={14} />
+                  Modifier
+                </>
               )}
             </button>
           </div>
         </form>
       </div>
-    </div>
+    </Modal>
   );
 };
 

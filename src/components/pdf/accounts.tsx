@@ -139,7 +139,7 @@ const AccountPDF = ({ data }: dataSets) => {
       className="bg-green-800 py-2 px-4 rounded text-xs text-white cursor-pointer"
       onClick={generateReportPDF}
     >
-      Liste comptes épargne
+      PDF
     </span>
   );
 };

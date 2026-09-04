@@ -23,7 +23,6 @@ export const memberApi = {
     return responseData;
   },
 
-
   getAll: async (token: string, page = 1) => {
     const response = await fetch(`${API_URL}${BASE_URL}?page=${page}`, {
       headers: {
@@ -39,13 +38,13 @@ export const memberApi = {
   },
 
   get: async (token: string, id: string) => {
-    const res = await fetch(`${API_URL}${BASE_URL}?=search=${id}/`, {
+    const res = await fetch(`${API_URL}${BASE_URL}?search=${encodeURIComponent(id)}`, {
       headers: {
         "Content-Type": "application/json",
         ...(token ? { Authorization: `Token ${token}` } : {}),
       },
     });
-    if (!res.ok) throw new Error("Erreur fetch user");
+    if (!res.ok) throw new Error("Erreur fetch member");
     return res.json();
   },
 
@@ -70,8 +69,6 @@ export const memberApi = {
         ...(token ? { Authorization: `Token ${token}` } : {}),
       },
     });
-    // if (!res.ok) throw new Error("Erreur delete membre");
-    // return res.json();
 
      if (!res.ok) {
       throw new Error("Erreur delete account");
