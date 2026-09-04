@@ -17,6 +17,7 @@ const EditKind = ({ kind, onClose, open }: editKindMemeberProps) => {
   const { updateKind, fail, pending } = useEditeKind(token ?? "");
 
   const { showToast } = useToast();
+  
   const [formData, setFormData] = useState({
     id: kind.id,
     nom: kind.nom,
@@ -52,7 +53,7 @@ const EditKind = ({ kind, onClose, open }: editKindMemeberProps) => {
   };
 
   if (!open) return null;
-  
+
   return (
     <Modal>
       <div className="w-full max-w-md">

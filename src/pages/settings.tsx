@@ -2,20 +2,20 @@ import RootLayout from "../components/root-layout";
 import icon from "../assets/logo.png";
 import {
   User,
-  Building2,
+  // Building2,
   Percent,
   Users,
-  ShieldCheck,
-  Bell,
-  Palette,
-  Database,
+  // ShieldCheck,
+  // Bell,
+  // Palette,
+  // Database,
   ChevronRight,
   Plus,
   Pencil,
-  Lock,
+  // Lock,
   WalletCards,
-  FileText,
-  Settings2,
+  // FileText,
+  // Settings2,
   Trash2,
 } from "lucide-react";
 import { useState } from "react";
@@ -135,7 +135,7 @@ const SettingPage = () => {
               ORGANISATION
           ===================================================== */}
 
-          <section>
+          {/* <section>
 
             <div className="mb-3">
               <h2 className="text-sm font-semibold text-gray-900">
@@ -149,7 +149,7 @@ const SettingPage = () => {
 
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
 
-              {/* Organisation */}
+              {/* Organisation 
 
               <SettingCard
                 icon={<Building2 size={19} />}
@@ -157,7 +157,7 @@ const SettingPage = () => {
                 description="Nom, logo, adresse et coordonnées."
               />
 
-              {/* Paramètres généraux */}
+              {/* Paramètres généraux 
 
               <SettingCard
                 icon={<Settings2 size={19} />}
@@ -167,7 +167,7 @@ const SettingPage = () => {
 
             </div>
 
-          </section>
+          </section> */}
 
           {/* =====================================================
               FINANCES
@@ -375,7 +375,7 @@ const SettingPage = () => {
               ACCÈS & SÉCURITÉ
           ===================================================== */}
 
-          <section>
+          {/* <section>
 
             <div className="mb-3">
               <h2 className="text-sm font-semibold text-gray-900">
@@ -403,13 +403,13 @@ const SettingPage = () => {
 
             </div>
 
-          </section>
+          </section> */}
 
           {/* =====================================================
               NOTIFICATIONS
           ===================================================== */}
 
-          <section>
+          {/* <section>
 
             <div className="rounded-xl border border-gray-200 bg-white shadow-sm">
 
@@ -445,12 +445,12 @@ const SettingPage = () => {
 
             </div>
 
-          </section>
+          </section> */}
 
           {/* =====================================================
               APPARENCE
           ===================================================== */}
-
+{/* 
           <section>
 
             <div className="rounded-xl border border-gray-200 bg-white shadow-sm">
@@ -487,13 +487,13 @@ const SettingPage = () => {
 
             </div>
 
-          </section>
+          </section> */}
 
           {/* =====================================================
               DONNÉES
           ===================================================== */}
 
-          <section>
+          {/* <section>
 
             <div className="mb-3">
               <h2 className="text-sm font-semibold text-gray-900">
@@ -521,7 +521,7 @@ const SettingPage = () => {
 
             </div>
 
-          </section>
+          </section> */}
 
           {/* =====================================================
               VERSION

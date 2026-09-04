@@ -1,7 +1,7 @@
 import type { Kind } from "../../utlis/type";
 
 const API_URL = import.meta.env.VITE_API_URL;
-const BASE_URL = '/type-membres/'
+const BASE_URL = "/type-membres/";
 
 export const kindApi = {
   create: async (data: Kind, token: string) => {
@@ -59,7 +59,7 @@ export const kindApi = {
   },
 
   delete: async (token: string, id: number) => {
-    const res = await fetch(`${API_URL}${BASE_URL}${id}`, {
+    const res = await fetch(`${API_URL}${BASE_URL}${id}/`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -67,7 +67,12 @@ export const kindApi = {
       },
       // body: JSON.stringify({ id }),
     });
-    if (!res.ok) throw new Error("Erreur delete user");
-    return res.json();
+    
+    if (!res.ok) {
+      throw new Error("Erreur delete account");
+    }
+
+    const text = await res.text();
+    return text ? JSON.parse(text) : null;
   },
 };
