@@ -19,6 +19,7 @@ import { getToken } from "../utlis/get-token";
 import { useMembers } from "../features/members/hooks/use-members";
 import { useKinds } from "../features/kind/hooks/use-kind";
 import MemberPDF from "../components/pdf/members";
+import { useListMembers } from "../features/members/hooks/use-list-members";
 
 // const MemberPage = () => {
 //   const [selectedItem, setSelectedItem] = useState<Member | null>(null);
@@ -183,6 +184,10 @@ const MemberPage = () => {
 
   const { data: types } = useKinds(token ?? "");
 
+  const { data: listMembers } = useListMembers(token ?? "");
+  console.log("LISTE : ", listMembers);
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const members: Member[] = data?.members ?? [];
   const kinds: Kind[] = types?.kinds ?? [];
   const pagination = data?.pagination;
@@ -346,7 +351,7 @@ const MemberPage = () => {
 
             {/* ================= TOOLBAR ================= */}
             <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
-              <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+              <div className="flex flex-col gap-2 lg:flex-row lg:items-center lg:justify-between">
                 {/* SEARCH */}
 
                 <div className="relative lg:w-auto">
@@ -358,7 +363,7 @@ const MemberPage = () => {
                   <input
                     type="text"
                     placeholder="Rechercher..."
-                    className="h-10 w-auto rounded-lg border border-gray-200 bg-gray-50 pl-9 pr-10 text-sm text-gray-700 outline-none transition placeholder:text-gray-400 focus:border-green-600 focus:bg-white focus:ring-2 focus:ring-green-100 lg:w-70"
+                    className="h-10 w-auto rounded-lg border border-gray-200 bg-gray-50 pl-9 pr-10 text-sm text-gray-700 outline-none transition placeholder:text-gray-400 focus:border-green-600 focus:bg-white focus:ring-2 focus:ring-green-100 lg:w-65"
                     onChange={handleSearchChange}
                     value={searchQuery}
                   />
@@ -376,7 +381,7 @@ const MemberPage = () => {
 
                 {/* EXPORT */}
 
-                <MemberPDF data={filteredData} />
+                <MemberPDF data={listMembers ?? []} />
               </div>
 
               {/* RESULTATS */}
@@ -401,12 +406,12 @@ const MemberPage = () => {
           {/* ================= LISTE ================= */}
 
           {/* <div className="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm"> */}
-            <ListMember
-              loading={isLoading}
-              members={filteredData}
-              onDelete={handleDelete}
-              onEdit={handleEdit}
-            />
+          <ListMember
+            loading={isLoading}
+            members={filteredData}
+            onDelete={handleDelete}
+            onEdit={handleEdit}
+          />
           {/* </div> */}
 
           {/* ================= PAGINATION ================= */}
@@ -425,7 +430,7 @@ const MemberPage = () => {
                 type="button"
                 disabled={!pagination?.previous || isLoading || isFetching}
                 onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
-                className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-gray-200 text-gray-600 transition hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40"
+                className="inline-flex h-7 w-7 items-center justify-center rounded-lg border border-gray-200 text-gray-600 transition hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40 cursor-pointer"
               >
                 <ArrowBigLeft size={15} />
               </button>
@@ -440,7 +445,7 @@ const MemberPage = () => {
                 type="button"
                 disabled={!pagination?.next || isLoading || isFetching}
                 onClick={() => setCurrentPage((prev) => prev + 1)}
-                className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-gray-200 text-gray-600 transition hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40"
+                className="inline-flex h-7 w-7 items-center justify-center rounded-lg border border-gray-200 text-gray-600 transition hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40 cursor-pointer"
               >
                 <ArrowBigRight size={15} />
               </button>

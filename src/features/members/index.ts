@@ -37,13 +37,30 @@ export const memberApi = {
     return response.json();
   },
 
-  get: async (token: string, id: string) => {
-    const res = await fetch(`${API_URL}${BASE_URL}?search=${encodeURIComponent(id)}`, {
+  members: async (token: string) => {
+    const response = await fetch(`${API_URL}/liste_membres/`, {
       headers: {
-        "Content-Type": "application/json",
-        ...(token ? { Authorization: `Token ${token}` } : {}),
+        Authorization: `Token ${token}`,
       },
     });
+
+    if (!response.ok) {
+      throw new Error("Erreur lors de la récupération de la liste des membres");
+    }
+
+    return response.json();
+  },
+
+  get: async (token: string, id: string) => {
+    const res = await fetch(
+      `${API_URL}${BASE_URL}?search=${encodeURIComponent(id)}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          ...(token ? { Authorization: `Token ${token}` } : {}),
+        },
+      },
+    );
     if (!res.ok) throw new Error("Erreur fetch member");
     return res.json();
   },
@@ -70,7 +87,7 @@ export const memberApi = {
       },
     });
 
-     if (!res.ok) {
+    if (!res.ok) {
       throw new Error("Erreur delete account");
     }
 
@@ -78,3 +95,8 @@ export const memberApi = {
     return text ? JSON.parse(text) : null;
   },
 };
+
+
+
+
+// avec-token:"496d517ba6627b173f3430807fa3527456140808"

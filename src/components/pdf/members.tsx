@@ -2,7 +2,6 @@ import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import type { Member } from "../../utlis/type";
 
-
 interface DataSets {
   data: Member[];
 }
@@ -23,6 +22,16 @@ const MemberPDF = ({ data }: DataSets) => {
       format: "a4",
     });
 
+    /* =========================================================
+         CONFIGURATION
+      ========================================================= */
+
+    const PAGE_WIDTH = doc.internal.pageSize.width;
+    const PAGE_HEIGHT = doc.internal.pageSize.height;
+
+    const MARGIN = 15;
+    const CONTENT_WIDTH = PAGE_WIDTH - MARGIN * 2;
+
     const COLORS = {
       primary: [5, 85, 39] as [number, number, number],
       secondary: [71, 22, 36] as [number, number, number],
@@ -31,10 +40,6 @@ const MemberPDF = ({ data }: DataSets) => {
       text: [45, 45, 45] as [number, number, number],
       muted: [110, 110, 110] as [number, number, number],
       white: [255, 255, 255] as [number, number, number],
-      success: [220, 247, 231] as [number, number, number],
-      successText: [22, 101, 52] as [number, number, number],
-      danger: [254, 226, 226] as [number, number, number],
-      dangerText: [185, 28, 28] as [number, number, number],
     };
 
     const img = new Image();
@@ -42,108 +47,81 @@ const MemberPDF = ({ data }: DataSets) => {
 
     img.onload = () => {
       /* =========================================================
-         HEADER
-      ========================================================= */
+           HEADER
+        ========================================================= */
 
-      // Logo
-      doc.addImage(img, "PNG", 15, 10, 25, 25);
+      doc.addImage(img, "PNG", MARGIN, 10, 25, 25);
 
-      // Nom de l'organisation
       doc.setTextColor(...COLORS.primary);
       doc.setFont("helvetica", "bold");
       doc.setFontSize(13);
 
       doc.text("CEPARCREA", 45, 17);
 
-      // Description
       doc.setFont("helvetica", "normal");
       doc.setFontSize(8);
       doc.setTextColor(...COLORS.muted);
 
-      doc.text(
-        "Coopérative d'épargne et crédit de l'amitié",
-        45,
-        23,
-      );
+      doc.text("Coopérative d'épargne et crédit de l'amitié", 45, 23);
 
       doc.text("Goma — République Démocratique du Congo", 45, 28);
 
-
       /* =========================================================
-         TITRE
-      ========================================================= */
+           TITRE
+        ========================================================= */
 
       doc.setTextColor(...COLORS.secondary);
       doc.setFont("helvetica", "bold");
       doc.setFontSize(14);
 
-      doc.text("LISTE DES MEMBRES", 105, 45, {
+      doc.text("LISTE DES MEMBRES", PAGE_WIDTH / 2, 45, {
         align: "center",
       });
 
-
       /* =========================================================
-         INFORMATIONS DU RAPPORT
-      ========================================================= */
+           INFORMATIONS
+        ========================================================= */
 
       doc.setFont("helvetica", "normal");
       doc.setFontSize(8);
       doc.setTextColor(...COLORS.muted);
 
-      doc.text(
-        `Année : ${year}`,
-        15,
-        51,
-      );
+      doc.text(`Année : ${year}`, MARGIN, 51);
 
-      doc.text(
-        `Nombre de membres : ${data.length}`,
-        195,
-        51,
-        {
-          align: "right",
-        },
-      );
-
+      doc.text(`Nombre de membres : ${data.length}`, PAGE_WIDTH - MARGIN, 51, {
+        align: "right",
+      });
 
       /* =========================================================
-         LIGNE DE COULEURS
-      ========================================================= */
+           LIGNES DE COULEURS
+           Même largeur que le tableau et le footer
+        ========================================================= */
 
       doc.setFillColor(...COLORS.primary);
-      doc.rect(15, 55, 181, 1.2, "F");
+      doc.rect(MARGIN, 55, CONTENT_WIDTH, 1.2, "F");
 
       doc.setFillColor(...COLORS.light);
-      doc.rect(15, 56.2, 181, 1, "F");
+      doc.rect(MARGIN, 56.2, CONTENT_WIDTH, 1, "F");
 
       doc.setFillColor(...COLORS.secondary);
-      doc.rect(15, 57.2, 181, 1, "F");
-
+      doc.rect(MARGIN, 57.2, CONTENT_WIDTH, 1, "F");
 
       /* =========================================================
          TABLEAU
       ========================================================= */
 
       const head = [
-        [
-          "#",
-          "Nom complet",
-          "Téléphone",
-          "Adresse",
-          "Type",
-          "État",
-        ],
+        ["#", "Nom complet", "Téléphone", "Adresse", "Type", "État"],
       ];
 
       const body = data.map((item, index) => [
         index + 1,
-        item.nom_complet ?? "—",
+        item.nom_complet.toLocaleUpperCase() ?? "—",
         item.phone ?? "—",
         item.adresse ?? "—",
         item.type_member_nom ?? "—",
         item.status ?? "—",
       ]);
-
 
       autoTable(doc, {
         startY: 62,
@@ -153,28 +131,36 @@ const MemberPDF = ({ data }: DataSets) => {
 
         theme: "grid",
 
+        tableWidth: CONTENT_WIDTH,
+
         margin: {
-          left: 15,
-          right: 15,
+          left: MARGIN,
+          right: MARGIN,
         },
 
         styles: {
           font: "helvetica",
-          fontSize: 7.5,
-          cellPadding: 2.5,
+          fontSize: 8,
+          cellPadding: 3,
+
           textColor: COLORS.text,
+
           lineColor: COLORS.border,
           lineWidth: 0.2,
+
           valign: "middle",
         },
 
         headStyles: {
           fillColor: COLORS.primary,
           textColor: COLORS.white,
+
           fontStyle: "bold",
           fontSize: 8,
+
           halign: "center",
           valign: "middle",
+
           cellPadding: 3,
         },
 
@@ -186,6 +172,10 @@ const MemberPDF = ({ data }: DataSets) => {
           fillColor: COLORS.light,
         },
 
+        /* =======================================================
+             4 COLONNES UNIQUEMENT
+          ======================================================= */
+
         columnStyles: {
           0: {
             halign: "center",
@@ -194,18 +184,18 @@ const MemberPDF = ({ data }: DataSets) => {
 
           1: {
             halign: "left",
-            cellWidth: 40,
+            cellWidth: 45,
             fontStyle: "bold",
           },
 
           2: {
             halign: "left",
-            cellWidth: 28,
+            cellWidth: 30,
           },
 
           3: {
             halign: "left",
-            cellWidth: 42,
+            cellWidth: 40,
           },
 
           4: {
@@ -219,79 +209,29 @@ const MemberPDF = ({ data }: DataSets) => {
           },
         },
 
-
         /* =======================================================
-           PERSONNALISATION DES CELLULES
-        ======================================================= */
-
-        didParseCell(cellData) {
-
-          if (
-            cellData.section === "body" &&
-            cellData.column.index === 5
-          ) {
-            const value = String(cellData.cell.raw).toLowerCase();
-
-            if (
-              value === "actif" ||
-              value === "active"
-            ) {
-              cellData.cell.styles.fillColor = COLORS.success;
-              cellData.cell.styles.textColor =
-                COLORS.successText;
-
-              cellData.cell.styles.fontStyle = "bold";
-            }
-
-            if (
-              value === "inactif" ||
-              value === "inactive"
-            ) {
-              cellData.cell.styles.fillColor = COLORS.danger;
-              cellData.cell.styles.textColor =
-                COLORS.dangerText;
-
-              cellData.cell.styles.fontStyle = "bold";
-            }
-          }
-        },
-
-
-        /* =======================================================
-           FOOTER DE CHAQUE PAGE
-        ======================================================= */
+             FOOTER
+          ======================================================= */
 
         didDrawPage: () => {
-
-          const pageHeight =
-            doc.internal.pageSize.height;
-
-          const pageWidth =
-            doc.internal.pageSize.width;
+          const footerY = PAGE_HEIGHT - 15;
 
           doc.setDrawColor(...COLORS.border);
+          doc.setLineWidth(0.2);
 
-          doc.line(
-            15,
-            pageHeight - 15,
-            pageWidth - 15,
-            pageHeight - 15,
-          );
+          // Même début et même fin que le tableau
+          doc.line(MARGIN, footerY, PAGE_WIDTH - MARGIN, footerY);
 
           doc.setFont("helvetica", "normal");
           doc.setFontSize(7);
           doc.setTextColor(...COLORS.muted);
 
-          doc.text(
-            `© ${year} — CEPARCREA`,
-            15,
-            pageHeight - 9,
-          );
+          doc.text(`© ${year} — CEPARCREA`, MARGIN, PAGE_HEIGHT - 9);
 
           doc.text(
             `Page ${doc.getNumberOfPages()}`,
-            pageWidth - 15,
-            pageHeight - 9,
+            PAGE_WIDTH - MARGIN,
+            PAGE_HEIGHT - 9,
             {
               align: "right",
             },
@@ -299,33 +239,20 @@ const MemberPDF = ({ data }: DataSets) => {
         },
       });
 
-
       /* =========================================================
-         RÉSUMÉ
-      ========================================================= */
+           RÉSUMÉ
+        ========================================================= */
 
-      const lastAutoTable =
-        (doc as JsPDFWithAutoTable).lastAutoTable;
+      const lastAutoTable = (doc as JsPDFWithAutoTable).lastAutoTable;
 
-      const finalY =
-        (lastAutoTable?.finalY ?? 75) + 10;
+      const finalY = (lastAutoTable?.finalY ?? 75) + 10;
 
-
-      // Vérifier qu'il reste suffisamment de place
-      if (
-        finalY <
-        doc.internal.pageSize.height - 35
-      ) {
-
+      if (finalY < PAGE_HEIGHT - 35) {
         doc.setFont("helvetica", "bold");
         doc.setFontSize(9);
         doc.setTextColor(...COLORS.primary);
 
-        doc.text(
-          "Résumé",
-          15,
-          finalY,
-        );
+        doc.text("Résumé", MARGIN, finalY);
 
         doc.setFont("helvetica", "normal");
         doc.setFontSize(8);
@@ -333,40 +260,44 @@ const MemberPDF = ({ data }: DataSets) => {
 
         doc.text(
           `Total des membres enregistrés : ${data.length}`,
-          15,
+          MARGIN,
           finalY + 6,
         );
       }
 
-
       /* =========================================================
-         EXPORT
-      ========================================================= */
+           EXPORT
+        ========================================================= */
 
-      doc.save(
-        `liste_membres_${year}.pdf`,
-      );
+      doc.save(`liste_des_membres_${year}.pdf`);
     };
 
-
     img.onerror = () => {
-      console.error(
-        "Impossible de charger le logo.",
-      );
+      console.error("Impossible de charger le logo.");
     };
   };
 
-
   return (
-    <button
-      type="button"
+    <span
+      // type="button"
       onClick={generateReportPDF}
-      className="inline-flex items-center rounded-lg bg-green-800 px-4 py-2 text-xs font-medium text-white transition hover:bg-green-900 active:scale-95"
+      className="inline-flex 
+      items-center 
+      rounded-lg 
+      bg-green-800 
+      px-6 
+      py-2 
+      text-xs 
+      font-medium 
+      text-white 
+      transition 
+      hover:bg-green-900 
+      active:scale-95 
+      cursor-pointer"
     >
       PDF
-    </button>
+    </span>
   );
 };
 
 export default MemberPDF;
-

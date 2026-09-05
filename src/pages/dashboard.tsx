@@ -25,6 +25,7 @@ import { SummaryCard } from "../components/summary-card";
 import { useMembers } from "../features/members/hooks/use-members";
 import OperationItemList from "../components/operation-item-list";
 import { useStats } from "../features/stats/hooks/use-statistics";
+// import { useListMembers } from "../features/members/hooks/use-list-members";
 
 const DashboardPage = () => {
   const token = getToken();
@@ -34,13 +35,13 @@ const DashboardPage = () => {
   const { data: mb } = useMembers(token ?? "", 1);
   const pagination = mb?.pagination;
 
-  const {data:stats} = useStats(token ?? "");
+  const { data: stats } = useStats(token ?? "");
 
   const transactions: Transaction[] = data?.transactions ?? [];
   // const members : Member[] =
   const loans: Loan[] = ln?.loans ?? [];
 
-  console.log('ZZZZZZZZZZZ',stats)
+  // console.log('ZZZZZZZZZZZ',stats)
 
   const operations = [
     {
@@ -54,7 +55,7 @@ const DashboardPage = () => {
     {
       title: "Emprunts",
       description: "Emprunts en cours",
-      value:  stats?.somme_totale_emprunt?.toString() ?? "—",
+      value: stats?.somme_totale_emprunt?.toString() ?? "—",
       icon: HandCoins,
       iconBg: "bg-blue-50",
       iconColor: "text-blue-600",

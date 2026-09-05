@@ -2,7 +2,7 @@ import { jsPDF } from "jspdf";
 import autoTable from "jspdf-autotable";
 import type { Account } from "../../utlis/type";
 
-interface dataSets {
+interface DataSets {
   data: Account[];
 }
 
@@ -12,131 +12,322 @@ interface JsPDFWithAutoTable extends jsPDF {
   };
 }
 
-const AccountPDF = ({ data }: dataSets) => {
+const AccountPDF = ({ data }: DataSets) => {
   const year = new Date().getFullYear();
 
   const generateReportPDF = () => {
-    const doc = new jsPDF();
+    const doc = new jsPDF({
+      orientation: "portrait",
+      unit: "mm",
+      format: "a4",
+    });
+
+    /* =========================================================
+       CONFIGURATION
+    ========================================================= */
+
+    const PAGE_WIDTH = doc.internal.pageSize.width;
+    const PAGE_HEIGHT = doc.internal.pageSize.height;
+
+    const MARGIN = 15;
+    const CONTENT_WIDTH = PAGE_WIDTH - MARGIN * 2;
+
+    const COLORS = {
+      primary: [5, 85, 39] as [number, number, number],
+      secondary: [71, 22, 36] as [number, number, number],
+      light: [243, 247, 244] as [number, number, number],
+      border: [220, 225, 221] as [number, number, number],
+      text: [45, 45, 45] as [number, number, number],
+      muted: [110, 110, 110] as [number, number, number],
+      white: [255, 255, 255] as [number, number, number],
+    };
 
     const img = new Image();
     img.src = "/logo.png";
 
     img.onload = () => {
-      // Logo
-      doc.addImage(img, "PNG", 15, 10, 27, 27);
+      /* =========================================================
+         HEADER
+      ========================================================= */
 
-      // Texte après le logo
-      doc.setFontSize(10);
-      doc.text("CEPARCREA / Goma", 15, 45);
-      doc.text("Coopérative", 15, 49);
+      doc.addImage(img, "PNG", MARGIN, 10, 25, 25);
 
-      doc.setFontSize(10);
-      doc.text("LISTE DE COMPTES", 105, 45, { align: "center" });
+      doc.setTextColor(...COLORS.primary);
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(13);
+
+      doc.text("CEPARCREA", 45, 17);
+
+      doc.setFont("helvetica", "normal");
       doc.setFontSize(8);
-      // ID	Membre	Numero compte	Balance
-      const head = [["ID", "Noms", "Numéro compte", "Balance"]];
+      doc.setTextColor(...COLORS.muted);
 
-      const body = data.map((item) => {
-         
-        return [
-          item.id ?? "",
-          item.membre_nom ?? "",
-          item.numero_compte ?? "",
-          item.balance ?? 0
-        ];
-      });
+      doc.text(
+        "Coopérative d'épargne et crédit de l'amitié",
+        45,
+        23,
+      );
 
+      doc.text(
+        "Goma — République Démocratique du Congo",
+        45,
+        28,
+      );
 
-      const COLORS = {
-        gold: [212, 175, 55] as [number, number, number],
-        dark: [40, 40, 40] as [number, number, number],
-        light: [248, 248, 248] as [number, number, number],
-        border: [210, 210, 210] as [number, number, number],
-        text: [70, 70, 70] as [number, number, number],
-      };
+      /* =========================================================
+         TITRE
+      ========================================================= */
+
+      doc.setTextColor(...COLORS.secondary);
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(14);
+
+      doc.text(
+        "LISTE DES COMPTES EPARGNES",
+        PAGE_WIDTH / 2,
+        45,
+        {
+          align: "center",
+        },
+      );
+
+      /* =========================================================
+         INFORMATIONS
+      ========================================================= */
+
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(8);
+      doc.setTextColor(...COLORS.muted);
+
+      doc.text(`Année : ${year}`, MARGIN, 51);
+
+      doc.text(
+        `Nombre de comptes : ${data.length}`,
+        PAGE_WIDTH - MARGIN,
+        51,
+        {
+          align: "right",
+        },
+      );
+
+      /* =========================================================
+         LIGNES DE COULEURS
+         Même largeur que le tableau et le footer
+      ========================================================= */
+
+      doc.setFillColor(...COLORS.primary);
+      doc.rect(
+        MARGIN,
+        55,
+        CONTENT_WIDTH,
+        1.2,
+        "F",
+      );
+
+      doc.setFillColor(...COLORS.light);
+      doc.rect(
+        MARGIN,
+        56.2,
+        CONTENT_WIDTH,
+        1,
+        "F",
+      );
+
+      doc.setFillColor(...COLORS.secondary);
+      doc.rect(
+        MARGIN,
+        57.2,
+        CONTENT_WIDTH,
+        1,
+        "F",
+      );
+
+      /* =========================================================
+         TABLEAU
+      ========================================================= */
+
+      const head = [
+        [
+          "#",
+          "Nom complet",
+          "Numéro compte",
+          "Balance",
+        ],
+      ];
+
+      const body = data.map((item, index) => [
+        index + 1,
+        item.membre_nom?.toLocaleUpperCase() ?? "—",
+        item.numero_compte ?? "—",
+        item.balance ?? 0,
+      ]);
 
       autoTable(doc, {
-        startY: 55,
+        startY: 62,
+
         head,
         body,
+
         theme: "grid",
+
+        tableWidth: CONTENT_WIDTH,
+
+        margin: {
+          left: MARGIN,
+          right: MARGIN,
+        },
+
         styles: {
+          font: "helvetica",
           fontSize: 8,
-          cellPadding: 2,
+          cellPadding: 3,
+
           textColor: COLORS.text,
+
           lineColor: COLORS.border,
           lineWidth: 0.2,
+
           valign: "middle",
         },
 
         headStyles: {
-          fillColor: COLORS.dark,
-          textColor: [255, 255, 255],
+          fillColor: COLORS.primary,
+          textColor: COLORS.white,
+
           fontStyle: "bold",
+          fontSize: 8,
+
           halign: "center",
-          fontSize: 10,
+          valign: "middle",
+
+          cellPadding: 3,
         },
 
         bodyStyles: {
-          fillColor: [255, 255, 255],
+          fillColor: COLORS.white,
         },
 
         alternateRowStyles: {
           fillColor: COLORS.light,
         },
 
+        /* =======================================================
+           4 COLONNES UNIQUEMENT
+        ======================================================= */
+
         columnStyles: {
-          0: { halign: "center" },
-          1: { halign: "left" },
-          2: { halign: "center" },
-          3: { halign: "right" },
-          4: { halign: "center" },
+          0: {
+            halign: "center",
+            cellWidth: 15,
+          },
+
+          1: {
+            halign: "left",
+            cellWidth: 70,
+            fontStyle: "bold",
+          },
+
+          2: {
+            halign: "center",
+            cellWidth: 55,
+          },
+
+          3: {
+            halign: "right",
+            cellWidth: 40,
+          },
+        },
+
+        /* =======================================================
+           FOOTER
+        ======================================================= */
+
+        didDrawPage: () => {
+          const footerY = PAGE_HEIGHT - 15;
+
+          doc.setDrawColor(...COLORS.border);
+          doc.setLineWidth(0.2);
+
+          // Même début et même fin que le tableau
+          doc.line(
+            MARGIN,
+            footerY,
+            PAGE_WIDTH - MARGIN,
+            footerY,
+          );
+
+          doc.setFont("helvetica", "normal");
+          doc.setFontSize(7);
+          doc.setTextColor(...COLORS.muted);
+
+          doc.text(
+            `© ${year} — CEPARCREA`,
+            MARGIN,
+            PAGE_HEIGHT - 9,
+          );
+
+          doc.text(
+            `Page ${doc.getNumberOfPages()}`,
+            PAGE_WIDTH - MARGIN,
+            PAGE_HEIGHT - 9,
+            {
+              align: "right",
+            },
+          );
         },
       });
 
-      // const total = data.reduce((sum, d) => sum + Number(d.montant), 0);
-      const lastAutoTable = (doc as JsPDFWithAutoTable).lastAutoTable;
-      const finalY = (lastAutoTable?.finalY ?? 75) + 20;
+      /* =========================================================
+         RÉSUMÉ
+      ========================================================= */
 
-      // new
+      const lastAutoTable =
+        (doc as JsPDFWithAutoTable).lastAutoTable;
 
-      doc.setFont("helvetica", "bold");
-      // doc.text("Résumé des totaux :", 60, finalY);
+      const finalY =
+        (lastAutoTable?.finalY ?? 75) + 10;
 
-      autoTable(doc, {
-        startY: finalY + 10,
-        margin: { left: 60 },
-        theme: "plain",
-        styles: { fontSize: 10 },
-        body: [],
-        didParseCell: function (data) {
-          const raw = data.row.raw;
-          if (Array.isArray(raw) && String(raw[0]) === "Solde :") {
-            data.cell.styles.fontSize = 11;
-            data.cell.styles.fontStyle = "bold";
-          }
-        },
-      });
+      if (finalY < PAGE_HEIGHT - 35) {
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(9);
+        doc.setTextColor(...COLORS.primary);
 
-      // === PIED DE PAGE ===
-      const pageHeight = doc.internal.pageSize.height;
-      doc.setFontSize(7);
-      doc.setTextColor(120);
-      doc.text(
-        `© ${year} — CEPARCREA | Alt Space`,
-        75,
-        pageHeight - 20,
+        doc.text(
+          "Résumé",
+          MARGIN,
+          finalY,
+        );
+
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(8);
+        doc.setTextColor(...COLORS.muted);
+
+        doc.text(
+          `Total des comptes enregistrés : ${data.length}`,
+          MARGIN,
+          finalY + 6,
+        );
+      }
+
+      /* =========================================================
+         EXPORT
+      ========================================================= */
+
+      doc.save(
+        `liste_comptes_epargnes_${year}.pdf`,
       );
-
-      doc.save(`list_compte_epargne.pdf`);
     };
+
     img.onerror = () => {
-      console.error("Impossible de charger le logo.");
+      console.error(
+        "Impossible de charger le logo.",
+      );
     };
   };
+
   return (
     <span
-      className="bg-green-800 py-2 px-4 rounded text-xs text-white cursor-pointer"
+      className="bg-green-800 py-2 px-6 rounded-lg text-xs text-white cursor-pointer"
       onClick={generateReportPDF}
     >
       PDF

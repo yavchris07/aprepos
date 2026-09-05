@@ -29,7 +29,7 @@ export const transactionApi = {
         ...(token ? { Authorization: `Token ${token}` } : {}),
       },
     });
-    if (!res.ok) throw new Error("Erreur fetch users");
+    if (!res.ok) throw new Error("Erreur fetch transactions");
     return res.json();
   },
 

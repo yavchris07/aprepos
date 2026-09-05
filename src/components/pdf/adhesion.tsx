@@ -15,72 +15,151 @@ const AdhesionPDF = ({ data }: dataSets) => {
   const year = new Date().getFullYear();
 
   const generateReportPDF = () => {
-    const doc = new jsPDF();
+    const doc = new jsPDF({
+      orientation: "portrait",
+      unit: "mm",
+      format: "a4",
+    });
+
+    /* =========================================================
+         CONFIGURATION
+      ========================================================= */
+
+    const PAGE_WIDTH = doc.internal.pageSize.width;
+    const PAGE_HEIGHT = doc.internal.pageSize.height;
+
+    const MARGIN = 15;
+    const CONTENT_WIDTH = PAGE_WIDTH - MARGIN * 2;
+
+    const COLORS = {
+      primary: [5, 85, 39] as [number, number, number],
+      secondary: [71, 22, 36] as [number, number, number],
+      light: [243, 247, 244] as [number, number, number],
+      border: [220, 225, 221] as [number, number, number],
+      text: [45, 45, 45] as [number, number, number],
+      muted: [110, 110, 110] as [number, number, number],
+      white: [255, 255, 255] as [number, number, number],
+    };
 
     const img = new Image();
     img.src = "/logo.png";
-    const COLORS = {
-      primary: [5, 85, 39] as [number, number, number], // Vert CEPARCREA
-      secondary: [71, 22, 36] as [number, number, number], // Bordeaux
-      light: [243, 247, 244] as [number, number, number], // Fond des lignes
-      border: [211, 215, 210] as [number, number, number], // Bordures
-      text: [40, 40, 40] as [number, number, number], // Texte
-      white: [255, 255, 255] as [number, number, number], // Blanc
-    };
 
     img.onload = () => {
-      // Logo
-      doc.addImage(img, "PNG", 15, 10, 27, 27);
+      /* =========================================================
+           HEADER
+        ========================================================= */
 
-      // Texte après le logo
-      doc.setFontSize(10);
-      doc.text("CEPARCREA / Goma", 15, 45);
-      doc.text("Coopérative", 15, 49);
+      doc.addImage(img, "PNG", MARGIN, 10, 25, 25);
 
-      doc.setFontSize(10);
-      doc.text("LISTE DE ADHESION", 105, 45, { align: "center" });
+      doc.setTextColor(...COLORS.primary);
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(13);
+
+      doc.text("CEPARCREA", 45, 17);
+
+      doc.setFont("helvetica", "normal");
       doc.setFontSize(8);
+      doc.setTextColor(...COLORS.muted);
+
+      doc.text("Coopérative d'épargne et crédit de l'amitié", 45, 23);
+
+      doc.text("Goma — République Démocratique du Congo", 45, 28);
+
+      /* =========================================================
+           TITRE
+        ========================================================= */
+
+      doc.setTextColor(...COLORS.secondary);
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(14);
+
+      doc.text("LISTE ADHERES", PAGE_WIDTH / 2, 45, {
+        align: "center",
+      });
+
+      /* =========================================================
+           INFORMATIONS
+        ========================================================= */
+
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(8);
+      doc.setTextColor(...COLORS.muted);
+
+      doc.text(`Année : ${year}`, MARGIN, 51);
+
+      doc.text(`Nombre adhérés : ${data.length}`, PAGE_WIDTH - MARGIN, 51, {
+        align: "right",
+      });
+
+      /* =========================================================
+           LIGNES DE COULEURS
+           Même largeur que le tableau et le footer
+        ========================================================= */
 
       doc.setFillColor(...COLORS.primary);
-      doc.rect(15, 51, 181, 1, "F");
+      doc.rect(MARGIN, 55, CONTENT_WIDTH, 1.2, "F");
+
       doc.setFillColor(...COLORS.light);
-      doc.rect(15, 52, 181, 1, "F");
+      doc.rect(MARGIN, 56.2, CONTENT_WIDTH, 1, "F");
+
       doc.setFillColor(...COLORS.secondary);
-      doc.rect(15, 53, 181, 1, "F");
+      doc.rect(MARGIN, 57.2, CONTENT_WIDTH, 1, "F");
+
+      /* =========================================================
+         TABLEAU
+      ========================================================= */
 
       const head = [["ID", "Noms", "Montant", "Année", "Date"]];
 
-      const body = data.map((item) => {
+      const body = data.map((item, index) => {
         return [
-          item.id ?? "",
+          index + 1,
           item.membre_nom ?? "",
           item.montant ?? "",
+          item.annee ?? "",
           item.date ?? "",
         ];
       });
 
       autoTable(doc, {
-        startY: 55,
+        startY: 62,
+
         head,
         body,
+
         theme: "grid",
 
+        tableWidth: CONTENT_WIDTH,
+
+        margin: {
+          left: MARGIN,
+          right: MARGIN,
+        },
+
         styles: {
+          font: "helvetica",
           fontSize: 8,
           cellPadding: 3,
+
           textColor: COLORS.text,
+
           lineColor: COLORS.border,
           lineWidth: 0.2,
+
           valign: "middle",
         },
 
         headStyles: {
           fillColor: COLORS.primary,
           textColor: COLORS.white,
+
           fontStyle: "bold",
+          fontSize: 8,
+
           halign: "center",
           valign: "middle",
-          fontSize: 9,
+
+          cellPadding: 3,
         },
 
         bodyStyles: {
@@ -91,69 +170,110 @@ const AdhesionPDF = ({ data }: dataSets) => {
           fillColor: COLORS.light,
         },
 
+        /* =======================================================
+                   4 COLONNES UNIQUEMENT
+                ======================================================= */
+
         columnStyles: {
-          0: { halign: "center" }, // Date
-          1: { halign: "center" }, // Numéro
-          2: { halign: "left" }, // Libellé
-          3: { halign: "center" }, // Type
-          4: { halign: "right" }, // Montant
-          // 5: { halign: "right" }, // Solde
+          0: {
+            halign: "center",
+            cellWidth: 10,
+          },
+
+          1: {
+            halign: "left",
+            cellWidth: 60,
+            fontStyle: "bold",
+          },
+
+          2: {
+            halign: "left",
+            cellWidth: 35,
+          },
+
+          3: {
+            halign: "left",
+            cellWidth: 40,
+          },
+
+          4: {
+            halign: "center",
+            cellWidth: 35,
+          },
+
         },
 
-        didParseCell(data) {
-          // Mettre en évidence la colonne Montant
-          if (data.section === "body" && data.column.index === 4) {
-            data.cell.styles.fontStyle = "bold";
-            data.cell.styles.textColor = COLORS.secondary;
-          }
+        /* =======================================================
+                   FOOTER
+                ======================================================= */
 
-          // Mettre encore plus en évidence le Solde
-          if (data.section === "body" && data.column.index === 5) {
-            data.cell.styles.fontStyle = "bold";
-            data.cell.styles.textColor = COLORS.primary;
-          }
+        didDrawPage: () => {
+          const footerY = PAGE_HEIGHT - 15;
+
+          doc.setDrawColor(...COLORS.border);
+          doc.setLineWidth(0.2);
+
+          // Même début et même fin que le tableau
+          doc.line(MARGIN, footerY, PAGE_WIDTH - MARGIN, footerY);
+
+          doc.setFont("helvetica", "normal");
+          doc.setFontSize(7);
+          doc.setTextColor(...COLORS.muted);
+
+          doc.text(`© ${year} — CEPARCREA`, MARGIN, PAGE_HEIGHT - 9);
+
+          doc.text(
+            `Page ${doc.getNumberOfPages()}`,
+            PAGE_WIDTH - MARGIN,
+            PAGE_HEIGHT - 9,
+            {
+              align: "right",
+            },
+          );
         },
       });
 
-      // const total = data.reduce((sum, d) => sum + Number(d.montant), 0);
+      /* =========================================================
+                 RÉSUMÉ
+              ========================================================= */
+
       const lastAutoTable = (doc as JsPDFWithAutoTable).lastAutoTable;
-      const finalY = (lastAutoTable?.finalY ?? 75) + 20;
 
-      // new
+      const finalY = (lastAutoTable?.finalY ?? 75) + 10;
 
-      doc.setFont("helvetica", "bold");
-      // doc.text("Résumé des totaux :", 60, finalY);
+      if (finalY < PAGE_HEIGHT - 35) {
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(9);
+        doc.setTextColor(...COLORS.primary);
 
-      autoTable(doc, {
-        startY: finalY + 10,
-        margin: { left: 60 },
-        theme: "plain",
-        styles: { fontSize: 10 },
-        body: [],
-        didParseCell: function (data) {
-          const raw = data.row.raw;
-          if (Array.isArray(raw) && String(raw[0]) === "Solde :") {
-            data.cell.styles.fontSize = 11;
-            data.cell.styles.fontStyle = "bold";
-          }
-        },
-      });
+        doc.text("Résumé", MARGIN, finalY);
 
-      // === PIED DE PAGE ===
-      const pageHeight = doc.internal.pageSize.height;
-      doc.setFontSize(7);
-      doc.setTextColor(120);
-      doc.text(`© ${year} — CEPARCREA | Alt Space`, 75, pageHeight - 20);
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(8);
+        doc.setTextColor(...COLORS.muted);
 
-      doc.save(`list_compte_epargne.pdf`);
+        doc.text(
+          `Total adhésions enregistrées : ${data.length}`,
+          MARGIN,
+          finalY + 6,
+        );
+      }
+
+      /* =========================================================
+                 EXPORT
+              ========================================================= */
+
+      doc.save(`liste_adhesions_${year}.pdf`);
     };
+
     img.onerror = () => {
       console.error("Impossible de charger le logo.");
     };
   };
+
   return (
     <span
-      className="bg-green-800 py-2 px-4 rounded text-xs text-white cursor-pointer"
+      className="bg-green-800 py-2 px-4 rounded-lg text-xs text-white cursor-pointer"
       onClick={generateReportPDF}
     >
       PDF

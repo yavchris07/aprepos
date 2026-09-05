@@ -18,6 +18,7 @@ import { useAccounts } from "../features/account/hooks/use-accounts";
 import { getToken } from "../utlis/get-token";
 import AccountItem from "../features/account/components/account-item";
 import AccountPDF from "../components/pdf/accounts";
+import { useListAccounts } from "../features/account/hooks/use-list-accounts";
 
 // const AccountPage = () => {
 //   const token = getToken();
@@ -165,6 +166,9 @@ const AccountPage = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const accounts: Account[] = data?.accounts ?? [];
   const pagination = data?.pagination;
+
+  const { data: listAccounts } = useListAccounts(token ?? "");
+  console.log("ACCOUNTS ", listAccounts);
 
   const [selectedItem, setSelectedItem] = useState<Account | null>(null);
 
@@ -324,7 +328,7 @@ const AccountPage = () => {
                   <input
                     type="text"
                     placeholder="Rechercher un membre..."
-                    className="h-10 w-full rounded-lg border border-gray-200 bg-gray-50 pl-9 pr-3 text-sm text-gray-700 outline-none transition placeholder:text-gray-400 focus:border-green-600 focus:bg-white focus:ring-2 focus:ring-green-100 sm:w-67"
+                    className="h-10 w-full rounded-lg border border-gray-200 bg-gray-50 pl-9 pr-3 text-sm text-gray-700 outline-none transition placeholder:text-gray-400 focus:border-green-600 focus:bg-white focus:ring-2 focus:ring-green-100 sm:w-59"
                     onChange={handleSearchChange}
                     value={searchQuery}
                   />
@@ -332,7 +336,7 @@ const AccountPage = () => {
 
                 {/* Export */}
                 <div>
-                  <AccountPDF data={filteredData} />
+                  <AccountPDF data={listAccounts ?? []} />
                 </div>
               </div>
 
@@ -358,7 +362,6 @@ const AccountPage = () => {
           </div>
 
           {/* LISTE */}
-          {/* <div className="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm"> */}
 
           <ListAccount
             accounts={filteredData}
@@ -381,7 +384,7 @@ const AccountPage = () => {
               <div className="flex items-center gap-2">
                 <button
                   disabled={!pagination?.previous || isLoading}
-                  className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-gray-200 text-gray-600 transition hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40"
+                  className="inline-flex h-7 w-7 items-center justify-center rounded-lg border border-gray-200 text-gray-600 transition hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40"
                 >
                   <ArrowBigLeft size={15} />
                 </button>
@@ -392,7 +395,7 @@ const AccountPage = () => {
 
                 <button
                   disabled={!pagination?.next || isLoading}
-                  className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-gray-200 text-gray-600 transition hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40"
+                  className="inline-flex h-7 w-7 items-center justify-center rounded-lg border border-gray-200 text-gray-600 transition hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40"
                 >
                   <ArrowBigRight size={15} />
                 </button>

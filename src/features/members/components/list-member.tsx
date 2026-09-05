@@ -172,12 +172,12 @@ const ListMember = ({ members, loading, onDelete, onEdit }: MemberProps) => {
 
       {/* Footer */}
 
-      <div className="flex items-center justify-between border-t border-gray-100 bg-gray-50/50 px-5 py-3">
+      {/* <div className="flex items-center justify-between border-t border-gray-100 bg-gray-50/50 px-5 py-3">
         <p className="text-[11px] text-gray-400">
           {members.length} membre{members.length > 1 ? "s" : ""}
           affiché{members.length > 1 ? "s" : ""}
         </p>
-      </div>
+      </div> */}
     </div>
   );
 };

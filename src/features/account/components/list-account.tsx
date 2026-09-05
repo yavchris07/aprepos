@@ -10,7 +10,13 @@ interface AccountProps {
   onView: (account: Account) => void;
 }
 
-const ListAccount = ({ accounts, loading, onDelete, onView }: AccountProps) => {
+const ListAccount = ({
+  accounts,
+  loading,
+  onDelete,
+  onView,
+}: AccountProps) => {
+  
   if (loading) {
     return <Loading />;
   }
@@ -152,14 +158,14 @@ const ListAccount = ({ accounts, loading, onDelete, onView }: AccountProps) => {
 
       {/* Footer */}
 
-      <div className="flex items-center justify-between border-t border-gray-100 bg-gray-50/50 px-5 py-3">
+      {/* <div className="flex items-center justify-between border-t border-gray-100 bg-gray-50/50 px-5 py-3">
         <p className="text-[11px] text-gray-400">
           {accounts.length} compte{accounts.length > 1 ? "s" : ""}
           affiché{accounts.length > 1 ? "s" : ""}
         </p>
 
         <p className="text-[11px] text-gray-400">Comptes d'épargne</p>
-      </div>
+      </div> */}
     </div>
   );
 };

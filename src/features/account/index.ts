@@ -3,6 +3,8 @@ import type { Account } from "../../utlis/type";
 const API_URL = import.meta.env.VITE_API_URL;
 const BASE_URL = "/comptes/";
 
+// https://ceparcrea.acedh-rdc.org/api/liste_comptes/
+
 export const accountApi = {
   create: async (data: Account, token: string) => {
     const res = await fetch(`${API_URL}${BASE_URL}`, {
@@ -32,6 +34,20 @@ export const accountApi = {
     });
     if (!res.ok) throw new Error("Erreur fetch users");
     return res.json();
+  },
+
+  accounts : async (token:string)=> {
+    const response = await fetch(`${API_URL}/liste_comptes/`, {
+      headers: {
+        Authorization: `Token ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("Erreur lors de la récupération de la liste des membres");
+    }
+
+    return response.json();
   },
 
   get: async (token: string, id:number) => {
