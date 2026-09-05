@@ -20,6 +20,7 @@ import {
   ArrowBigLeft,
   ArrowBigRight,
 } from "lucide-react";
+import { useListSocials } from "../features/socials/hooks/use-list-socials";
 
 const SocialPage = () => {
   const token = getToken();
@@ -28,6 +29,10 @@ const SocialPage = () => {
 
   const { data: mb } = useMembers(token ?? "", 1);
   const { data, isLoading, isFetching } = useSocials(token ?? "");
+
+  const {data:listSocials} = useListSocials(token ?? "");
+
+  console.log(listSocials)
 
   const members: Member[] = mb?.members ?? [];
 
@@ -312,6 +317,7 @@ const SocialPage = () => {
                   <FileDown size={16} />
                   Relevé
                 </button>
+                
               </div>
             </div>
           </div>

@@ -18,16 +18,21 @@ import {
   Users,
   CreditCard,
   X,
+  ArrowBigLeft,
+  ArrowBigRight,
 } from "lucide-react";
+import { useListAdhesions } from "../features/adhesion/hooks/use-list-adhesions";
 
 const AdhesionPage = () => {
   const token = getToken();
-
+  const [currentPage, setCurrentPage] = useState(1);
   const { data: mbs } = useMembers(token ?? "", 1);
-  const { data, isLoading } = useAdhesion(token ?? "", 1);
+  const { data, isLoading, isFetching } = useAdhesion(token ?? "", currentPage);
 
   const members = mbs?.pagination?.count ?? 0;
   // const pages = members?.pagination?.count ?? 0;
+
+  const { data: listAdhesions } = useListAdhesions(token ?? "");
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const adhesions: Adhesion[] = data?.adhesions ?? [];
   const pagination = data?.pagination;
@@ -72,6 +77,10 @@ const AdhesionPage = () => {
   };
 
   const hasFilters = searchQuery || year;
+
+  // Pagination
+  const totalAdhesions = pagination?.count ?? adhesions.length;
+  const totalPages = Math.ceil(totalAdhesions / 10);
 
   return (
     <RootLayout>
@@ -192,7 +201,6 @@ const AdhesionPage = () => {
                 </div>
 
                 {/* Export */}
-                 
               </div>
 
               {/* Résultat des filtres */}
@@ -215,7 +223,6 @@ const AdhesionPage = () => {
               <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
                 {/* Filtres */}
                 <div className="grid grid-cols-1 gap-3 sm:grid-cols-1">
-
                   <div className="relative">
                     <CalendarDays
                       size={17}
@@ -254,14 +261,11 @@ const AdhesionPage = () => {
                     onClick={() => {}}
                   >
                     <FileDown size={16} />
-                    <AdhesionPDF data={filteredData} />
+                    <AdhesionPDF data={listAdhesions ?? []} />
                   </button>
                 </div>
               </div>
-
-               
             </div>
-
           </div>
 
           {/* TABLEAU */}
@@ -276,31 +280,40 @@ const AdhesionPage = () => {
 
           {/* PAGINATION */}
           {(pagination?.next || pagination?.previous) && (
-            <div className="flex items-center justify-between rounded-xl border border-gray-200 bg-white px-4 py-3 shadow-sm">
+            <div className="flex flex-col gap-3 rounded-xl border border-gray-200 bg-white px-4 py-3 shadow-sm sm:flex-row sm:items-center sm:justify-between">
               <p className="text-xs text-gray-500">
                 Total :{" "}
                 <span className="font-semibold text-gray-700">
-                  {pagination?.count ?? 0}
-                </span>
+                  {totalAdhesions}
+                </span>{" "}
+                adhesions
               </p>
 
-              <div className="flex items-center gap-2">
+              <div className="flex items-center justify-between gap-2 sm:justify-end">
                 <button
-                  disabled={!pagination?.previous || isLoading}
-                  className="rounded-lg border border-gray-200 px-3 py-2 text-sm text-gray-600 transition hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40"
+                  type="button"
+                  disabled={!pagination?.previous || isLoading || isFetching}
+                  onClick={() =>
+                    setCurrentPage((prev) => Math.max(1, prev - 1))
+                  }
+                  className="inline-flex h-7 w-7 items-center justify-center rounded-lg border border-gray-200 text-gray-600 transition hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40 cursor-pointer"
                 >
-                  ←
+                  <ArrowBigLeft size={15} />
                 </button>
 
-                <span className="rounded-lg bg-green-50 px-3 py-2 text-sm font-medium text-green-700">
-                  Page 1
-                </span>
+                <div className="min-w-22.5 rounded-lg bg-green-50 px-3 py-2 text-center text-xs font-semibold text-green-700">
+                  {isFetching
+                    ? "Chargement..."
+                    : `Page ${currentPage} / ${totalPages || 1}`}
+                </div>
 
                 <button
-                  disabled={!pagination?.next || isLoading}
-                  className="rounded-lg border border-gray-200 px-3 py-2 text-sm text-gray-600 transition hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40"
+                  type="button"
+                  disabled={!pagination?.next || isLoading || isFetching}
+                  onClick={() => setCurrentPage((prev) => prev + 1)}
+                  className="inline-flex h-7 w-7 items-center justify-center rounded-lg border border-gray-200 text-gray-600 transition hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40 cursor-pointer"
                 >
-                  →
+                  <ArrowBigRight size={15} />
                 </button>
               </div>
             </div>

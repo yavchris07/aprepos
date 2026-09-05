@@ -42,6 +42,20 @@ export const adhesionApi = {
     return res.json();
   },
 
+  adhesions: async (token: string) => {
+    const response = await fetch(`${API_URL}/liste_adhesions/`, {
+      headers: {
+        Authorization: `Token ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("Erreur lors de la récupération de la liste des membres");
+    }
+
+    return response.json();
+  },
+
   update: async (token: string, data: Adhesion) => {
     const res = await fetch(`${API_URL}${BASE_URL}${data.id}/`, {
       method: "PUT",

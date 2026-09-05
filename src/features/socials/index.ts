@@ -41,6 +41,20 @@ export const socialApi = {
     return res.json();
   },
 
+  socials: async (token: string) => {
+    const response = await fetch(`${API_URL}/liste_socials/`, {
+      headers: {
+        Authorization: `Token ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("Erreur lors de la récupération de data");
+    }
+
+    return response.json();
+  },
+
   update: async (token: string, data: Social) => {
     const res = await fetch(`${API_URL}${BASE_URL}${data.id}/`, {
       method: "PUT",
