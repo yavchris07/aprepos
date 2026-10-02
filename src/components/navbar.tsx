@@ -1,6 +1,5 @@
 import { LogOut } from "lucide-react";
 import React, { useState } from "react";
-// import logo from "../public/icon.png";
 import { useNavigate } from "react-router";
 import { getToken } from "../utlis/get-token";
 import { useLogout } from "../features/auth/hooks/use-logoutt";

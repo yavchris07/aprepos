@@ -1,21 +1,22 @@
-
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { authApi } from "..";
+import { productApi } from "..";
+// import {  memberApi } from "..";
 
-export const useLogout = (token: string) => {
+export const useDeleteProduct = (token: string) => {
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
-    mutationFn: () => authApi.logout(token),
+    mutationFn: (id: number) => productApi.delete(token, id),
 
     onSuccess: () => {
-      // Vide le cache après la déconnexion
-      queryClient.clear();
+      queryClient.invalidateQueries({
+        queryKey: ["products"],
+      });
     },
   });
 
   return {
-    logout: mutation.mutateAsync,
+    deleteProduct: mutation.mutateAsync,
     pending: mutation.isPending,
     fail: mutation.error instanceof Error ? mutation.error.message : "",
     data: mutation.data,

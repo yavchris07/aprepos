@@ -119,3 +119,26 @@ export interface Stats {
   somme_totale_adhesion: number;
 }
 
+// CANTINE
+export type Product = {
+  id: number;
+  nom: string;
+  prix_unitaire: number;
+  devise: string;
+  stock: number;
+};
+
+export type CreateProductPayload = {
+  nom: string;
+  prix_unitaire: number;
+  devise: string;
+  stock: number;
+};
+
+export type EditProductPayload = {
+  id: number;
+  nom: string;
+  prix_unitaire: number;
+  devise: string;
+  stock: number;
+};

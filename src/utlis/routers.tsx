@@ -1,9 +1,11 @@
 import AccountPage from "../pages/account";
 import AdhesionPage from "../pages/adhesion";
+import Cantine from "../pages/cantine";
 import DashboardPage from "../pages/dashboard";
 import LoanPage from "../pages/loan";
 import LoginPage from "../pages/login";
 import MemberPage from "../pages/member";
+import Products from "../pages/products";
 import RefundPage from "../pages/refund";
 import SettingPage from "../pages/settings";
 import SocialPage from "../pages/social";
@@ -61,4 +63,13 @@ export const routers: router[] = [
     path: "/statement",
     element: <StatementPage />,
   },
+
+  {
+    path: "/products",
+    element: <Products />,
+  },
+  {
+    path: "/cantine",
+    element: <Cantine />,
+  }
 ];

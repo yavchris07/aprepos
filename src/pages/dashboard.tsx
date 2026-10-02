@@ -117,7 +117,7 @@ const DashboardPage = () => {
         <div className="hidden md:flex items-center gap-2 text-xs text-gray-500">
           <CalendarCheck size={15} />
           <span>
-            {new Date().getDate()} / {new Date().getMonth()} /{" "}
+            {new Date().getDate()} / {new Date().getMonth() + 1} /{" "}
             {new Date().getFullYear()}
           </span>
         </div>

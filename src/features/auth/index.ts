@@ -29,9 +29,10 @@ export const authApi = {
       const user = {
         id: responseData.user_id,
         username: responseData.username,
-        email: responseData.email
+        email: responseData.email,
+        role: responseData.role,
       };
-      console.log('XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX', user)
+      console.log('USER CEPARCREA : ', user)
       localStorage.setItem("avec-user", JSON.stringify(user));
     }
 
@@ -39,13 +40,13 @@ export const authApi = {
   },
 
   logout: async (token: string) => {
-    const res = await fetch(`${API_URL}/users/all`, {
+    const res = await fetch(`${API_URL}/logout/`, {
       headers: {
         "Content-Type": "application/json",
         ...(token ? { Authorization: `Bearer ${token}` } : {}),
       },
     });
-    if (!res.ok) throw new Error("Erreur fetch users");
+    if (!res.ok) throw new Error("Erreur fetch logout");
     return res.json();
   },
 };

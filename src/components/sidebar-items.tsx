@@ -1,4 +1,3 @@
-// import { useEffect, useState } from "react";
 import {
   ArrowRightLeft,
   ChartCandlestick,
@@ -10,14 +9,18 @@ import {
   ReceiptText,
   Repeat2,
   SettingsIcon,
+  ShoppingBasket,
+  ShoppingCart,
   User as UserIcon,
 } from "lucide-react";
 import { Link, useLocation } from "react-router";
-// import { ADMN, type User } from "../utlis/type";
-// import { getCurrentUser } from "../utlis/get-user";
+import { getCurrentUser } from "../utlis/get-user";
 
 const SidebarItems = () => {
   const location = useLocation();
+  const user = getCurrentUser();
+
+  console.log("CURRENT USER : ", user);
 
   const sections = [
     {
@@ -95,9 +98,81 @@ const SidebarItems = () => {
     },
   ];
 
+  const sectionsCantine = [
+    {
+      title: "Vue d'ensemble",
+      items: [
+        {
+          path: "/dashboard",
+          name: "Tableau de bord",
+          icon: <LayoutDashboard size={17} />,
+        },
+      ],
+    },
+
+    {
+      title: "Products & emprunts",
+      items: [
+        {
+          path: "/products",
+          name: "Produits",
+          icon: <ShoppingBasket size={17} />,
+        },
+        {
+          path: "/cantine",
+          name: "Cantine",
+          icon: <ShoppingCart size={17} />,
+        },
+       
+      ],
+    },
+
+    {
+      title: "Remboursements",
+      items: [
+        {
+          path: "/members",
+          name: "Membres",
+          icon: <UserIcon size={17} />,
+        },
+        // {
+        //   path: "/accounts",
+        //   name: "Comptes épargne",
+        //   icon: <CircleUserRound size={17} />,
+        // },
+        // {
+        //   path: "/adhesions",
+        //   name: "Adhésions",
+        //   icon: <ReceiptText size={17} />,
+        // },
+        // {
+        //   path: "/socials",
+        //   name: "Social",
+        //   icon: <Repeat2 size={17} />,
+        // },
+      ],
+    },
+
+    {
+      title: "Administration",
+      items: [
+        {
+          path: "/settings",
+          name: "Paramètres",
+          icon: <SettingsIcon size={17} />,
+        },
+      ],
+    },
+  ];
+
+  console.log(sectionsCantine);
+
+  const sectionsToRender =
+    user?.role === "agent_cantine" ? sectionsCantine : sections;
+
   return (
     <nav className="space-y-5">
-      {sections.map((section) => (
+      {sectionsToRender.map((section) => (
         <div key={section.title}>
           {/* Titre section */}
 
@@ -106,7 +181,6 @@ const SidebarItems = () => {
           </p>
 
           {/* Items */}
-
           <div className="space-y-0.5">
             {section.items.map((item) => {
               const isActive =

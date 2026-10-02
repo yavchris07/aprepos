@@ -1,5 +1,10 @@
 @import "tailwindcss";
 
+
+body {
+  font-family: 'Lato', sans-serif;
+}
+
 @keyframes splashLogo {
   from {
     opacity: 0;

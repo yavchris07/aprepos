@@ -75,4 +75,10 @@ export default defineConfig([
 ```
 # aprepos
 
+
+<!-- "cantine/produits": "https://ceparcrea.acedh-rdc.org/api/cantine/produits/",
+"cantine/credits": "https://ceparcrea.acedh-rdc.org/api/cantine/credits/",
+"cantine/panier": "https://ceparcrea.acedh-rdc.org/api/cantine/panier/",
+"cantine/remboursements": "https://ceparcrea.acedh-rdc.org/api/cantine/remboursements/", -->
+
 <!-- 👋 -->

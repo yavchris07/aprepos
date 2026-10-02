@@ -38,7 +38,7 @@ const Sidebar = () => {
             </p>
 
             <span className="mt-3 inline-flex items-center gap-1 rounded-full bg-green-50 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide text-green-700">
-              Administrateur
+              {user?.role === 'agent' ? "Administrateur" : 'Agent de cantine'}
             </span>
 
           </div>

@@ -1,21 +1,20 @@
-import { Loader2 } from 'lucide-react';
-import React from 'react'
-import Modal from '../../../components/modal';
-import { useToast } from '../../../components/toast-context';
-import { useLogout } from '../hooks/use-logoutt';
-import { getToken } from '../../../utlis/get-token';
+import { Loader2 } from "lucide-react";
+import React from "react";
+import Modal from "../../../components/modal";
+import { useToast } from "../../../components/toast-context";
+import { useLogout } from "../hooks/use-logoutt";
+import { getToken } from "../../../utlis/get-token";
 
 type logoutProps = {
   open: boolean;
   onClose: () => void;
 };
 
-
-const Logout = ({onClose,open}:logoutProps) => {
+const Logout = ({ onClose, open }: logoutProps) => {
   const token = getToken();
   const { logout, fail, pending } = useLogout(token ?? "");
   const { showToast } = useToast();
-//   const [formData, setFormData] = useState({ id: "" });
+  //   const [formData, setFormData] = useState({ id: "" });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -48,14 +47,10 @@ const Logout = ({onClose,open}:logoutProps) => {
         <p className="text-gray-500 text-sm">
           Voulez-vous vraiment vous deconnectez ?
         </p>
-        <p>Cette session sera fermee, il vous faudra vous reconnecter encore une fois de plus, merci ! </p>
-
-        {/* <input
-          type="text"
-          value={formData.id}
-          onChange={(e) => setFormData({ ...formData, id: e.target.value })}
-          placeholder="id"
-        /> */}
+        <p className="text-xs text-red-700">
+          Cette session sera fermee, il vous faudra vous reconnecter encore une
+          fois de plus, merci !{" "}
+        </p>
 
         <div className="flex justify-end gap-2 my-2">
           <span
@@ -78,9 +73,7 @@ const Logout = ({onClose,open}:logoutProps) => {
         </div>
       </form>
     </Modal>
-  )
-}
+  );
+};
 
-export default Logout
-
-
+export default Logout;
