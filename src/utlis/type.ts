@@ -142,3 +142,94 @@ export type EditProductPayload = {
   devise: string;
   stock: number;
 };
+
+
+// credit
+// /api/cantine/panier/
+export type CreateCreditPayload = {
+  membre: number;
+  acompte_initial: string;
+  devise: string;
+  date: string;
+}
+
+export type EditCreditPayload = {
+  id: number;
+  membre: number;
+  acompte_initial: string;
+  devise: string;
+  date: string;
+}
+
+
+export interface LigneCreditCantine {
+  id: number;
+  credit_cantine: number;
+  produit: number;
+  nom_produit: string;
+  quantite: number;
+  prix_unitaire_applique: string;
+  sous_total: string;
+}
+
+export interface RemboursementCantine {
+  id: number;
+  montant: string;
+  devise: string;
+  date: string;
+  credit_cantine: number;
+}
+
+export interface CreditCantine {
+  id: number;
+  membre: number;
+  nom_membre: string;
+  acompte_initial: string;
+  montant_total_panier: string;
+  balance: string;
+  devise: string;
+  date: string;
+  lignes: LigneCreditCantine[];
+  remboursements_cantine: RemboursementCantine[];
+}
+
+// {
+//   "id": 0,
+//   "membre": 0,
+//   "nom_membre": "string",
+//   "acompte_initial": "52964506",
+//   "montant_total_panier": "0654.83",
+//   "balance": "-.85",
+//   "devise": "cdf",
+//   "date": "2026-10-03",
+//   "lignes": [
+//     {
+//       "id": 0,
+//       "credit_cantine": 0,
+//       "produit": 0,
+//       "nom_produit": "string",
+//       "quantite": 4294967295,
+//       "prix_unitaire_applique": "-951383623.",
+//       "sous_total": "0662956174.5"
+//     }
+//   ],
+//   "remboursements_cantine": [
+//     {
+//       "id": 0,
+//       "montant": "94089.72",
+//       "devise": "cdf",
+//       "date": "2026-10-03",
+//       "credit_cantine": 0
+//     }
+//   ]
+// }
+
+// Line credit 
+// "id": 0,
+//       "credit_cantine": 0,
+//       "produit": 0,
+//       "nom_produit": "string",
+//       "quantite": 4294967295,
+//       "prix_unitaire_applique": "-1051",
+//       "sous_total": "3070"
+

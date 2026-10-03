@@ -1,6 +1,6 @@
 import AccountPage from "../pages/account";
 import AdhesionPage from "../pages/adhesion";
-import Cantine from "../pages/cantine";
+import Credit from "../pages/credit";
 import DashboardPage from "../pages/dashboard";
 import LoanPage from "../pages/loan";
 import LoginPage from "../pages/login";
@@ -70,6 +70,6 @@ export const routers: router[] = [
   },
   {
     path: "/cantine",
-    element: <Cantine />,
+    element: <Credit />,
   }
 ];

@@ -1,6 +1,8 @@
 import {
   ArrowRightLeft,
+  BanknoteArrowDown,
   ChartCandlestick,
+  ChartNoAxesGantt,
   ChevronRight,
   CircleUserRound,
   Coins,
@@ -111,7 +113,7 @@ const SidebarItems = () => {
     },
 
     {
-      title: "Products & emprunts",
+      title: "Cantine",
       items: [
         {
           path: "/products",
@@ -120,36 +122,19 @@ const SidebarItems = () => {
         },
         {
           path: "/cantine",
-          name: "Cantine",
+          name: "Crédit",
+          icon: <ChartNoAxesGantt size={17} />,
+        },
+        {
+          path: "/accounts",
+          name: "Ligne crédit",
           icon: <ShoppingCart size={17} />,
         },
-       
-      ],
-    },
-
-    {
-      title: "Remboursements",
-      items: [
         {
-          path: "/members",
-          name: "Membres",
-          icon: <UserIcon size={17} />,
+          path: "/adhesions",
+          name: "Remboursements",
+          icon: <BanknoteArrowDown size={17} />,
         },
-        // {
-        //   path: "/accounts",
-        //   name: "Comptes épargne",
-        //   icon: <CircleUserRound size={17} />,
-        // },
-        // {
-        //   path: "/adhesions",
-        //   name: "Adhésions",
-        //   icon: <ReceiptText size={17} />,
-        // },
-        // {
-        //   path: "/socials",
-        //   name: "Social",
-        //   icon: <Repeat2 size={17} />,
-        // },
       ],
     },
 

@@ -2,49 +2,47 @@ import {
   Loader2,
   X,
   ShoppingBasket,
-  CirclePile,
   Landmark,
   Banknote,
+  CalendarDays,
 } from "lucide-react";
 import { useState } from "react";
 import Modal from "../../../components/modal";
 import { getToken } from "../../../utlis/get-token";
 import { useToast } from "../../../components/toast-context";
-import type { EditProductPayload } from "../../../utlis/type";
-import { useEditProduct } from "../hooks/use-edit-product";
+import { useCreateCredit } from "../hooks/use-create-credit";
+import GetMember from "../../members/components/get-member";
 
-interface EditProductProps {
+interface CreateCreditProps {
   onClose: () => void;
   open: boolean;
-  product: EditProductPayload;
 }
 
-const EditProduct = ({ onClose, open, product }: EditProductProps) => {
+const CreateCredit = ({ onClose, open }: CreateCreditProps) => {
   const token = getToken();
 
-  const { editProduct, fail, pending } = useEditProduct(token ?? "");
+  const { create, fail, pending } = useCreateCredit(token ?? "");
 
   const { showToast } = useToast();
 
   const [formData, setFormData] = useState({
-    id: product.id || "",
-    nom: product.nom || "",
-    prix_unitaire: product.prix_unitaire?.toString() || "",
-    devise: product.devise || "",
-    stock: product.stock?.toString() || "",
+    membre: 0,
+    acompte_initial: "",
+    devise: "",
+    date: "",
+  });
+
+  const [errors, setErrors] = useState({
+    membre: "",
+    acompte_initial: "",
+    devise: "",
+    date: "",
   });
 
   const currencies = [
     { id: "usd", name: "Dollars Americais" },
     { id: "cdf", name: "Francs congolais" },
   ];
-
-  const [errors, setErrors] = useState({
-    nom: "",
-    prix_unitaire: "",
-    devise: "",
-    stock: "",
-  });
 
   /* ============================================================
      HANDLE CHANGE
@@ -71,40 +69,40 @@ const EditProduct = ({ onClose, open, product }: EditProductProps) => {
      VALIDATION
   ============================================================ */
 
-  //   const validateForm = () => {
-  //     const newErrors = {
-  //       nom: "",
-  //       prix_unitaire: "",
-  //       devise: "",
-  //       stock: "",
-  //     };
+  const validateForm = () => {
+    const newErrors = {
+      membre: "",
+      acompte_initial: "",
+      devise: "",
+      date: "",
+    };
 
-  //     let valid = true;
+    let valid = true;
 
-  //     if (!formData.nom.trim()) {
-  //       newErrors.nom = "Le nom est obligatoire.";
-  //       valid = false;
-  //     }
+    // if (!formData.membre.trim()) {
+    //   newErrors.membre = "Le membre est obligatoire.";
+    //   valid = false;
+    // }
 
-  //     if (!formData.prix_unitaire.trim()) {
-  //       newErrors.prix_unitaire = "Le prix unitaire est obligatoire.";
-  //       valid = false;
-  //     }
+    if (!formData.acompte_initial.trim()) {
+      newErrors.acompte_initial = "L'acompte initial est obligatoire.";
+      valid = false;
+    }
 
-  //     if (!formData.devise.trim()) {
-  //       newErrors.devise = "LLa devise est obligatoire.";
-  //       valid = false;
-  //     }
+    if (!formData.devise.trim()) {
+      newErrors.devise = "La devise est obligatoire.";
+      valid = false;
+    }
 
-  //     if (!formData.stock.trim()) {
-  //       newErrors.stock = "Le stock est obligatoire.";
-  //       valid = false;
-  //     }
+    if (!formData.date.trim()) {
+      newErrors.date = "La date est obligatoire.";
+      valid = false;
+    }
 
-  //     setErrors(newErrors);
+    setErrors(newErrors);
 
-  //     return valid;
-  //   };
+    return valid;
+  };
 
   /* ============================================================
      SUBMIT
@@ -113,28 +111,22 @@ const EditProduct = ({ onClose, open, product }: EditProductProps) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // if (!validateForm()) {
-    //   return;
-    // }
+    if (!validateForm()) {
+      return;
+    }
 
     try {
-      await editProduct({
-        ...formData,
-        id: Number(formData.id),
-        prix_unitaire: Number(formData.prix_unitaire),
-        stock: Number(formData.stock),
-      });
+      await create({ ...formData, membre: Number(formData.membre) });
 
-      showToast("Produit mis à jour avec succès !", "success");
+      showToast("Crédit créé avec succès !", "success");
 
       onClose();
 
       setFormData({
-        id: 0,
-        nom: "",
-        prix_unitaire: "",
+        membre: 0,
+        acompte_initial: "",
         devise: "",
-        stock: "",
+        date: "",
       });
     } catch (e) {
       console.error(e);
@@ -148,7 +140,9 @@ const EditProduct = ({ onClose, open, product }: EditProductProps) => {
   return (
     <Modal>
       <div className="w-full max-w-lg">
-        {/* ========= HEADER ==== */}
+        {/* =====================================================
+            HEADER
+        ===================================================== */}
 
         <div className="flex items-start justify-between border-b border-gray-100 pb-4">
           <div>
@@ -159,11 +153,11 @@ const EditProduct = ({ onClose, open, product }: EditProductProps) => {
 
               <div>
                 <h2 className="text-sm font-bold text-gray-900">
-                  Modifier le produit
+                  Nouveau credit
                 </h2>
 
                 <p className="mt-0.5 text-[11px] text-gray-400">
-                  Mettre à jour les informations du produit
+                  Ajouter un credit cantine de CEPARCREA
                 </p>
               </div>
             </div>
@@ -185,55 +179,23 @@ const EditProduct = ({ onClose, open, product }: EditProductProps) => {
         ===================================================== */}
 
         <form onSubmit={handleSubmit} className="mt-5 flex flex-col gap-4">
-          {/* ===================================================
-              NOM
-          =================================================== */}
-
-          <div>
-            <label
-              htmlFor="nom_complet"
-              className="mb-1.5 block text-xs font-semibold text-gray-700"
-            >
-              Nom
-            </label>
-
-            <div className="relative">
-              <ShoppingBasket
-                size={16}
-                className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
-              />
-
-              <input
-                id="nom"
-                name="nom"
-                type="text"
-                value={formData.nom}
-                onChange={handleChange}
-                placeholder="Ex. Jean Dupont"
-                disabled={pending}
-                className={`w-full rounded-lg border bg-white py-2.5 pl-9 pr-3 text-xs text-gray-800 outline-none transition placeholder:text-gray-400 ${
-                  errors.nom
-                    ? "border-red-400 focus:ring-2 focus:ring-red-100"
-                    : "border-gray-300 focus:border-green-700 focus:ring-2 focus:ring-green-100"
-                }`}
-              />
-            </div>
-
-            {errors.nom && (
-              <p className="mt-1 text-[10px] text-red-500">{errors.nom}</p>
-            )}
-          </div>
-
-          {/* ===================================================
-              TELEPHONE
-          =================================================== */}
-
+          {/* ===== NOM ==== */}
+          <GetMember
+            value={formData.membre}
+            onChange={(member) =>
+              setFormData((prev) => ({
+                ...prev,
+                membre: member.id,
+              }))
+            }
+            token={token ?? ""}
+          />
           <div>
             <label
               htmlFor="prix_unitaire"
               className="mb-1.5 block text-xs font-semibold text-gray-700"
             >
-              Prix unitaire
+              Acompte initial
             </label>
 
             <div className="relative">
@@ -242,31 +204,27 @@ const EditProduct = ({ onClose, open, product }: EditProductProps) => {
                 className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
               />
               <input
-                id="prix_unitaire"
-                name="prix_unitaire"
+                id="acompte_initial"
+                name="acompte_initial"
                 type="number"
-                value={formData.prix_unitaire}
+                value={formData.acompte_initial}
                 onChange={handleChange}
-                placeholder="Prix unitaire"
+                placeholder="Acompte initial"
                 disabled={pending}
                 className={`w-full rounded-lg border bg-white py-2.5 pl-9 pr-3 text-xs text-gray-800 outline-none transition placeholder:text-gray-400 ${
-                  errors.prix_unitaire
+                  errors.acompte_initial
                     ? "border-red-400 focus:ring-2 focus:ring-red-100"
                     : "border-gray-300 focus:border-green-700 focus:ring-2 focus:ring-green-100"
                 }`}
               />
             </div>
 
-            {errors.prix_unitaire && (
+            {errors.acompte_initial && (
               <p className="mt-1 text-[10px] text-red-500">
-                {errors.prix_unitaire}
+                {errors.acompte_initial}
               </p>
             )}
           </div>
-
-          {/* ===================================================
-              ADRESSE
-          =================================================== */}
 
           <div>
             <label
@@ -308,48 +266,44 @@ const EditProduct = ({ onClose, open, product }: EditProductProps) => {
             )}
           </div>
 
-          {/* ===================================================
-              STOCK
-          =================================================== */}
+          {/* ===== Date ==== */}
 
           <div>
             <label
               htmlFor="stock"
               className="mb-1.5 block text-xs font-semibold text-gray-700"
             >
-              Stock
+              Date
             </label>
 
             <div className="relative">
-              <CirclePile
+              <CalendarDays
                 size={16}
                 className="absolute left-3 top-3 text-gray-400"
               />
 
               <input
-                id="stock"
-                name="stock"
-                type="text"
-                value={formData.stock}
+                id="date"
+                name="date"
+                type="date"
+                value={formData.date}
                 onChange={handleChange}
-                placeholder="Ex. Goma, Katindo"
+                placeholder="Ex. 12"
                 disabled={pending}
                 className={`w-full rounded-lg border bg-white py-2.5 pl-9 pr-3 text-xs text-gray-800 outline-none transition placeholder:text-gray-400 ${
-                  errors.stock
+                  errors.date
                     ? "border-red-400 focus:ring-2 focus:ring-red-100"
                     : "border-gray-300 focus:border-green-700 focus:ring-2 focus:ring-green-100"
                 }`}
               />
             </div>
 
-            {errors.stock && (
-              <p className="mt-1 text-[10px] text-red-500">{errors.stock}</p>
+            {errors.date && (
+              <p className="mt-1 text-[10px] text-red-500">{errors.date}</p>
             )}
           </div>
 
-          {/* ===================================================
-              ACTIONS
-          =================================================== */}
+          {/* ===== ACTIONS ===== */}
 
           <div className="mt-2 flex items-center justify-end gap-2 border-t border-gray-100 pt-4">
             <button
@@ -365,9 +319,9 @@ const EditProduct = ({ onClose, open, product }: EditProductProps) => {
               type="submit"
               disabled={
                 pending ||
-                !formData.nom ||
-                !formData.prix_unitaire ||
-                !formData.stock ||
+                !formData.acompte_initial ||
+                !formData.membre ||
+                !formData.date ||
                 !formData.devise
               }
               className="flex min-w-25 cursor-pointer items-center justify-center gap-2 rounded-lg bg-green-800 px-5 py-2.5 text-xs font-semibold text-white transition hover:bg-green-900 disabled:cursor-not-allowed disabled:opacity-60"
@@ -375,10 +329,10 @@ const EditProduct = ({ onClose, open, product }: EditProductProps) => {
               {pending ? (
                 <>
                   <Loader2 size={15} className="animate-spin" />
-                  Modification...
+                  Création...
                 </>
               ) : (
-                "Modifier le produit"
+                "Ajouter credit"
               )}
             </button>
           </div>
@@ -388,4 +342,4 @@ const EditProduct = ({ onClose, open, product }: EditProductProps) => {
   );
 };
 
-export default EditProduct;
+export default CreateCredit;

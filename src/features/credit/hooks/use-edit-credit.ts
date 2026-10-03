@@ -1,16 +1,16 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import type { EditProductPayload } from "../../../utlis/type";
-import { productApi } from "..";
+import { creditApi } from "..";
+import type { EditCreditPayload } from "../../../utlis/type";
 
-export const useEditProduct = (token: string) => {
+export const useEditCredit = (token: string) => {
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
-    mutationFn: (data: EditProductPayload) => productApi.update(token, data),
+    mutationFn: (data: EditCreditPayload) => creditApi.update(token, data),
 
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["products"],
+        queryKey: ["credits"],
       });
     },
   });

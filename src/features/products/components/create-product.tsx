@@ -206,7 +206,7 @@ const CreateProduct = ({ onClose, open }: CreateProductProps) => {
                 type="text"
                 value={formData.nom}
                 onChange={handleChange}
-                placeholder="Ex. Jean Dupont"
+                placeholder="Ex. Riz ou Riz de Goma"
                 disabled={pending}
                 className={`w-full rounded-lg border bg-white py-2.5 pl-9 pr-3 text-xs text-gray-800 outline-none transition placeholder:text-gray-400 ${
                   errors.nom
@@ -329,7 +329,7 @@ const CreateProduct = ({ onClose, open }: CreateProductProps) => {
                 type="text"
                 value={formData.stock}
                 onChange={handleChange}
-                placeholder="Ex. Goma, Katindo"
+                placeholder="Ex. 12"
                 disabled={pending}
                 className={`w-full rounded-lg border bg-white py-2.5 pl-9 pr-3 text-xs text-gray-800 outline-none transition placeholder:text-gray-400 ${
                   errors.stock
