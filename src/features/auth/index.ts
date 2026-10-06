@@ -46,7 +46,7 @@ export const authApi = {
         ...(token ? { Authorization: `Bearer ${token}` } : {}),
       },
     });
-    if (!res.ok) throw new Error("Erreur fetch logout");
+    if (!res.ok) throw new Error("Erreur logout");
     return res.json();
   },
 };

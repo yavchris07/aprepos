@@ -1,8 +1,8 @@
 import type { LucideProps } from "lucide-react";
 import type { ReactNode } from "react";
 
-export const ADMN = "";
-export const CASHIER = "";
+// export const ADMN = "";
+// export const CASHIER = "";
 
 export interface router {
   path: string;
@@ -161,7 +161,6 @@ export type EditCreditPayload = {
   date: string;
 }
 
-
 export interface LigneCreditCantine {
   id: number;
   credit_cantine: number;
@@ -192,44 +191,22 @@ export interface CreditCantine {
   lignes: LigneCreditCantine[];
   remboursements_cantine: RemboursementCantine[];
 }
-
-// {
-//   "id": 0,
-//   "membre": 0,
-//   "nom_membre": "string",
-//   "acompte_initial": "52964506",
-//   "montant_total_panier": "0654.83",
-//   "balance": "-.85",
-//   "devise": "cdf",
-//   "date": "2026-10-03",
-//   "lignes": [
-//     {
-//       "id": 0,
-//       "credit_cantine": 0,
-//       "produit": 0,
-//       "nom_produit": "string",
-//       "quantite": 4294967295,
-//       "prix_unitaire_applique": "-951383623.",
-//       "sous_total": "0662956174.5"
-//     }
-//   ],
-//   "remboursements_cantine": [
-//     {
-//       "id": 0,
-//       "montant": "94089.72",
-//       "devise": "cdf",
-//       "date": "2026-10-03",
-//       "credit_cantine": 0
-//     }
-//   ]
-// }
-
+ 
 // Line credit 
-// "id": 0,
-//       "credit_cantine": 0,
-//       "produit": 0,
-//       "nom_produit": "string",
-//       "quantite": 4294967295,
-//       "prix_unitaire_applique": "-1051",
-//       "sous_total": "3070"
+
+
+
+// Type du payload à envoyer au Backend pour chaque ligne
+export interface CantineLinePayload {
+  credit_cantine: number;
+  produit: number;
+  quantite: number;
+}
+
+// Élément local pour la gestion du panier avec détails d'affichage
+export interface CartItem {
+  produit: Product;
+  quantite: number;
+}
+ 
 

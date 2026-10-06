@@ -54,6 +54,7 @@ const CreditCantineList = ({
               <th className="whitespace-nowrap px-3 py-2">Balance</th>
               <th className="whitespace-nowrap px-3 py-2">Lignes / Remb.</th>
               <th className="whitespace-nowrap px-3 py-2">Date</th>
+              <th className="whitespace-nowrap px-3 py-2">Jeton</th>
               <th className="whitespace-nowrap px-3 py-2 text-center">
                 Actions
               </th>
@@ -149,6 +150,9 @@ const CreditCantineList = ({
                   {/* Date */}
                   <td className="whitespace-nowrap px-3 py-2 text-xs text-gray-500">
                     {credit.date || "—"}
+                  </td>
+                     <td className="whitespace-nowrap px-3 py-2 text-xs text-gray-500">
+                    {credit.id || "#"}
                   </td>
 
                   {/* Actions */}

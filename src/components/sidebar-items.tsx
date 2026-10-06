@@ -126,7 +126,7 @@ const SidebarItems = () => {
           icon: <ChartNoAxesGantt size={17} />,
         },
         {
-          path: "/accounts",
+          path: "/credit-line",
           name: "Ligne crédit",
           icon: <ShoppingCart size={17} />,
         },
