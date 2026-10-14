@@ -223,3 +223,14 @@ export interface CantineLinePayload {
 export interface CreateCantineLinesPayload {
   lignes: CantineLinePayload[];
 }
+
+
+export type CantineCart = {
+  id: number
+  credit_cantine: number,
+  produit: number,
+  nom_produit: string,
+  quantite: number,
+  prix_unitaire_applique: string,
+  sous_total: string
+}
