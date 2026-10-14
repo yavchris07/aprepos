@@ -1,36 +1,36 @@
 
 import RootLayout from "../components/root-layout";
-import CantinePos from "../components/credit-line-items";
-import Loading from "../components/loading";
-import { useProducts } from "../features/products/hooks/use-products";
-import { getToken } from "../utlis/get-token";
-import { useState } from "react";
-import type { CantineLinePayload } from "../utlis/type";
+// import CantinePos from "../components/credit-line-items";
+// import Loading from "../components/loading";
+// import { useProducts } from "../features/products/hooks/use-products";
+// import { getToken } from "../utlis/get-token";
+// import { useState } from "react";
+// import type { CantineLinePayload } from "../utlis/type";
 
-const CreditLine = () => {
-    const token = getToken();
-    const newCreditId = 2;
-    const [currentPage, setCurrentPage] = useState(1);
-     const {
-       data: prods,
-       isLoading,
-       isFetching,
-     } = useProducts(token ?? "", currentPage);
+const CreditLinePage = () => {
+    // const token = getToken();
+    // const newCreditId = 2;
+    // const [currentPage, setCurrentPage] = useState(1);
+    //  const {
+    //    data: prods,
+    //    isLoading,
+    //    isFetching,
+    //  } = useProducts(token ?? "", currentPage);
     //  const pagination = prods?.pagination;
-     const pros = prods?.products ?? [];
+    //  const pros = prods?.products ?? [];
 
 //   const loading = false;
 
-  const handleSaveLignes = async (lignes: CantineLinePayload[]) => {
-    console.log("Lignes à sauvegarder :", lignes);
-    setCurrentPage(1); // Exemple de mise à jour de la page actuelle après l'envoi des lignes
-    // Ici, vous pouvez ajouter la logique pour envoyer les lignes au backend
-  };
+  // const handleSaveLignes = async (lignes: CantineLinePayload[]) => {
+  //   console.log("Lignes à sauvegarder :", lignes);
+  //   setCurrentPage(1); // Exemple de mise à jour de la page actuelle après l'envoi des lignes
+  //   // Ici, vous pouvez ajouter la logique pour envoyer les lignes au backend
+  // };
   
 
-  if (isLoading || isFetching) {
-    return <Loading />;
-  }
+  // if (isLoading || isFetching) {
+  //   return <Loading />;
+  // }
   
   return (
     <RootLayout>
@@ -67,22 +67,10 @@ const CreditLine = () => {
             </button> */}
           </div>
  
-            {/* PAGE COURANTE */}
-            <CantinePos
-              creditCantineId={newCreditId}
-              products={pros ?? []}
-              loadingProducts={isLoading || isFetching}
-              onSubmitLignes={handleSaveLignes}
-            />
-
-            {/* ================= TOOLBAR ================= */}
-          {/* </div> */}
-
-          {/* ================= LISTE ================= */}
         </div>
       </div>
     </RootLayout>
   );
 };
 
-export default CreditLine;
+export default CreditLinePage;

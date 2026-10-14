@@ -1,4 +1,3 @@
-// import ItemCardList from "../components/item-card-list";
 import LoanItemList from "../components/loan-item-list";
 import RootLayout from "../components/root-layout";
 import TransactionItem from "../features/transactions/components/transaction-item";
@@ -9,12 +8,10 @@ import { useLoans } from "../features/loan/hooks/use-loans";
 
 import {
   ArrowDownLeft,
-  // ArrowUpRight,
   Banknote,
   CalendarCheck,
   ChevronRight,
   Coffee,
-  // CircleDollarSign,
   CreditCard,
   HandCoins,
   HeartHandshake,
@@ -25,23 +22,26 @@ import { SummaryCard } from "../components/summary-card";
 import { useMembers } from "../features/members/hooks/use-members";
 import OperationItemList from "../components/operation-item-list";
 import { useStats } from "../features/stats/hooks/use-statistics";
-// import { useListMembers } from "../features/members/hooks/use-list-members";
+import CantineDashboard from "../components/cantine -dashboard";
+import { getCurrentUser } from "../utlis/get-user";
+import { useProducts } from "../features/products/hooks/use-products";
+import { useCreditlines } from "../features/credit-line/hooks/use-credit-line";
+import { useCredits } from "../features/credit/hooks/use-credits";
+import { useRefundCantine } from "../features/refund-cantine/hooks/use-refund-cantine";
 
 const DashboardPage = () => {
   const token = getToken();
+  const user = getCurrentUser();
 
+  // data
   const { data } = useTransactions(token ?? "");
   const { data: ln } = useLoans(token ?? "");
   const { data: mb } = useMembers(token ?? "", 1);
   const pagination = mb?.pagination;
-
   const { data: stats } = useStats(token ?? "");
-
   const transactions: Transaction[] = data?.transactions ?? [];
   // const members : Member[] =
   const loans: Loan[] = ln?.loans ?? [];
-
-  // console.log('ZZZZZZZZZZZ',stats)
 
   const operations = [
     {
@@ -93,6 +93,57 @@ const DashboardPage = () => {
       iconColor: "text-cyan-600",
     },
   ];
+
+  // Cantine
+  const prods = useProducts(token ?? "", 1);
+  const creds = useCredits(token ?? "", 1);
+  const creditLins = useCreditlines(token ?? "", 1);
+  const refundsC = useRefundCantine(token ?? "", 1);
+
+  // All must use 'pagination.count'
+  const products = prods?.pagination ?? [];
+  const credits = creds?.pagination ?? [];
+  const creditLines = creditLins?.pagination ?? [];
+  const refundsCantine = refundsC?.pagination ?? [];
+
+  if (user?.role === "agent_cantine") {
+    <RootLayout>
+      {/* HEADER */}
+      <div className="flex items-center justify-between mb-5">
+        <div>
+          <div className="flex items-center gap-2">
+            <h1 className="text-gray-900 font-semibold text-base">
+              Tableau de bord
+            </h1>
+
+            <span className="text-gray-400">/</span>
+
+            <span className="text-gray-500 text-sm">partie principale</span>
+          </div>
+
+          <p className="text-gray-500 text-xs mt-1">
+            Vue générale de votre activité au sein de la cantine CEPARCREA
+          </p>
+        </div>
+
+        <div className="hidden md:flex items-center gap-2 text-xs text-gray-500">
+          <CalendarCheck size={15} />
+          <span>
+            {new Date().getDate()} / {new Date().getMonth() + 1} /{" "}
+            {new Date().getFullYear()}
+          </span>
+        </div>
+      </div>
+
+      {/* if  */}
+      <CantineDashboard
+        CreditLines={creditLines}
+        credits={credits}
+        products={products}
+        refunds={[]}
+      />
+    </RootLayout>;
+  }
 
   return (
     <RootLayout>

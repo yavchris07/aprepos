@@ -1,7 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { creditApi } from "..";
 
-
 export const useCredits = (token: string, page: number) => {
   return useQuery({
     queryKey: ["credits", page],
@@ -9,7 +8,7 @@ export const useCredits = (token: string, page: number) => {
     queryFn: () => creditApi.getAll(token, page),
 
     select: (data) => ({
-      credits: data.results,
+      creditCantine: data.results,
       pagination: {
         count: data.count,
         next: data.next,

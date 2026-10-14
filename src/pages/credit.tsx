@@ -9,11 +9,15 @@ import { getToken } from "../utlis/get-token";
 import DeleteCredit from "../features/credit/components/delete-credit";
 import CreditCantineDetailsModal from "../features/credit/components/credit-detail";
 import EditCredit from "../features/credit/components/edit-credit";
+// import CreditLine from "../features/credit-line/components/credit-line";
+import CantinePos from "../components/credit-line-items";
+import { useProducts } from "../features/products/hooks/use-products";
 
 const Credit = () => {
   const token = getToken();
   const [modal, setModal] = React.useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
+  const [cartModal, setCartModal] = useState(false);
   const [editModal, setEditModal] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [detailModal, setDetailModal] = useState(false);
@@ -37,19 +41,47 @@ const Credit = () => {
     setDetailModal(true);
   };
 
+  const handleCart = (credit: CreditCantine) => {
+    setSelectedItem(credit);
+    setCartModal(true);
+  };
+
   const {
     data: items,
     isLoading,
     isFetching,
-  } = useCredits(token ?? "", currentPage); // Replace "token" with the actual token and 1 with the desired page number
+  } = useCredits(token ?? "", currentPage);
   console.log("ITEMS : ", items);
   const pagination = items?.pagination;
-  const credits = items?.credits ?? [];
+  const credits = items?.creditCantine ?? [];
 
   console.log(pagination);
 
   const totalAdhesions = pagination?.count ?? credits.length;
   const totalPages = Math.ceil(totalAdhesions / 10);
+
+  // Cart
+  // const token = getToken();
+  // const newCreditId = 2;
+  // const [currentPage, setCurrentPage] = useState(1);
+  const {
+    data: prods,
+    isLoading: lg,
+    isFetching: fetching,
+  } = useProducts(token ?? "", currentPage);
+  //  const pagination = prods?.pagination;
+  const pros = prods?.products ?? [];
+
+  //   const loading = false;
+
+  // const handleSaveLignes = async (lignes: CantineLinePayload[]) => {
+  //   console.log("Lignes à sauvegarder :", lignes);
+  //   setCurrentPage(1);
+  //   // Exemple de mise à jour de la page actuelle après l'envoi des lignes
+  //   // Ici, vous pouvez ajouter la logique pour envoyer les lignes au backend
+  // };
+
+  console.log("Credit ID ", lg, fetching);
 
   return (
     <RootLayout>
@@ -105,6 +137,7 @@ const Credit = () => {
             onDelete={handleDelete}
             onEdit={handleEdit}
             onViewDetails={handleDetail}
+            onCart={handleCart}
           />
 
           {/* ================= PAGINATION ================= */}
@@ -171,6 +204,16 @@ const Credit = () => {
             isOpen={detailModal}
             onClose={() => setDetailModal(false)}
             credit={selectedItem}
+          />
+        )}
+
+        {cartModal && selectedItem && (
+          <CantinePos
+            creditCantineId={selectedItem.id}
+            products={pros ?? []}
+            loadingProducts={isLoading || isFetching}
+            // onSubmitLignes={handleSaveLignes}
+            onClose={()=> setCartModal(false)}
           />
         )}
       </div>

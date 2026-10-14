@@ -143,7 +143,6 @@ export type EditProductPayload = {
   stock: number;
 };
 
-
 // credit
 // /api/cantine/panier/
 export type CreateCreditPayload = {
@@ -151,7 +150,7 @@ export type CreateCreditPayload = {
   acompte_initial: string;
   devise: string;
   date: string;
-}
+};
 
 export type EditCreditPayload = {
   id: number;
@@ -159,8 +158,7 @@ export type EditCreditPayload = {
   acompte_initial: string;
   devise: string;
   date: string;
-}
-
+};
 export interface LigneCreditCantine {
   id: number;
   credit_cantine: number;
@@ -191,13 +189,18 @@ export interface CreditCantine {
   lignes: LigneCreditCantine[];
   remboursements_cantine: RemboursementCantine[];
 }
- 
-// Line credit 
 
-
+// Line credit
 
 // Type du payload à envoyer au Backend pour chaque ligne
 export interface CantineLinePayload {
+  credit_cantine: number;
+  produit: number;
+  quantite: number;
+}
+
+export interface EditCantineLinePayload {
+  id: number;
   credit_cantine: number;
   produit: number;
   quantite: number;
@@ -208,5 +211,15 @@ export interface CartItem {
   produit: Product;
   quantite: number;
 }
- 
 
+
+
+export interface CantineLinePayload {
+  credit_cantine: number;
+  produit: number;
+  quantite: number;
+}
+
+export interface CreateCantineLinesPayload {
+  lignes: CantineLinePayload[];
+}

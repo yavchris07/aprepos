@@ -1,4 +1,4 @@
-import type { CreateCreditPayload, EditeCreditPayload  } from "../../utlis/type";
+import type { CreateCreditPayload, EditCreditPayload  } from "../../utlis/type";
 const API_URL = import.meta.env.VITE_API_URL;
 const BASE_URL = "/cantine/credits/";
 
@@ -56,7 +56,7 @@ export const creditApi = {
     return response.json();
   },
 
-  update: async (token: string, data: EditeCreditPayload) => {
+  update: async (token: string, data: EditCreditPayload) => {
     const res = await fetch(`${API_URL}${BASE_URL}${data.id}/`, {
       method: "PUT",
       headers: {

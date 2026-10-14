@@ -1,4 +1,4 @@
-import { Pencil, Trash2, Eye } from "lucide-react";
+import { Pencil, Trash2, Eye, ShoppingCart } from "lucide-react";
 import type { CreditCantine } from "../../../utlis/type";
 import Loading from "../../../components/loading";
 
@@ -8,6 +8,7 @@ interface CreditCantineProps {
   onDelete: (credit: CreditCantine) => void;
   onEdit: (credit: CreditCantine) => void;
   onViewDetails?: (credit: CreditCantine) => void;
+  onCart: (credit: CreditCantine) => void;
 }
 
 const CreditCantineList = ({
@@ -16,6 +17,7 @@ const CreditCantineList = ({
   onDelete,
   onEdit,
   onViewDetails,
+  onCart
 }: CreditCantineProps) => {
   if (loading) {
     return <Loading />;
@@ -151,7 +153,7 @@ const CreditCantineList = ({
                   <td className="whitespace-nowrap px-3 py-2 text-xs text-gray-500">
                     {credit.date || "—"}
                   </td>
-                     <td className="whitespace-nowrap px-3 py-2 text-xs text-gray-500">
+                  <td className="whitespace-nowrap px-3 py-2 text-xs text-gray-500">
                     {credit.id || "#"}
                   </td>
 
@@ -191,6 +193,17 @@ const CreditCantineList = ({
                         className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg text-gray-400 transition hover:bg-red-50 hover:text-red-600"
                       >
                         <Trash2 size={15} />
+                      </button>
+
+                      {/* Cart */}
+                       <button
+                        type="button"
+                        onClick={() => onCart(credit)}
+                        title="Supprimer"
+                        aria-label={`Supprimer le crédit ${credit.id}`}
+                        className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg text-gray-400 transition hover:bg-blue-100 hover:text-blue-600"
+                      >
+                        <ShoppingCart size={15} />
                       </button>
                     </div>
                   </td>
