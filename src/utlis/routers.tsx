@@ -8,6 +8,7 @@ import LoginPage from "../pages/login";
 import MemberPage from "../pages/member";
 import Products from "../pages/products";
 import RefundPage from "../pages/refund";
+import RefundCantineCredit from "../pages/refund-cantine-credit";
 import SettingPage from "../pages/settings";
 import SocialPage from "../pages/social";
 import SplashScreenPage from "../pages/splash-screen";
@@ -76,5 +77,9 @@ export const routers: router[] = [
   {
     path: "/credit-line",
     element: <CreditLine />,
+  },
+    {
+    path: "/refund-cantine",
+    element: <RefundCantineCredit />,
   }
 ];

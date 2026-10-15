@@ -15,7 +15,7 @@ const CreditLinePage = () => {
     isLoading,
     isFetching,
   } = useCreditlines(token ?? "", currentPage);
-  const items = creditCantines?.creditLines;
+  const items = creditCantines?.creditLines ?? [];
   const pagination = creditCantines?.pagination;
   // console.log('Credit cantine', creditCantines);
 
@@ -42,7 +42,7 @@ const CreditLinePage = () => {
                 </h1>
 
                 <p className="mt-1 text-sm text-gray-500">
-                  Gérez les crédits de la cantine, les produits.
+                  Liste de produits pris dans la cantine.
                 </p>
               </div>
             </div>
@@ -58,42 +58,43 @@ const CreditLinePage = () => {
           </div>
         </div>
         <CantineCartList cantineCarts={items ?? []} loading={isLoading} />
+        {pagination?.count >= 10 && (
+          <div className="flex flex-col gap-3 rounded-xl border border-gray-200 bg-white px-4 py-3 shadow-sm sm:flex-row sm:items-center sm:justify-between">
+            <p className="text-xs text-gray-500">
+              Total :{" "}
+              <span className="font-semibold text-gray-700">
+                {totalCantineCredit}
+              </span>{" "}
+              Credit cantine
+            </p>
 
-        <div className="flex flex-col gap-3 rounded-xl border border-gray-200 bg-white px-4 py-3 shadow-sm sm:flex-row sm:items-center sm:justify-between">
-          <p className="text-xs text-gray-500">
-            Total :{" "}
-            <span className="font-semibold text-gray-700">
-              {totalCantineCredit}
-            </span>{" "}
-            Credit cantine
-          </p>
+            <div className="flex items-center justify-between gap-2 sm:justify-end">
+              <button
+                type="button"
+                disabled={!pagination?.previous || isLoading || isFetching}
+                onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
+                className="inline-flex h-7 w-7 items-center justify-center rounded-lg border border-gray-200 text-gray-600 transition hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40 cursor-pointer"
+              >
+                <ArrowBigLeft size={15} />
+              </button>
 
-          <div className="flex items-center justify-between gap-2 sm:justify-end">
-            <button
-              type="button"
-              disabled={!pagination?.previous || isLoading || isFetching}
-              onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
-              className="inline-flex h-7 w-7 items-center justify-center rounded-lg border border-gray-200 text-gray-600 transition hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40 cursor-pointer"
-            >
-              <ArrowBigLeft size={15} />
-            </button>
+              <div className="min-w-22.5 rounded-lg bg-green-50 px-3 py-2 text-center text-xs font-semibold text-green-700">
+                {isFetching
+                  ? "Chargement..."
+                  : `Page ${currentPage} / ${totalPages || 1}`}
+              </div>
 
-            <div className="min-w-22.5 rounded-lg bg-green-50 px-3 py-2 text-center text-xs font-semibold text-green-700">
-              {isFetching
-                ? "Chargement..."
-                : `Page ${currentPage} / ${totalPages || 1}`}
+              <button
+                type="button"
+                disabled={!pagination?.next || isLoading || isFetching}
+                onClick={() => setCurrentPage((prev) => prev + 1)}
+                className="inline-flex h-7 w-7 items-center justify-center rounded-lg border border-gray-200 text-gray-600 transition hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40 cursor-pointer"
+              >
+                <ArrowBigRight size={15} />
+              </button>
             </div>
-
-            <button
-              type="button"
-              disabled={!pagination?.next || isLoading || isFetching}
-              onClick={() => setCurrentPage((prev) => prev + 1)}
-              className="inline-flex h-7 w-7 items-center justify-center rounded-lg border border-gray-200 text-gray-600 transition hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40 cursor-pointer"
-            >
-              <ArrowBigRight size={15} />
-            </button>
           </div>
-        </div>
+        )}
       </div>
     </RootLayout>
   );

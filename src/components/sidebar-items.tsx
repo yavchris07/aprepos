@@ -131,7 +131,7 @@ const SidebarItems = () => {
           icon: <ShoppingCart size={17} />,
         },
         {
-          path: "/adhesions",
+          path: "/refund-cantine",
           name: "Remboursements",
           icon: <BanknoteArrowDown size={17} />,
         },

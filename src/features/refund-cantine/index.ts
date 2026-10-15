@@ -1,12 +1,10 @@
-import type {
-  CantineLinePayload,
-  EditCantineLinePayload,
-} from "../../utlis/type";
+import type { EditCantineLinePayload } from "../../utlis/type";
+import type { RefundCantinePayload } from "./type";
 const API_URL = import.meta.env.VITE_API_URL;
 const BASE_URL = "/cantine/remboursements/";
 
 export const refundCantineApi = {
-  create: async (data: CantineLinePayload, token: string) => {
+  create: async (data: RefundCantinePayload, token: string) => {
     const res = await fetch(`${API_URL}${BASE_URL}`, {
       method: "POST",
       headers: {
