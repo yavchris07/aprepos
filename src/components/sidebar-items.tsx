@@ -138,16 +138,16 @@ const SidebarItems = () => {
       ],
     },
 
-    {
-      title: "Administration",
-      items: [
-        {
-          path: "/settings",
-          name: "Paramètres",
-          icon: <SettingsIcon size={17} />,
-        },
-      ],
-    },
+    // {
+    //   title: "Administration",
+    //   items: [
+    //     {
+    //       path: "/settings",
+    //       name: "Paramètres",
+    //       icon: <SettingsIcon size={17} />,
+    //     },
+    //   ],
+    // },
   ];
 
   console.log(sectionsCantine);

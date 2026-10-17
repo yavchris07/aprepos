@@ -3,7 +3,6 @@ import type { Account } from "../../utlis/type";
 const API_URL = import.meta.env.VITE_API_URL;
 const BASE_URL = "/comptes/";
 
-// https://ceparcrea.acedh-rdc.org/api/liste_comptes/
 
 export const accountApi = {
   create: async (data: Account, token: string) => {
@@ -99,4 +98,3 @@ export const accountApi = {
 };
 
 
-// https://ceparcrea.acedh-rdc.org/api/comptes/?search=1585 3745 2830 901

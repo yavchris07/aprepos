@@ -1,9 +1,12 @@
 import Loading from "../../../components/loading";
+import NoResult from "../../../components/no-result";
 import type { RefundCantine } from "../type";
 
 interface cantineCartListProps {
   refundCantines: RefundCantine[];
   loading: boolean;
+  onDelete?: () => void;
+  onEdit?: () => void;
 }
 
 const RefundCantineList = ({
@@ -16,17 +19,10 @@ const RefundCantineList = ({
 
   if (!refundCantines.length) {
     return (
-      <div className="my-3 flex min-h-50 items-center justify-center rounded-xl border border-gray-200 bg-white">
-        <div className="text-center">
-          <p className="text-sm font-medium text-gray-600">
-            Aucun remboursement de crédit cantine trouvé
-          </p>
-
-          <p className="mt-1 text-xs text-gray-400">
-            Aucun résultat pour le moment.
-          </p>
-        </div>
-      </div>
+      <NoResult
+        subject="Aucun remboursement de crédit cantine trouvé"
+        subSubject=" Aucun résultat pour le moment."
+      />
     );
   }
 

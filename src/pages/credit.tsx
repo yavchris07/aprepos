@@ -9,7 +9,6 @@ import { getToken } from "../utlis/get-token";
 import DeleteCredit from "../features/credit/components/delete-credit";
 import CreditCantineDetailsModal from "../features/credit/components/credit-detail";
 import EditCredit from "../features/credit/components/edit-credit";
-// import CreditLine from "../features/credit-line/components/credit-line";
 import CantinePos from "../components/credit-line-items";
 import { useProducts } from "../features/products/hooks/use-products";
 
@@ -148,7 +147,7 @@ const Credit = () => {
                 <span className="font-semibold text-gray-700">
                   {totalAdhesions}
                 </span>{" "}
-                adhesions
+                Credits
               </p>
 
               <div className="flex items-center justify-between gap-2 sm:justify-end">
@@ -213,7 +212,7 @@ const Credit = () => {
             products={pros ?? []}
             loadingProducts={isLoading || isFetching}
             // onSubmitLignes={handleSaveLignes}
-            onClose={()=> setCartModal(false)}
+            onClose={() => setCartModal(false)}
           />
         )}
       </div>

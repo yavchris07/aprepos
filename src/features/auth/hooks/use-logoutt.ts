@@ -1,4 +1,3 @@
-
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { authApi } from "..";
 
@@ -22,5 +21,3 @@ export const useLogout = (token: string) => {
     reset: mutation.reset,
   };
 };
-
- 

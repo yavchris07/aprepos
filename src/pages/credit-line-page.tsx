@@ -7,7 +7,7 @@ import { ArrowBigLeft, ArrowBigRight } from "lucide-react";
 
 const CreditLinePage = () => {
   const token = getToken();
-  // const newCreditId = 2;
+
   const [currentPage, setCurrentPage] = useState(1);
 
   const {
@@ -17,7 +17,6 @@ const CreditLinePage = () => {
   } = useCreditlines(token ?? "", currentPage);
   const items = creditCantines?.creditLines ?? [];
   const pagination = creditCantines?.pagination;
-  // console.log('Credit cantine', creditCantines);
 
   const totalCantineCredit = pagination?.count ?? items.length;
   const totalPages = Math.ceil(totalCantineCredit / 10);
@@ -47,17 +46,11 @@ const CreditLinePage = () => {
               </div>
             </div>
 
-            {/* <button
-              type="button"
-              onClick={() => setModal(true)}
-              className="inline-flex items-center justify-center gap-2 rounded-lg bg-green-700 px-4 py-2.5 text-sm font-medium text-white shadow-sm transition hover:bg-green-800 active:scale-[0.98]"
-            >
-              <Plus size={17} />
-              Nouveau crédit
-            </button> */}
           </div>
         </div>
+        
         <CantineCartList cantineCarts={items ?? []} loading={isLoading} />
+
         {pagination?.count >= 10 && (
           <div className="flex flex-col gap-3 rounded-xl border border-gray-200 bg-white px-4 py-3 shadow-sm sm:flex-row sm:items-center sm:justify-between">
             <p className="text-xs text-gray-500">

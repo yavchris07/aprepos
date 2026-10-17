@@ -24,31 +24,7 @@ const GetAccount = ({ value, onChange, token }: Props) => {
   // const timeout = useRef<number | undefined>(undefined);
 
   const shouldSearch = query.trim().length >= 2;
-
-  //   useEffect(() => {
-  //     if (query.trim().length < 2) {
-  //       setResults([]);
-  //       return;
-  //     }
-
-  //     window.clearTimeout(timeout.current);
-
-  //     timeout.current = window.setTimeout(async () => {
-  //       try {
-  //         setLoading(true);
-  //         // const { account } = useGetAccount(query);
-  //         const account = await accountApi.get(query);
-  //         setResults(account);
-
-  //         setOpen(true);
-  //       } finally {
-  //         setLoading(false);
-  //       }
-  //     }, 300);
-
-  //     return () => window.clearTimeout(timeout.current);
-  //   }, [query]);
-
+ 
   useEffect(() => {
     if (!shouldSearch) return;
 

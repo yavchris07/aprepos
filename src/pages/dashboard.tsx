@@ -22,7 +22,7 @@ import { SummaryCard } from "../components/summary-card";
 import { useMembers } from "../features/members/hooks/use-members";
 import OperationItemList from "../components/operation-item-list";
 import { useStats } from "../features/stats/hooks/use-statistics";
-import CantineDashboard from "../components/cantine -dashboard";
+import CantineDashboard from "../components/cantine-dashboard";
 import { getCurrentUser } from "../utlis/get-user";
 import { useProducts } from "../features/products/hooks/use-products";
 import { useCreditlines } from "../features/credit-line/hooks/use-credit-line";
@@ -40,7 +40,6 @@ const DashboardPage = () => {
   const pagination = mb?.pagination;
   const { data: stats } = useStats(token ?? "");
   const transactions: Transaction[] = data?.transactions ?? [];
-  // const members : Member[] =
   const loans: Loan[] = ln?.loans ?? [];
 
   const operations = [
@@ -101,215 +100,217 @@ const DashboardPage = () => {
   const refundsC = useRefundCantine(token ?? "", 1);
 
   // All must use 'pagination.count'
-  const products = prods?.pagination ?? [];
-  const credits = creds?.pagination ?? [];
-  const creditLines = creditLins?.pagination ?? [];
-  const refundsCantine = refundsC?.pagination ?? [];
+  const products = prods?.data?.pagination.count ?? 0;
+  const credits = creds?.data?.pagination.count ?? 0;
+  const creditLines = creditLins?.data?.pagination.count ?? 0;
+  const refundsCantine = refundsC?.data?.refundCantine ?? [];
 
-  if (user?.role === "agent_cantine") {
-    <RootLayout>
-      {/* HEADER */}
-      <div className="flex items-center justify-between mb-5">
-        <div>
-          <div className="flex items-center gap-2">
-            <h1 className="text-gray-900 font-semibold text-base">
-              Tableau de bord
-            </h1>
-
-            <span className="text-gray-400">/</span>
-
-            <span className="text-gray-500 text-sm">partie principale</span>
-          </div>
-
-          <p className="text-gray-500 text-xs mt-1">
-            Vue générale de votre activité au sein de la cantine CEPARCREA
-          </p>
-        </div>
-
-        <div className="hidden md:flex items-center gap-2 text-xs text-gray-500">
-          <CalendarCheck size={15} />
-          <span>
-            {new Date().getDate()} / {new Date().getMonth() + 1} /{" "}
-            {new Date().getFullYear()}
-          </span>
-        </div>
-      </div>
-
-      {/* if  */}
-      <CantineDashboard
-        CreditLines={creditLines}
-        credits={credits}
-        products={products}
-        refunds={[]}
-      />
-    </RootLayout>;
-  }
+  // console.log("USER ", user?.role);
 
   return (
     <RootLayout>
       {/* HEADER */}
-      <div className="flex items-center justify-between mb-5">
+      {user?.role === "agent" ? (
         <div>
-          <div className="flex items-center gap-2">
-            <h1 className="text-gray-900 font-semibold text-base">
-              Tableau de bord
-            </h1>
+          <div className="flex items-center justify-between mb-5">
+            <div>
+              <div className="flex items-center gap-2">
+                <h1 className="text-gray-900 font-semibold text-base">
+                  Tableau de bord
+                </h1>
 
-            <span className="text-gray-400">/</span>
+                <span className="text-gray-400">/</span>
 
-            <span className="text-gray-500 text-sm">partie principale</span>
+                <span className="text-gray-500 text-sm">partie principale</span>
+              </div>
+
+              <p className="text-gray-500 text-xs mt-1">
+                Vue générale de votre activité au sein de CEPARCREA
+              </p>
+            </div>
+
+            <div className="hidden md:flex items-center gap-2 text-xs text-gray-500">
+              <CalendarCheck size={15} />
+              <span>
+                {new Date().getDate()} / {new Date().getMonth() + 1} /{" "}
+                {new Date().getFullYear()}
+              </span>
+            </div>
           </div>
 
-          <p className="text-gray-500 text-xs mt-1">
-            Vue générale de votre activité au sein de CEPARCREA
-          </p>
-        </div>
+          {/* TOP SUMMARY */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-4">
+            <SummaryCard
+              title="Membres"
+              value={pagination?.count ?? 0}
+              description="Membres enregistrés"
+              icon={Users}
+            />
 
-        <div className="hidden md:flex items-center gap-2 text-xs text-gray-500">
-          <CalendarCheck size={15} />
-          <span>
-            {new Date().getDate()} / {new Date().getMonth() + 1} /{" "}
-            {new Date().getFullYear()}
-          </span>
-        </div>
-      </div>
+            <SummaryCard
+              title="Épargne"
+              value="—"
+              description="Épargne totale"
+              icon={PiggyBank}
+            />
 
-      {/* TOP SUMMARY */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-4">
-        <SummaryCard
-          title="Membres"
-          value={pagination?.count ?? 0}
-          description="Membres enregistrés"
-          icon={Users}
-        />
+            <SummaryCard
+              title="Emprunts"
+              value={loans.length.toString()}
+              description="Emprunts en cours"
+              icon={HandCoins}
+            />
 
-        <SummaryCard
-          title="Épargne"
-          value="—"
-          description="Épargne totale"
-          icon={PiggyBank}
-        />
+            <SummaryCard
+              title="Transactions"
+              value={transactions.length.toString()}
+              description="Transactions récentes"
+              icon={CreditCard}
+            />
+          </div>
 
-        <SummaryCard
-          title="Emprunts"
-          value={loans.length.toString()}
-          description="Emprunts en cours"
-          icon={HandCoins}
-        />
+          {/* MAIN GRID */}
+          <div className="grid grid-cols-1 xl:grid-cols-[1fr_360px] gap-4">
+            {/* LEFT / CENTER */}
+            <div className="space-y-4">
+              {/* OPERATIONS */}
+              <section className="bg-white border border-gray-200 rounded-xl p-4">
+                <div className="flex items-center justify-between mb-4">
+                  <div>
+                    <h2 className="font-semibold text-gray-900 text-sm">
+                      Mes opérations
+                    </h2>
 
-        <SummaryCard
-          title="Transactions"
-          value={transactions.length.toString()}
-          description="Transactions récentes"
-          icon={CreditCard}
-        />
-      </div>
+                    <p className="text-xs text-gray-500 mt-1">
+                      Accédez rapidement aux différents services
+                    </p>
+                  </div>
 
-      {/* MAIN GRID */}
-      <div className="grid grid-cols-1 xl:grid-cols-[1fr_360px] gap-4">
-        {/* LEFT / CENTER */}
-        <div className="space-y-4">
-          {/* OPERATIONS */}
-          <section className="bg-white border border-gray-200 rounded-xl p-4">
-            <div className="flex items-center justify-between mb-4">
-              <div>
-                <h2 className="font-semibold text-gray-900 text-sm">
-                  Mes opérations
-                </h2>
+                  <button className="text-xs text-emerald-700 hover:text-emerald-800 font-medium flex items-center gap-1">
+                    Voir tout
+                    <ChevronRight size={14} />
+                  </button>
+                </div>
 
-                <p className="text-xs text-gray-500 mt-1">
-                  Accédez rapidement aux différents services
-                </p>
-              </div>
+                {/* 5 OPERATIONS */}
+                <OperationItemList operations={operations} />
+              </section>
 
-              <button className="text-xs text-emerald-700 hover:text-emerald-800 font-medium flex items-center gap-1">
-                Voir tout
-                <ChevronRight size={14} />
-              </button>
+              {/* TRANSACTIONS */}
+              <section className="bg-white border border-gray-200 rounded-xl p-4">
+                <div className="flex items-center justify-between mb-4">
+                  <div>
+                    <h2 className="font-semibold text-gray-900 text-sm">
+                      Transactions récentes
+                    </h2>
+
+                    <p className="text-xs text-gray-500 mt-1">
+                      Les dernières opérations enregistrées
+                    </p>
+                  </div>
+
+                  <button className="text-xs text-emerald-700 font-medium flex items-center gap-1">
+                    Toutes les transactions
+                    <ChevronRight size={14} />
+                  </button>
+                </div>
+
+                <div className="divide-y divide-gray-100">
+                  {transactions.slice(0, 5).map((item, index) => (
+                    <TransactionItem key={index} item={item} />
+                  ))}
+
+                  {transactions.length === 0 && (
+                    <div className="py-10 text-center">
+                      <CreditCard size={28} className="mx-auto text-gray-300" />
+
+                      <p className="text-sm text-gray-500 mt-2">
+                        Aucune transaction récente
+                      </p>
+                    </div>
+                  )}
+                </div>
+              </section>
             </div>
 
-            {/* 5 OPERATIONS */}
-            <OperationItemList operations={operations} />
-          </section>
+            {/* RIGHT : LOANS */}
+            <aside className="bg-white border border-gray-200 rounded-xl p-4 h-fit">
+              <div className="flex items-center justify-between mb-4">
+                <div>
+                  <h2 className="font-semibold text-gray-900 text-sm">
+                    Emprunts récents
+                  </h2>
 
-          {/* TRANSACTIONS */}
-          <section className="bg-white border border-gray-200 rounded-xl p-4">
-            <div className="flex items-center justify-between mb-4">
-              <div>
-                <h2 className="font-semibold text-gray-900 text-sm">
-                  Transactions récentes
-                </h2>
+                  <p className="text-xs text-gray-500 mt-1">
+                    Derniers emprunts enregistrés
+                  </p>
+                </div>
 
-                <p className="text-xs text-gray-500 mt-1">
-                  Les dernières opérations enregistrées
-                </p>
+                <div className="w-9 h-9 rounded-lg bg-blue-50 flex items-center justify-center">
+                  <HandCoins size={18} className="text-blue-600" />
+                </div>
               </div>
 
-              <button className="text-xs text-emerald-700 font-medium flex items-center gap-1">
-                Toutes les transactions
-                <ChevronRight size={14} />
-              </button>
-            </div>
+              <LoanItemList items={loans} />
 
-            <div className="divide-y divide-gray-100">
-              {transactions.slice(0, 5).map((item, index) => (
-                <TransactionItem key={index} item={item} />
-              ))}
-
-              {transactions.length === 0 && (
+              {loans.length === 0 && (
                 <div className="py-10 text-center">
-                  <CreditCard size={28} className="mx-auto text-gray-300" />
+                  <div className="w-12 h-12 mx-auto rounded-full bg-gray-50 flex items-center justify-center">
+                    <Banknote size={22} className="text-gray-300" />
+                  </div>
 
-                  <p className="text-sm text-gray-500 mt-2">
-                    Aucune transaction récente
+                  <p className="text-sm font-medium text-gray-600 mt-3">
+                    Aucun emprunt
+                  </p>
+
+                  <p className="text-xs text-gray-400 mt-1">
+                    Aucun emprunt récent à afficher
                   </p>
                 </div>
               )}
-            </div>
-          </section>
+
+              <button className="w-full mt-4 py-2.5 rounded-lg border border-gray-200 text-xs font-medium text-gray-600 hover:bg-gray-50 transition">
+                Voir tous les emprunts
+              </button>
+            </aside>
+          </div>
         </div>
-
-        {/* RIGHT : LOANS */}
-        <aside className="bg-white border border-gray-200 rounded-xl p-4 h-fit">
-          <div className="flex items-center justify-between mb-4">
+      ) : (
+        <div>
+          <div className="flex items-center justify-between mb-5">
             <div>
-              <h2 className="font-semibold text-gray-900 text-sm">
-                Emprunts récents
-              </h2>
+              <div className="flex items-center gap-2">
+                <h1 className="text-gray-900 font-semibold text-base">
+                  Tableau de bord
+                </h1>
 
-              <p className="text-xs text-gray-500 mt-1">
-                Derniers emprunts enregistrés
+                <span className="text-gray-400">/</span>
+
+                <span className="text-gray-500 text-sm">partie principale</span>
+              </div>
+
+              <p className="text-gray-500 text-xs mt-1">
+                Vue générale de votre activité au sein de la cantine CEPARCREA
               </p>
             </div>
 
-            <div className="w-9 h-9 rounded-lg bg-blue-50 flex items-center justify-center">
-              <HandCoins size={18} className="text-blue-600" />
+            <div className="hidden md:flex items-center gap-2 text-xs text-gray-500">
+              <CalendarCheck size={15} />
+              <span>
+                {new Date().getDate()} / {new Date().getMonth() + 1} /{" "}
+                {new Date().getFullYear()}
+              </span>
             </div>
           </div>
 
-          <LoanItemList items={loans} />
-
-          {loans.length === 0 && (
-            <div className="py-10 text-center">
-              <div className="w-12 h-12 mx-auto rounded-full bg-gray-50 flex items-center justify-center">
-                <Banknote size={22} className="text-gray-300" />
-              </div>
-
-              <p className="text-sm font-medium text-gray-600 mt-3">
-                Aucun emprunt
-              </p>
-
-              <p className="text-xs text-gray-400 mt-1">
-                Aucun emprunt récent à afficher
-              </p>
-            </div>
-          )}
-
-          <button className="w-full mt-4 py-2.5 rounded-lg border border-gray-200 text-xs font-medium text-gray-600 hover:bg-gray-50 transition">
-            Voir tous les emprunts
-          </button>
-        </aside>
-      </div>
+          <CantineDashboard
+            CreditLines={creditLines}
+            credits={credits}
+            products={products}
+            refunds={refundsCantine}
+          />
+        </div>
+      )}
     </RootLayout>
   );
 };
