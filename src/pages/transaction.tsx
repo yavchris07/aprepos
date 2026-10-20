@@ -23,6 +23,7 @@ import {
   ArrowBigRight,
 } from "lucide-react";
 import type { Transaction } from "../features/transactions/type";
+import TransactionPDF from "../components/pdf/transaction";
 
 const TransactionPage = () => {
   const token = getToken();
@@ -144,13 +145,13 @@ const TransactionPage = () => {
 
   const volume = totalDeposits + totalWithdrawals;
 
-  console.log("TRX ", transactions);
-  console.log("depot ", totalWithdrawals);
-  console.log("retrait ", totalDeposits);
-  console.log("in ", deposits);
-  console.log("out", withdrawals);
+  // console.log("TRX ", transactions);
+  // console.log("depot ", totalWithdrawals);
+  // console.log("retrait ", totalDeposits);
+  // console.log("in ", deposits);
+  // console.log("out", withdrawals);
 
-  console.log("Volum", volume);
+  // console.log("Volum", volume);
   return (
     <RootLayout>
       <div className="min-h-screen bg-gray-50/60">
@@ -346,6 +347,7 @@ const TransactionPage = () => {
                   >
                     <ArrowDownToLine size={16} />
                     Dépôts
+                    <TransactionPDF data={deposits}  />
                   </button>
 
                   <button
@@ -354,6 +356,7 @@ const TransactionPage = () => {
                   >
                     <ArrowUpFromLine size={16} />
                     Retraits
+                    <TransactionPDF data={withdrawals} />
                   </button>
 
                   <button
@@ -370,6 +373,7 @@ const TransactionPage = () => {
                   >
                     <FileDown size={16} />
                     Exporter
+                     <TransactionPDF data={currentTransactions} />
                   </button>
                 </div>
               </div>

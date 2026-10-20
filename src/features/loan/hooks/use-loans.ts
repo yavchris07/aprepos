@@ -17,5 +17,3 @@ export const useLoans = (token: string) => {
   });
 };
 
-// queryKey: ["members"],
-// queryFn: () => memberApi.getAll(token),

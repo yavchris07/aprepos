@@ -3,7 +3,6 @@ import { useMemo, useState } from "react";
 import TransactionStatement from "../features/transactions/components/transaction-statement";
 import { useTransactions } from "../features/transactions/hooks/use-transactions";
 import { getToken } from "../utlis/get-token";
-import type { Transaction } from "../utlis/type";
 import {
   ArrowLeftRight,
   CalendarDays,
@@ -15,6 +14,8 @@ import {
   WalletCards,
   X,
 } from "lucide-react";
+import type { Transaction } from "../features/transactions/type";
+import TransactionPDF from "../components/pdf/transaction";
 // import Pagination from "../components/pagination";
 
 const StatementPage = () => {
@@ -41,7 +42,7 @@ const StatementPage = () => {
     }
 
     return transactions.filter((item) =>
-      String(item.compte ?? "")
+      String(item.compte_details.membre_nom ?? "")
         .toLowerCase()
         .includes(query),
     );
@@ -55,21 +56,25 @@ const StatementPage = () => {
   // STATISTIQUES
   // ============================
 
-  const totalTransactions = transactions.length;
+  const totalTransactions = filteredData.length;
 
   const totalCredit = useMemo(() => {
-    return transactions.reduce(
-      (total, item) => total + Number(item.montant ?? 0),
+    return filteredData.reduce(
+      (total, item) =>
+        total +
+        Number(item.type_transaction === "in" ? (item.montant ?? 0) : 0),
       0,
     );
-  }, [transactions]);
+  }, [filteredData]);
 
   const totalDebit = useMemo(() => {
-    return transactions.reduce(
-      (total, item) => total + Number(item.montant ?? 0),
+    return filteredData.reduce(
+      (total, item) =>
+        total +
+        Number(item.type_transaction === "out" ? (item.montant ?? 0) : 0),
       0,
     );
-  }, [transactions]);
+  }, [filteredData]);
 
   const solde = totalCredit - totalDebit;
 
@@ -104,6 +109,7 @@ const StatementPage = () => {
             >
               <FileText size={17} />
               Générer le relevé
+              <TransactionPDF data={filteredData} />
             </button>
           </div>
 
@@ -274,6 +280,7 @@ const StatementPage = () => {
                   >
                     <Download size={16} />
                     Exporter
+                    <TransactionPDF data={filteredData} />
                   </button>
                 </div>
               </div>
@@ -282,11 +289,10 @@ const StatementPage = () => {
 
           {/* ================= RELEVÉ ================= */}
 
-           
-            <TransactionStatement
-              loading={isLoading}
-              transactions={filteredData}
-            />
+          <TransactionStatement
+            loading={isLoading}
+            transactions={filteredData}
+          />
           {/* </div> */}
         </div>
       </div>

@@ -1,5 +1,6 @@
 import Loading from "../../../components/loading";
-import type { Transaction } from "../../../utlis/type";
+import { formatAccountNumber } from "../../../utlis/fomatted-number";
+import type { Transaction } from "../type";
 
 interface transactionStatementProps {
   transactions: Transaction[];
@@ -20,6 +21,9 @@ const TransactionStatement = ({
               ID
             </th>
             <th scope="col" className="px-6 py-4 text-left">
+              Membre
+            </th>
+            <th scope="col" className="px-6 py-4 text-left">
               Compte
             </th>
             <th scope="col" className="px-6 py-4 text-left">
@@ -31,11 +35,8 @@ const TransactionStatement = ({
             >
               Montant
             </th>
-            <th
-              scope="col"
-              className="px-6 py-4 max-w-xs text-left md:max-w-md"
-            >
-              Réference
+            <th scope="col" className="px-6 py-4 text-left">
+              Balance
             </th>
             <th
               scope="col"
@@ -52,26 +53,33 @@ const TransactionStatement = ({
               className="hover:bg-gray-50 odd:bg-white even:bg-gray-50/50 transition-colors"
             >
               <td className="whitespace-nowrap px-6 py-2">
-                <span className="font-medium">{adh.id}</span>
+                <span className="font-medium">{adh.reference}</span>
+              </td>
+               <td className="whitespace-nowrap px-6 py-2">
+                <span className="font-medium">{adh.compte_details.membre_nom}</span>
               </td>
               <td className="whitespace-nowrap px-6 py-2">
-                <span className="font-medium">{adh.compte}</span>
+                <span className="font-medium">{formatAccountNumber(adh.compte_details.numero_compte)}</span>
               </td>
-              <td
-                className={`whitespace-nowrap px-6 py-2 font-medium text-gray-900 ${adh.type_transaction === "in" ? "text-green-600" : "text-red-600"}`}
-              >
-                <span>
-                  {adh.type_transaction === "in" ? "Entrée" : "Retrait"}
-                </span>
+              <td className="whitespace-nowrap px-6 py-2 font-medium">
+                <div
+                  className={`flex items-center gap-2 ${adh.type_transaction === "in" ? "text-green-600" : "text-red-600"}`}
+                >
+                  <span>
+                    {adh.type_transaction === "in" ? "Entrée" : "Sortie"}
+                  </span>
+                </div>
               </td>
               <td className="whitespace-nowrap px-6 py-2">
                 <span className="font-medium">{adh.montant}</span>
               </td>
-              <td className="whitespace-nowrap px-6 py-2">
-                <span className="font-medium">{adh.reference}</span>
+               <td className="whitespace-nowrap px-6 py-2">
+                <span className="font-medium">{adh.compte_details.balance} {adh.compte_details.devise}</span>
               </td>
               <td className="whitespace-nowrap px-6 py-2">
-                <span className="font-medium">{adh.created_at}</span>
+                <span className="font-medium">
+                  {adh.created_at.split("T")[0]}
+                </span>
               </td>
             </tr>
           ))}
