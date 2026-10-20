@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import { Loader2 } from "lucide-react";
 import { useToast } from "../../../components/toast-context";
 import { getToken } from "../../../utlis/get-token";
-import type { Member, Refund } from "../../../utlis/type";
+import type { Member } from "../../../utlis/type";
 import { useCreateRefund } from "../hooks/use-create-refund";
+import type { Refund } from "./type";
 
 type editSocialProps = {
   open: boolean;

@@ -1,7 +1,7 @@
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { refundApi } from "..";
-import type { Refund } from "../../../utlis/type";
+import type { Refund } from "../components/type";
 
 export const useEditeRefund = (token: string) => {
   const queryClient = useQueryClient();

@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import { Loader2 } from "lucide-react";
 import { useToast } from "../../../components/toast-context";
 import { getToken } from "../../../utlis/get-token";
-import type { Account, Transaction } from "../../../utlis/type";
+import type { Account } from "../../../utlis/type";
 import { useCreateTransaction } from "../hooks/use-create-transaction";
+import type { Transaction } from "../type";
 
 type createAccountProps = {
   open: boolean;

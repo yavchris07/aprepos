@@ -1,6 +1,6 @@
 import { Eye, Pencil, Trash2 } from "lucide-react";
-import type { Refund } from "../../../utlis/type";
 import Loading from "../../../components/loading";
+import type { Refund } from "./type";
 
 interface listRefundProps {
   refunds: Refund[];

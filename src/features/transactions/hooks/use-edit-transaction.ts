@@ -1,7 +1,8 @@
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { transactionApi } from "..";
-import type { Transaction } from "../../../utlis/type";
+import type { Transaction } from "../type";
+// import type { Transaction } from "../../../utlis/type";
 
 export const useEditeTransaction = (token: string) => {
   const queryClient = useQueryClient();

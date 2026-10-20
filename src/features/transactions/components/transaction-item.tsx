@@ -1,5 +1,5 @@
 import { ArrowUpDown } from "lucide-react";
-import type { Transaction } from "../../../utlis/type";
+import type { Transaction } from "../type";
 
 type tansactionItemProps = {item : Transaction}
 

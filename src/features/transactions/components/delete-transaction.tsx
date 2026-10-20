@@ -1,10 +1,10 @@
 import { Loader2 } from "lucide-react";
 import React, { useState } from "react";
-import type { Transaction } from "../../../utlis/type";
 import { useToast } from "../../../components/toast-context";
 import { getToken } from "../../../utlis/get-token";
 import Modal from "../../../components/modal";
 import { useDeleteTransaction } from "../hooks/use-delete-transaction";
+import type { Transaction } from "../type";
 
 type deleteAccountProps = {
   open: boolean;

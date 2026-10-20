@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 import RootLayout from "../components/root-layout";
 import CreateRefund from "../features/refund/components/create-refund";
 import ListRefund from "../features/refund/components/list-refund";
-import type { Member, Refund } from "../utlis/type";
+import type { Member } from "../utlis/type";
 import EditRefund from "../features/refund/components/edit-refund";
 import DeleteRefund from "../features/refund/components/delete-refund";
 import {
@@ -21,6 +21,7 @@ import { getToken } from "../utlis/get-token";
 import { useRefunds } from "../features/refund/hooks/use-refunds";
 import { useMembers } from "../features/members/hooks/use-members";
 import RefundItem from "../features/refund/components/refund-item";
+import type { Refund } from "../features/refund/components/type";
  
 const RefundPage = () => {
   const token = getToken();

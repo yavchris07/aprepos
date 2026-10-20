@@ -1,12 +1,13 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { transactionApi } from "..";
-import type { Transaction } from "../../../utlis/type";
+import type { CreateTransactionPayload } from "../type";
+
  
 export const useCreateTransaction = (token: string) => {
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
-    mutationFn: (data: Transaction) => transactionApi.create(data, token),
+    mutationFn: (data: CreateTransactionPayload) => transactionApi.create(data, token),
 
     onSuccess: () => {
       queryClient.invalidateQueries({

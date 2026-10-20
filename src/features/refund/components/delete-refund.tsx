@@ -1,10 +1,10 @@
 import { Loader2 } from "lucide-react";
 import React, { useState } from "react";
-import type { Refund } from "../../../utlis/type";
 import { useToast } from "../../../components/toast-context";
 import { getToken } from "../../../utlis/get-token";
 import Modal from "../../../components/modal";
 import { useDeleteRefund } from "../hooks/use-delete-refund";
+import type { Refund } from "./type";
 
 type deleteSocialProps = {
   open: boolean;

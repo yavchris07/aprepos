@@ -1,5 +1,5 @@
 import { ArrowUpDown } from "lucide-react";
-import type { Refund } from "../../../utlis/type";
+import type { Refund } from "./type";
 
 type refundItemProps = { item: Refund };
 

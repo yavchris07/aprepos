@@ -3,7 +3,7 @@ import RootLayout from "../components/root-layout";
 import TransactionItem from "../features/transactions/components/transaction-item";
 import { getToken } from "../utlis/get-token";
 import { useTransactions } from "../features/transactions/hooks/use-transactions";
-import type { Loan, Transaction } from "../utlis/type";
+import type { Loan } from "../utlis/type";
 import { useLoans } from "../features/loan/hooks/use-loans";
 
 import {
@@ -28,6 +28,7 @@ import { useProducts } from "../features/products/hooks/use-products";
 import { useCreditlines } from "../features/credit-line/hooks/use-credit-line";
 import { useCredits } from "../features/credit/hooks/use-credits";
 import { useRefundCantine } from "../features/refund-cantine/hooks/use-refund-cantine";
+import type { Transaction } from "../features/transactions/type";
 
 const DashboardPage = () => {
   const token = getToken();
