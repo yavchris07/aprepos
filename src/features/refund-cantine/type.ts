@@ -1,5 +1,5 @@
 export type RefundCantinePayload = {
-  montant: string;
+  montant: number;
   devise: string;
   date: string;
   credit_cantine: number;

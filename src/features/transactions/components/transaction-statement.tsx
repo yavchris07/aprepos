@@ -23,7 +23,7 @@ const TransactionStatement = ({
               Compte
             </th>
             <th scope="col" className="px-6 py-4 text-left">
-              Type operation
+              Type opération
             </th>
             <th
               scope="col"
@@ -35,7 +35,7 @@ const TransactionStatement = ({
               scope="col"
               className="px-6 py-4 max-w-xs text-left md:max-w-md"
             >
-              Reference
+              Réference
             </th>
             <th
               scope="col"
@@ -57,10 +57,12 @@ const TransactionStatement = ({
               <td className="whitespace-nowrap px-6 py-2">
                 <span className="font-medium">{adh.compte}</span>
               </td>
-              <td className="whitespace-nowrap px-6 py-2 font-medium text-gray-900">
-                <div className="flex items-center gap-2">
-                  <span>{adh.type_transaction}</span>
-                </div>
+              <td
+                className={`whitespace-nowrap px-6 py-2 font-medium text-gray-900 ${adh.type_transaction === "in" ? "text-green-600" : "text-red-600"}`}
+              >
+                <span>
+                  {adh.type_transaction === "in" ? "Entrée" : "Retrait"}
+                </span>
               </td>
               <td className="whitespace-nowrap px-6 py-2">
                 <span className="font-medium">{adh.montant}</span>

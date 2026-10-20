@@ -1,15 +1,15 @@
-import type { Loan } from "../../utlis/type";
+import type { CreateLoanPayload, Loan } from "./type";
 
 const API_URL = import.meta.env.VITE_API_URL;
 const BASE_URL = "/emprunts/";
 
 export const loanApi = {
-  create: async (data: Loan, token: string) => {
+  create: async (data: CreateLoanPayload, token: string) => {
     const res = await fetch(`${API_URL}${BASE_URL}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        ...(token ? { Authorization: `Token ${token}` } : {}),
       },
       body: JSON.stringify(data),
     });

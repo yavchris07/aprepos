@@ -1,6 +1,8 @@
 import { Pencil, Trash2 } from "lucide-react";
-import type { Transaction } from "../../../utlis/type";
+// import type { Transaction } from "../../../utlis/type";
 import Loading from "../../../components/loading";
+import type { Transaction } from "../type";
+import { formatAccountNumber } from "../../../utlis/fomatted-number";
 
 interface listTransactionProps {
   transactions: Transaction[];
@@ -27,6 +29,9 @@ const ListTransaction = ({
               ID
             </th>
             <th scope="col" className="px-6 py-4 text-left">
+              Membre
+            </th>
+            <th scope="col" className="px-6 py-4 text-left">
               Compte
             </th>
             <th scope="col" className="px-6 py-4 text-left">
@@ -38,11 +43,8 @@ const ListTransaction = ({
             >
               Montant
             </th>
-            <th
-              scope="col"
-              className="px-6 py-4 max-w-xs text-left md:max-w-md"
-            >
-              Réference
+            <th scope="col" className="px-6 py-4 text-left">
+              Balance
             </th>
             <th
               scope="col"
@@ -62,12 +64,13 @@ const ListTransaction = ({
               className="hover:bg-gray-50 odd:bg-white even:bg-gray-50/50 transition-colors"
             >
               <td className="whitespace-nowrap px-6 py-2">
-                <span className="font-medium">
-                  {adh.created_at.split("T")[0]}
-                </span>
+                <span className="font-medium">{adh.reference}</span>
+              </td>
+               <td className="whitespace-nowrap px-6 py-2">
+                <span className="font-medium">{adh.compte_details.membre_nom}</span>
               </td>
               <td className="whitespace-nowrap px-6 py-2">
-                <span className="font-medium">{adh.compte}</span>
+                <span className="font-medium">{formatAccountNumber(adh.compte_details.numero_compte)}</span>
               </td>
               <td className="whitespace-nowrap px-6 py-2 font-medium">
                 <div
@@ -81,29 +84,25 @@ const ListTransaction = ({
               <td className="whitespace-nowrap px-6 py-2">
                 <span className="font-medium">{adh.montant}</span>
               </td>
-              <td className="whitespace-nowrap px-6 py-2">
-                <span className="font-medium">{adh.reference}</span>
+               <td className="whitespace-nowrap px-6 py-2">
+                <span className="font-medium">{adh.compte_details.balance} {adh.compte_details.devise}</span>
               </td>
               <td className="whitespace-nowrap px-6 py-2">
-                <span className="font-medium">{adh.created_at}</span>
+                <span className="font-medium">
+                  {adh.created_at.split("T")[0]}
+                </span>
               </td>
               <td className="whitespace-nowrap px-6 py-2 font-medium flex gap-2 justify-center">
-                {/* <button
-                  onClick={() => onView(adh)}
-                  className=" hover:bg-gray-100 cursor-pointer"
-                >
-                  <Eye size={16} />
-                </button> */}
                 <button
                   onClick={() => onEdit(adh)}
-                  className=" hover:bg-gray-100 cursor-pointer"
+                  className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg text-gray-400 transition hover:bg-green-100 hover:text-green-700"
                 >
                   <Pencil size={16} />
                 </button>
 
                 <button
                   onClick={() => onDelete(adh)}
-                  className=" text-red-600 hover:bg-red-50 cursor-pointer"
+                  className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg text-gray-400 transition hover:bg-red-50 hover:text-red-600"
                 >
                   <Trash2 size={16} />
                 </button>

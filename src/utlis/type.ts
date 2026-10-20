@@ -56,15 +56,6 @@ export type Account = {
   membre_nom?: string;
 };
 
-export type Transaction = {
-  id: number;
-  compte: number;
-  type_transaction: string;
-  montant: number;
-  reference: string;
-  created_at: string;
-};
-
 export type Loan = {
   id: number;
   membre: number;
@@ -72,13 +63,6 @@ export type Loan = {
   taux_interet: number;
   total_a_payer: number;
   balance: number;
-  date: string;
-};
-
-export type Refund = {
-  id: number;
-  emprumt: number;
-  montant: number;
   date: string;
 };
 

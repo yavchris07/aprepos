@@ -11,6 +11,7 @@ import CreditCantineDetailsModal from "../features/credit/components/credit-deta
 import EditCredit from "../features/credit/components/edit-credit";
 import CantinePos from "../components/credit-line-items";
 import { useProducts } from "../features/products/hooks/use-products";
+import CreateRefundCantine from "../features/refund-cantine/components/create-refund-cantine";
 
 const Credit = () => {
   const token = getToken();
@@ -20,6 +21,7 @@ const Credit = () => {
   const [editModal, setEditModal] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [detailModal, setDetailModal] = useState(false);
+  const [refundModal, setRefundModal] = useState(false);
   const [selectedItem, setSelectedItem] = useState<CreditCantine | null>(null);
 
   const handleDelete = (credit: CreditCantine) => {
@@ -45,6 +47,10 @@ const Credit = () => {
     setCartModal(true);
   };
 
+  const handleRefund = () => {
+    setRefundModal(true);
+  };
+
   const {
     data: items,
     isLoading,
@@ -59,10 +65,6 @@ const Credit = () => {
   const totalAdhesions = pagination?.count ?? credits.length;
   const totalPages = Math.ceil(totalAdhesions / 10);
 
-  // Cart
-  // const token = getToken();
-  // const newCreditId = 2;
-  // const [currentPage, setCurrentPage] = useState(1);
   const {
     data: prods,
     isLoading: lg,
@@ -70,15 +72,6 @@ const Credit = () => {
   } = useProducts(token ?? "", currentPage);
   //  const pagination = prods?.pagination;
   const pros = prods?.products ?? [];
-
-  //   const loading = false;
-
-  // const handleSaveLignes = async (lignes: CantineLinePayload[]) => {
-  //   console.log("Lignes à sauvegarder :", lignes);
-  //   setCurrentPage(1);
-  //   // Exemple de mise à jour de la page actuelle après l'envoi des lignes
-  //   // Ici, vous pouvez ajouter la logique pour envoyer les lignes au backend
-  // };
 
   console.log("Credit ID ", lg, fetching);
 
@@ -137,6 +130,7 @@ const Credit = () => {
             onEdit={handleEdit}
             onViewDetails={handleDetail}
             onCart={handleCart}
+            refundCantine={handleRefund}
           />
 
           {/* ================= PAGINATION ================= */}
@@ -203,6 +197,14 @@ const Credit = () => {
             isOpen={detailModal}
             onClose={() => setDetailModal(false)}
             credit={selectedItem}
+          />
+        )}
+
+        {refundModal && selectedItem && (
+          <CreateRefundCantine
+            creditId={selectedItem.id}
+            onClose={() => setRefundModal(false)}
+            open={refundModal}
           />
         )}
 

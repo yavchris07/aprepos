@@ -15,10 +15,9 @@ const CreateRefund = ({ onClose, open }: createSocialProps) => {
   const { create, fail, pending } = useCreateRefund(token ?? "");
   const { showToast } = useToast();
   const [formData, setFormData] = useState({
-    id: 0,
     emprumt: 0,
     montant: 0,
-    date: "",
+    date: new Date().toLocaleDateString("en-EN"),
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -51,7 +50,7 @@ const CreateRefund = ({ onClose, open }: createSocialProps) => {
           </span>
         </div>
         <p className="text-gray-500 text-xs font-medium my-3">
-          Ajouter un paiement de social.
+          Remboursement de dette.
         </p>
         <form onSubmit={handleSubmit} className="flex flex-col gap-0">
           <GetMember

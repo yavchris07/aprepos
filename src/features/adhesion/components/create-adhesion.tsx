@@ -5,6 +5,7 @@ import { getToken } from "../../../utlis/get-token";
 import { useCreateAdhesion } from "../hooks/use-create-adhesion";
 import Modal from "../../../components/modal";
 import GetMember from "../../members/components/get-member";
+import { currency } from "../../../utlis/currency";
 
 type createUserProps = {
   open: boolean;
@@ -16,6 +17,7 @@ const CreateAdhesion = ({ open, onClose }: createUserProps) => {
   const { create, fail, pending } = useCreateAdhesion(token ?? "");
 
   const { showToast } = useToast();
+
   const [formData, setFormData] = useState({
     id: 0,
     membre: 0,
@@ -24,11 +26,6 @@ const CreateAdhesion = ({ open, onClose }: createUserProps) => {
     annee: "",
     date: "",
   });
-
-  const currency = [
-    { id: "usd", name: "USD" },
-    { id: "cdf", name: "CDF" },
-  ];
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -57,13 +54,13 @@ const CreateAdhesion = ({ open, onClose }: createUserProps) => {
   return (
     <Modal>
       <div className="flex justify-between items-center my-2">
-        <h2 className="text-black font-semibold">Création Adhession</h2>
+        <h2 className="text-black font-semibold">Création Adhéssion</h2>
         <span onClick={onClose} className="text-gray-600 cursor-pointer">
           x
         </span>
       </div>
       <p className="text-gray-500 text-xs font-medium my-3">
-        Ajoute une adhesion avant de pouvoir poursuivre avec les autres etapes
+        Ajoute une adhésion avant de pouvoir poursuivre avec les autres étapes
       </p>
       <form onSubmit={handleSubmit} className="flex flex-col gap-0">
         <GetMember

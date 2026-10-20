@@ -349,7 +349,6 @@ const LoanPage = () => {
 
           {/* ================= LISTE ================= */}
 
-          <div className="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
             <ListLoans
               loading={isLoading}
               onDelete={handleDelete}
@@ -357,7 +356,6 @@ const LoanPage = () => {
               onView={handleView}
               loans={currentLoans}
             />
-          </div>
 
           {/* ================= PAGINATION ================= */}
 

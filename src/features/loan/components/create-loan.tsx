@@ -5,6 +5,7 @@ import { getToken } from "../../../utlis/get-token";
 import Modal from "../../../components/modal";
 import { useCreateLoan } from "../hooks/use-create-loan";
 import GetMember from "../../members/components/get-member";
+import { currency } from "../../../utlis/currency";
 
 type createLoanProps = {
   open: boolean;
@@ -17,13 +18,11 @@ const CreateLoan = ({ onClose, open }: createLoanProps) => {
 
   const { showToast } = useToast();
   const [formData, setFormData] = useState({
-    id: 0,
+    montant_emprunt: 0,
+    devise: "",
+    taux_interet: 4,
     membre: 0,
-    montant: 0,
-    taux_interet: 0,
-    total_a_payer: 0,
-    balance: 0,
-    date: "",
+    date: new Date().toLocaleDateString("en-CA"),
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -41,6 +40,10 @@ const CreateLoan = ({ onClose, open }: createLoanProps) => {
         showToast(fail, "error");
       }
     }
+  };
+
+  const handleDeviseChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setFormData({ ...formData, devise: event.target.value });
   };
 
   if (!open) return null;
@@ -71,29 +74,26 @@ const CreateLoan = ({ onClose, open }: createLoanProps) => {
           <label className="text-gray-900 text-xs font-semibold">Montant</label>
           <input
             type="text"
-            value={formData.montant}
+            value={formData.montant_emprunt}
             onChange={(e) =>
-              setFormData({ ...formData, montant: Number(e.target.value) })
+              setFormData({
+                ...formData,
+                montant_emprunt: Number(e.target.value),
+              })
             }
             placeholder="Téléphone"
             className="border border-gray-400 text-black py-2 pl-2 rounded text-sm w-full"
           />
         </div>
 
-        <div className="w-full my-1">
-          <label className="text-gray-900 text-xs font-semibold">Taux</label>
-          <input
-            type="text"
-            value={formData.taux_interet}
-            onChange={(e) =>
-              setFormData({ ...formData, taux_interet: Number(e.target.value) })
-            }
-            placeholder="Taux"
-            className="border border-gray-400 text-black py-2 pl-2 rounded text-sm w-full"
-          />
+        <div className="bg-green-50 text-green-700 rounded-lg py-4 px-2 border my-2">
+          <p className="text-xs">
+            Le taux applique a l'emprunt actuel est de{" "}
+            <span className="font-bold">4</span>
+          </p>
         </div>
 
-        <div className="w-full my-1">
+        {/* <div className="w-full my-1">
           <label className="text-gray-900 text-xs font-semibold">Total</label>
           <input
             type="text"
@@ -105,6 +105,33 @@ const CreateLoan = ({ onClose, open }: createLoanProps) => {
               })
             }
             placeholder="Total"
+            className="border border-gray-400 text-black py-2 pl-2 rounded text-sm w-full"
+          />
+        </div> */}
+
+        <div className="w-full my-1">
+          <label className="text-gray-900 text-xs font-semibold">Devise</label>
+          <select
+            className="border border-gray-400 text-black py-2 pl-2 rounded text-xs w-full cursor-pointer"
+            onChange={handleDeviseChange}
+            value={formData.devise}
+          >
+            <option value="">-- Devise --</option>
+            {currency.map((m) => (
+              <option key={m.id} value={m.id} className="cursor-pointer">
+                {m.name}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className="w-full my-1">
+          <label className="text-gray-900 text-xs font-semibold">Date</label>
+          <input
+            type="date"
+            value={formData.date}
+            onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+            placeholder="Taux"
             className="border border-gray-400 text-black py-2 pl-2 rounded text-sm w-full"
           />
         </div>

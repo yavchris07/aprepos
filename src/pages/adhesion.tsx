@@ -269,14 +269,14 @@ const AdhesionPage = () => {
           </div>
 
           {/* TABLEAU */}
-          <div className="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
+          {/* <div className="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm"> */}
             <ListAdhesion
               adhesions={filteredData}
               loading={isLoading}
               onDelete={handleDelete}
               onEdit={handleEdit}
             />
-          </div>
+          {/* </div> */}
 
           {/* PAGINATION */}
           {(pagination?.next || pagination?.previous) && (

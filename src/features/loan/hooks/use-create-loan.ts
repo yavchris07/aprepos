@@ -1,12 +1,12 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import type { Loan } from "../../../utlis/type";
 import { loanApi } from "..";
+import type { CreateLoanPayload } from "../type";
 
 export const useCreateLoan = (token: string) => {
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
-    mutationFn: (data: Loan) => loanApi.create(data, token),
+    mutationFn: (data: CreateLoanPayload) => loanApi.create(data, token),
 
     onSuccess: () => {
       queryClient.invalidateQueries({

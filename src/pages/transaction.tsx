@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import RootLayout from "../components/root-layout";
-import type { Account, Transaction } from "../utlis/type";
+import type { Account } from "../utlis/type";
 import ListTransaction from "../features/transactions/components/list-transactions";
 import EditTransaction from "../features/transactions/components/edit-transaction";
 import DeleteTransaction from "../features/transactions/components/delete-transaction";
@@ -22,6 +22,7 @@ import {
   ArrowBigLeft,
   ArrowBigRight,
 } from "lucide-react";
+import type { Transaction } from "../features/transactions/type";
 
 const TransactionPage = () => {
   const token = getToken();
@@ -73,7 +74,7 @@ const TransactionPage = () => {
     }
 
     return transactions.filter((item) =>
-      String(item.compte ?? "")
+      String(item.compte_details.membre_nom ?? "")
         .toLowerCase()
         .includes(query),
     );
@@ -88,7 +89,7 @@ const TransactionPage = () => {
   // PAGINATION
   // ============================
 
-  const itemsPerPage = 18;
+  const itemsPerPage = 10;
 
   const totalPages = Math.ceil(filteredData.length / itemsPerPage);
 
@@ -111,7 +112,7 @@ const TransactionPage = () => {
     return transactions.filter((item) =>
       String(item.type_transaction ?? item.type_transaction ?? "")
         .toLowerCase()
-        .includes("depot"),
+        .includes("in"),
     );
   }, [transactions]);
 
@@ -119,7 +120,7 @@ const TransactionPage = () => {
     return transactions.filter((item) =>
       String(item.type_transaction ?? item.type_transaction ?? "")
         .toLowerCase()
-        .includes("retrait"),
+        .includes("out"),
     );
   }, [transactions]);
 
@@ -127,11 +128,7 @@ const TransactionPage = () => {
     return deposits.reduce(
       (total, item) =>
         total +
-        Number(
-          (item.montant ?? item.montant ?? item.type_transaction === "depot")
-            ? 0
-            : 0,
-        ),
+        Number(item.type_transaction === "in" ? (item.montant ?? 0) : 0),
       0,
     );
   }, [deposits]);
@@ -140,17 +137,20 @@ const TransactionPage = () => {
     return withdrawals.reduce(
       (total, item) =>
         total +
-        Number(
-          (item.montant ?? item.montant ?? item.type_transaction === "retrait")
-            ? 0
-            : 0,
-        ),
+        Number(item.type_transaction === "out" ? (item.montant ?? 0) : 0),
       0,
     );
   }, [withdrawals]);
 
   const volume = totalDeposits + totalWithdrawals;
 
+  console.log("TRX ", transactions);
+  console.log("depot ", totalWithdrawals);
+  console.log("retrait ", totalDeposits);
+  console.log("in ", deposits);
+  console.log("out", withdrawals);
+
+  console.log("Volum", volume);
   return (
     <RootLayout>
       <div className="min-h-screen bg-gray-50/60">
@@ -378,14 +378,14 @@ const TransactionPage = () => {
 
           {/* ================= LISTE ================= */}
 
-          <div className="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
-            <ListTransaction
-              loading={isLoading}
-              onDelete={handleDelete}
-              onEdit={handleEdit}
-              transactions={currentTransactions}
-            />
-          </div>
+          {/* <div className="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm"> */}
+          <ListTransaction
+            loading={isLoading}
+            onDelete={handleDelete}
+            onEdit={handleEdit}
+            transactions={currentTransactions}
+          />
+          {/* </div> */}
 
           {/* ================= PAGINATION ================= */}
 

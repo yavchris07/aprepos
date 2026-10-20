@@ -1,9 +1,10 @@
-import type { Transaction } from "../../utlis/type";
+import type { CreateTransactionPayload, Transaction } from "./type";
+
 const API_URL = import.meta.env.VITE_API_URL;
 const BASE_URL = "/transactions/";
 
 export const transactionApi = {
-  create: async (data: Transaction, token: string) => {
+  create: async (data: CreateTransactionPayload, token: string) => {
     const res = await fetch(`${API_URL}${BASE_URL}`, {
       method: "POST",
       headers: {

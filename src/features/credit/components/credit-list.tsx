@@ -1,4 +1,4 @@
-import { Pencil, Trash2, Eye, ShoppingCart } from "lucide-react";
+import { Pencil, Trash2, Eye, ShoppingCart, BanknoteArrowDown } from "lucide-react";
 import type { CreditCantine } from "../../../utlis/type";
 import Loading from "../../../components/loading";
 
@@ -9,6 +9,7 @@ interface CreditCantineProps {
   onEdit: (credit: CreditCantine) => void;
   onViewDetails?: (credit: CreditCantine) => void;
   onCart: (credit: CreditCantine) => void;
+  refundCantine: () => void;
 }
 
 const CreditCantineList = ({
@@ -17,7 +18,8 @@ const CreditCantineList = ({
   onDelete,
   onEdit,
   onViewDetails,
-  onCart
+  onCart,
+  refundCantine
 }: CreditCantineProps) => {
   if (loading) {
     return <Loading />;
@@ -196,7 +198,7 @@ const CreditCantineList = ({
                       </button>
 
                       {/* Cart */}
-                       <button
+                      <button
                         type="button"
                         onClick={() => onCart(credit)}
                         title="Supprimer"
@@ -204,6 +206,15 @@ const CreditCantineList = ({
                         className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg text-gray-400 transition hover:bg-blue-100 hover:text-blue-600"
                       >
                         <ShoppingCart size={15} />
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => refundCantine()}
+                        title="Rembourser"
+                        aria-label={`Supprimer le crédit ${credit.id}`}
+                        className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg text-gray-400 transition hover:bg-purple-100 hover:text-purple-600"
+                      >
+                        <BanknoteArrowDown size={15} />
                       </button>
                     </div>
                   </td>

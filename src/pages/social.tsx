@@ -324,14 +324,14 @@ const SocialPage = () => {
 
           {/* ================= LIST ================= */}
 
-          <div className="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
+          {/* <div className="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm"> */}
             <ListSocial
               loading={isLoading}
               onDelete={handleDelete}
               onEdit={handleEdit}
               socials={currentSocials}
             />
-          </div>
+          {/* </div> */}
 
           {/* ================= PAGINATION ================= */}
 

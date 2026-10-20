@@ -3,13 +3,6 @@ import { useEffect, useState } from "react";
 import { accountApi } from "..";
 import type { Account } from "../../../utlis/type";
 
-// type Account = {
-//   id: number;
-//   numero_compte: string;
-//   membre: string;
-
-// };
-
 type Props = {
   value?: number;
   onChange: (account: Account) => void;
