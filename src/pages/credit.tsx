@@ -47,7 +47,8 @@ const Credit = () => {
     setCartModal(true);
   };
 
-  const handleRefund = () => {
+  const handleRefund = (credit: CreditCantine) => {
+      setSelectedItem(credit);
     setRefundModal(true);
   };
 
@@ -56,7 +57,7 @@ const Credit = () => {
     isLoading,
     isFetching,
   } = useCredits(token ?? "", currentPage);
-  console.log("ITEMS : ", items);
+  // console.log("ITEMS : ", items);
   const pagination = items?.pagination;
   const credits = items?.creditCantine ?? [];
 
@@ -202,9 +203,10 @@ const Credit = () => {
 
         {refundModal && selectedItem && (
           <CreateRefundCantine
-            creditId={selectedItem.id}
+            credit={selectedItem}
             onClose={() => setRefundModal(false)}
             open={refundModal}
+            token={token ?? ""}
           />
         )}
 

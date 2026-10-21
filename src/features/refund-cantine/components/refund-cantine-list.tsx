@@ -98,7 +98,7 @@ const RefundCantineList = ({
                       {/* Informations */}
                       <div className="min-w-0">
                         <p className="truncate text-xs font-semibold text-gray-800">
-                          {refundCantine.credit_cantine || "-"}
+                          #{refundCantine.credit_cantine || "-"}
                         </p>
                       </div>
                     </div>

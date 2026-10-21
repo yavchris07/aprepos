@@ -5,14 +5,14 @@ import { useCreateRefund } from "../hooks/use-create-refund";
 // import GetMember from "../../members/components/get-member";
 import type { Loan } from "../../loan/type";
 
-type createSocialProps = {
+type createRefundProps = {
   open: boolean;
   onClose: () => void;
   loan: Loan;
   token: string;
 };
 
-const CreateRefund = ({ onClose, open, loan, token }: createSocialProps) => {
+const CreateRefund = ({ onClose, open, loan, token }: createRefundProps) => {
   const { create, fail, pending } = useCreateRefund(token ?? "");
   const { showToast } = useToast();
   const [formData, setFormData] = useState({

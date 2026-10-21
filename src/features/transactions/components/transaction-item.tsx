@@ -9,7 +9,7 @@ const TransactionItem = ({item}:tansactionItemProps) => {
       <div className="flex flex-row items-center gap-2">
         <ArrowUpDown size={17}/>
         <div className="flex flex-col gap-0">
-          <h3 className="text-sm">{item.compte}</h3>
+          <h3 className="text-sm">{item.compte_details.membre_nom}</h3>
           <span className="text-[10px] text-orange-900">{item.reference}</span>
         </div>
       </div>

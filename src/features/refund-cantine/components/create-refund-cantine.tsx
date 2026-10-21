@@ -1,31 +1,35 @@
 import React, { useState } from "react";
-import { Landmark, Loader2 } from "lucide-react";
+import { BanknoteArrowDown, Landmark, Loader2, X } from "lucide-react";
 import { useToast } from "../../../components/toast-context";
-import { getToken } from "../../../utlis/get-token";
+// import { getToken } from "../../../utlis/get-token";
 import { useCreateRefundCantine } from "../hooks/use-create-refund-cantine";
+import { currency } from "../../../utlis/currency";
+import type { CreditCantine } from "../../../utlis/type";
 // import GetMember from "../../members/components/get-member";
 
 type createRefundCantineProps = {
   open: boolean;
   onClose: () => void;
-  creditId: number;
+  credit: CreditCantine;
+  token: string;
 };
 
 const CreateRefundCantine = ({
   onClose,
   open,
-  creditId,
+  credit,
+  token,
 }: createRefundCantineProps) => {
-  const token = getToken();
   const { create, fail, pending } = useCreateRefundCantine(token ?? "");
   const { showToast } = useToast();
   const [formData, setFormData] = useState({
-    credit_cantine: creditId,
+    credit_cantine: credit.id,
     montant: 0,
     devise: "",
-    date: "",
+    date: new Date().toLocaleDateString("en-CA"),
   });
 
+  
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
@@ -43,17 +47,17 @@ const CreateRefundCantine = ({
     }
   };
 
-  const devies = [
-    { id: "usd", name: "Dollars Americains" },
-    { id: "cdf", name: "Francs congolais" },
-  ];
+  // const devies = [
+  //   { id: "usd", name: "Dollars Americains" },
+  //   { id: "cdf", name: "Francs congolais" },
+  // ];
 
   if (!open) return null;
 
   return (
     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
       <div className="bg-zinc-50 p-4 rounded w-112.5 shadow-sm">
-        <div className="flex justify-between items-center my-2">
+        {/* <div className="flex justify-between items-center my-2">
           <h2 className="text-black font-semibold">
             Création remboursement cantine
           </h2>
@@ -63,10 +67,56 @@ const CreateRefundCantine = ({
         </div>
         <p className="text-gray-500 text-xs font-medium my-3">
           Remboursement cantine.
-        </p>
-        <form onSubmit={handleSubmit} className="flex flex-col gap-0">
+        </p> */}
+
+        <div className="flex items-start justify-between border-b border-gray-100 pb-4">
           <div>
-            <p>Jeton : #{formData.credit_cantine}</p>
+            <div className="flex items-center gap-2">
+              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-green-100">
+                <BanknoteArrowDown size={18} className="text-green-700" />
+              </div>
+
+              <div>
+                <h2 className="text-sm font-bold text-gray-900">
+                  Création remboursement cantine
+                </h2>
+
+                <p className="mt-0.5 text-[11px] text-gray-400">
+                  Remboursement cantine.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <button
+            type="button"
+            onClick={onClose}
+            disabled={pending}
+            aria-label="Fermer"
+            className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg text-gray-400 transition hover:bg-gray-100 hover:text-gray-700 disabled:cursor-not-allowed"
+          >
+            <X size={17} />
+          </button>
+        </div>
+
+        <form onSubmit={handleSubmit} className="flex flex-col gap-0">
+         <div className="rounded-lg border border-green-100 bg-green-50 px-3 py-2.5">
+            <div className="flex items-center justify-between">
+              <div>
+                <h2 className="text-xs font-semibold text-gray-700">
+                  {credit.nom_membre}
+                </h2>
+
+                <p className="mt-0.5 text-[10px] text-gray-400">
+                  {credit.balance}
+                </p>
+              </div>
+
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-white px-2.5 py-1 text-[10px] font-semibold text-green-700 shadow-sm">
+                <span className="h-1.5 w-1.5 rounded-full bg-green-600" />
+                {credit.devise}
+              </span>
+            </div>
           </div>
           <div className="w-full my-2">
             <label className="text-gray-900 text-xs font-semibold">
@@ -101,7 +151,7 @@ const CreateRefundCantine = ({
             >
               <option value="">Sélectionner un type</option>
 
-              {devies.map((kind) => (
+              {currency.map((kind) => (
                 <option key={kind.id} value={kind.id}>
                   {kind.name}
                 </option>

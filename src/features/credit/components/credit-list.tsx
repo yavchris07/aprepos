@@ -9,7 +9,7 @@ interface CreditCantineProps {
   onEdit: (credit: CreditCantine) => void;
   onViewDetails?: (credit: CreditCantine) => void;
   onCart: (credit: CreditCantine) => void;
-  refundCantine: () => void;
+  refundCantine: (credit: CreditCantine) => void;
 }
 
 const CreditCantineList = ({
@@ -209,7 +209,7 @@ const CreditCantineList = ({
                       </button>
                       <button
                         type="button"
-                        onClick={() => refundCantine()}
+                        onClick={() => refundCantine(credit)}
                         title="Rembourser"
                         aria-label={`Supprimer le crédit ${credit.id}`}
                         className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg text-gray-400 transition hover:bg-purple-100 hover:text-purple-600"

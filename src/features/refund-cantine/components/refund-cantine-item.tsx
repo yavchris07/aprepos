@@ -10,7 +10,7 @@ const RefundCantineItem = ({ item }: refundCantinItemProps) => {
       <div className="flex flex-row items-center gap-2">
         <ArrowUpDown size={17} />
         <div className="flex flex-col gap-0">
-          <h3 className="text-sm">{item.credit_cantine}</h3>
+          <h3 className="text-sm">Jeton {item.credit_cantine}</h3>
           <span className="text-[10px] text-orange-900">{item.date}</span>
         </div>
       </div>
