@@ -8,10 +8,17 @@ interface loanProps {
   onDelete: (loans: Loan) => void;
   onEdit: (loan: Loan) => void;
   onView: (loan: Loan) => void;
-  onRefund: (loan:Loan) => void;
+  onRefund: (loan: Loan) => void;
 }
 
-const ListLoans = ({ loans, loading, onDelete, onEdit, onView, onRefund }: loanProps) => {
+const ListLoans = ({
+  loans,
+  loading,
+  onDelete,
+  onEdit,
+  onView,
+  onRefund,
+}: loanProps) => {
   // console.log('VVV :',loans)
   if (loading) return <Loading />;
 

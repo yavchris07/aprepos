@@ -3,8 +3,10 @@ import { Loader2 } from "lucide-react";
 import { useToast } from "../../../components/toast-context";
 import { getToken } from "../../../utlis/get-token";
 import Modal from "../../../components/modal";
-import type { Loan, Member } from "../../../utlis/type";
+// import type { Loan, Member } from "../../../utlis/type";
 import { useEditLoan } from "../hooks/use-edit-loans";
+import type { Loan } from "../type";
+import type { Member } from "../../../utlis/type";
 
 type editLoanProps = {
   open: boolean;
@@ -21,7 +23,7 @@ const EditLoan = ({ onClose, open, members, loan }: editLoanProps) => {
   const [formData, setFormData] = useState({
     id: loan.id,
     membre: loan.membre,
-    montant: loan.montant,
+    montant: loan.montant_emprunt,
     taux_interet: loan.taux_interet,
     total_a_payer: loan.total_a_payer,
     balance: loan.balance,
@@ -31,7 +33,13 @@ const EditLoan = ({ onClose, open, members, loan }: editLoanProps) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await editLoan(formData);
+      await editLoan({
+        ...loan,
+        membre: formData.membre,
+        montant_emprunt: formData.montant,
+        taux_interet: formData.taux_interet,
+        total_a_payer: formData.total_a_payer,
+      });
       showToast("Création reussie !", "success");
       onClose();
     } catch (e) {
@@ -84,7 +92,7 @@ const EditLoan = ({ onClose, open, members, loan }: editLoanProps) => {
             type="text"
             value={formData.montant}
             onChange={(e) =>
-              setFormData({ ...formData, montant: Number(e.target.value) })
+              setFormData({ ...formData, montant: e.target.value })
             }
             placeholder="Téléphone"
             className="border border-gray-400 text-black py-2 pl-2 rounded text-sm w-full"

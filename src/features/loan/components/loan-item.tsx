@@ -1,6 +1,5 @@
 import { UserRoundArrowLeft } from "lucide-react"
 import type { Loan } from "../type"
-// import type { Loan } from "../../../utlis/type"
 
 type loanItemProps = {item : Loan}
 

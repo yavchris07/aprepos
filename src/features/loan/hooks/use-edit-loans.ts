@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { loanApi } from "..";
-import type { Loan } from "../../../utlis/type";
+import type { Loan } from "../type";
+// import type { Loan } from "../../../utlis/type";
 
 export const useEditLoan = (token: string) => {
   const queryClient = useQueryClient();

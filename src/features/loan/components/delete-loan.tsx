@@ -1,10 +1,10 @@
 import { Loader2 } from "lucide-react";
 import React, { useState } from "react";
-import type { Loan } from "../../../utlis/type";
 import { useToast } from "../../../components/toast-context";
 import { getToken } from "../../../utlis/get-token";
 import Modal from "../../../components/modal";
 import { useDeleteLoan } from "../hooks/use-delete-loan";
+import type { Loan } from "../type";
 
 type deleteLoanProps = {
   open: boolean;

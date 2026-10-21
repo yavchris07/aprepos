@@ -1,5 +1,6 @@
 import LoanItem from "../features/loan/components/loan-item";
-import type { Loan } from "../utlis/type";
+import type { Loan } from "../features/loan/type";
+// import type { Loan } from "../utlis/type";
 
 type loanItemListProps = { items: Loan[] };
 
