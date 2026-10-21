@@ -6,7 +6,7 @@ export const useRates = (token: string) => {
     queryKey: ["rates"],
     queryFn: async () => rateApi.getAll(token),
     select: (data) => ({
-      socials: data.results,
+      rates: data.results,
       pagination: {
         count: data.count,
         next: data.next,

@@ -22,7 +22,7 @@ const SidebarItems = () => {
   const location = useLocation();
   const user = getCurrentUser();
 
-  console.log("CURRENT USER : ", user);
+  // console.log("CURRENT USER : ", user);
 
   const sections = [
     {

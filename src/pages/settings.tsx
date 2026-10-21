@@ -5,11 +5,6 @@ import {
   // Building2,
   Percent,
   Users,
-  // ShieldCheck,
-  // Bell,
-  // Palette,
-  // Database,
-  ChevronRight,
   Plus,
   Pencil,
   // Lock,
@@ -17,6 +12,8 @@ import {
   // FileText,
   // Settings2,
   Trash2,
+  // Lock,
+  Sigma,
 } from "lucide-react";
 import { useState } from "react";
 
@@ -26,12 +23,24 @@ import { getToken } from "../utlis/get-token";
 import type { Kind } from "../utlis/type";
 import DeleteKind from "../features/kind/components/delete-kind";
 import EditKind from "../features/kind/components/edit-kind";
+import { SettingCard } from "../components/setting-card";
+import ListRate from "../features/rate/components/list-rate";
+import type { Rate } from "../features/rate/type";
+import CreateRate from "../features/rate/components/create-rate";
+import EditRate from "../features/rate/components/edit-rate";
+import DeleteRate from "../features/rate/components/delete-rate";
+import { useRates } from "../features/rate/hooks/use-rates";
 
 const SettingPage = () => {
   const [modal, setModal] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
   const [editModal, setEditModal] = useState(false);
   const [selectedKind, setSelectedKind] = useState<Kind | null>(null);
+
+  const [modalRate, setModalRate] = useState(false);
+  const [deleteRateModal, setDeleteRateModal] = useState(false);
+  const [editRateModal, setEditRateModal] = useState(false);
+  const [selectedRate, setSelectedRate] = useState<Rate | null>(null);
 
   const handleDeleteKind = (kind: Kind) => {
     setSelectedKind(kind);
@@ -43,17 +52,26 @@ const SettingPage = () => {
     setEditModal(true);
   };
 
+  const handleDeleteRate = (rate: Rate) => {
+    setSelectedRate(rate);
+    setDeleteRateModal(true);
+  };
+
+  const handleEditRate = (rate: Rate) => {
+    setSelectedRate(rate);
+    setEditRateModal(true);
+  };
+
   const token = getToken();
   const { data } = useKinds(token ?? "");
-
+  const { data: rates, isLoading } = useRates(token ?? "");
   const kinds: Kind[] = data?.kinds ?? [];
+  const items: Rate[] = rates?.rates ?? [];
 
   return (
     <RootLayout>
       <div className="min-h-screen bg-gray-50/60 pb-10">
-
         <div className="space-y-6">
-
           {/* =====================================================
               HEADER
           ===================================================== */}
@@ -62,19 +80,15 @@ const SettingPage = () => {
             <div className="flex items-center gap-2 text-xs text-gray-400">
               <span>Tableau de bord</span>
               <span>/</span>
-              <span className="text-gray-600">
-                Paramètres
-              </span>
+              <span className="text-gray-600">Paramètres</span>
             </div>
 
             <div className="mt-1">
-              <h1 className="text-xl font-bold text-gray-900">
-                Paramètres
-              </h1>
+              <h1 className="text-xl font-bold text-gray-900">Paramètres</h1>
 
               <p className="mt-1 text-sm text-gray-500">
-                Configurez les paramètres généraux et le fonctionnement
-                de votre plateforme.
+                Configurez les paramètres généraux et le fonctionnement de votre
+                plateforme.
               </p>
             </div>
           </div>
@@ -84,11 +98,8 @@ const SettingPage = () => {
           ===================================================== */}
 
           <div className="rounded-xl border border-gray-200 bg-white shadow-sm">
-
             <div className="flex flex-col gap-5 p-5 sm:flex-row sm:items-center sm:justify-between">
-
               <div className="flex items-center gap-4">
-
                 <div className="flex h-16 w-16 items-center justify-center overflow-hidden rounded-full border border-gray-200 bg-green-50">
                   <img
                     src={icon}
@@ -116,7 +127,6 @@ const SettingPage = () => {
                     Gestionnaire principal
                   </p>
                 </div>
-
               </div>
 
               <button
@@ -126,9 +136,7 @@ const SettingPage = () => {
                 <User size={16} />
                 Modifier le profil
               </button>
-
             </div>
-
           </div>
 
           {/* =====================================================
@@ -174,7 +182,6 @@ const SettingPage = () => {
           ===================================================== */}
 
           <section>
-
             <div className="mb-3">
               <h2 className="text-sm font-semibold text-gray-900">
                 Paramètres financiers
@@ -186,15 +193,11 @@ const SettingPage = () => {
             </div>
 
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-
               {/* Taux */}
 
               <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm">
-
                 <div className="flex items-start justify-between">
-
                   <div className="flex gap-3">
-
                     <div className="rounded-lg bg-orange-50 p-2.5 text-orange-700">
                       <Percent size={19} />
                     </div>
@@ -208,31 +211,22 @@ const SettingPage = () => {
                         Taux utilisé pour les emprunts.
                       </p>
                     </div>
-
                   </div>
 
                   <button className="rounded-lg p-2 text-gray-400 hover:bg-gray-50 hover:text-gray-700">
                     <Pencil size={15} />
                   </button>
-
                 </div>
 
                 <div className="mt-5 flex items-end gap-2">
-
-                  <span className="text-3xl font-bold text-gray-900">
-                    4
-                  </span>
+                  <span className="text-3xl font-bold text-gray-900">4</span>
 
                   <span className="mb-1 text-sm font-medium text-gray-500">
                     %
                   </span>
-
                 </div>
 
-                <p className="mt-1 text-xs text-gray-400">
-                  Taux actuel
-                </p>
-
+                <p className="mt-1 text-xs text-gray-400">Taux actuel</p>
               </div>
 
               {/* Devise */}
@@ -243,19 +237,64 @@ const SettingPage = () => {
                 description="Devise principale utilisée pour les opérations."
                 value="CDF — Franc congolais"
               />
-
             </div>
-
           </section>
 
+          {/* TAUX  */}
+          <section>
+            <div className="mb-3 flex items-end justify-between">
+              <div>
+                <h2 className="text-sm font-semibold text-gray-900">
+                  Gestion de taux d'interet
+                </h2>
+
+                <p className="text-xs text-gray-500">
+                  Gérez les taux d'interets pour tous les emprunts.
+                </p>
+              </div>
+            </div>
+
+            <div className="rounded-xl border border-gray-200 bg-white shadow-sm">
+              <div className="flex items-center justify-between border-b border-gray-100 p-4">
+                <div className="flex items-center gap-3">
+                  <div className="rounded-lg bg-green-50 p-2.5 text-green-700">
+                    <Sigma size={19} />
+                  </div>
+
+                  <div>
+                    <h3 className="text-sm font-semibold text-gray-900">
+                      Taux d'interet
+                    </h3>
+
+                    <p className="text-xs text-gray-500">
+                      Taux disponibles pour le moment.
+                    </p>
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => setModalRate(true)}
+                  className="inline-flex h-9 items-center gap-1.5 rounded-lg bg-green-700 px-3 text-xs font-medium text-white transition hover:bg-green-800"
+                >
+                  <Plus size={15} />
+                  Ajouter
+                </button>
+              </div>
+              <ListRate
+                loading={isLoading}
+                onDelete={handleDeleteRate}
+                onEdit={handleEditRate}
+                rates={items}
+              />
+            </div>
+          </section>
           {/* =====================================================
               MEMBRES
           ===================================================== */}
 
           <section>
-
             <div className="mb-3 flex items-end justify-between">
-
               <div>
                 <h2 className="text-sm font-semibold text-gray-900">
                   Gestion des membres
@@ -265,15 +304,11 @@ const SettingPage = () => {
                   Gérez les catégories et règles liées aux membres.
                 </p>
               </div>
-
             </div>
 
             <div className="rounded-xl border border-gray-200 bg-white shadow-sm">
-
               <div className="flex items-center justify-between border-b border-gray-100 p-4">
-
                 <div className="flex items-center gap-3">
-
                   <div className="rounded-lg bg-green-50 p-2.5 text-green-700">
                     <Users size={19} />
                   </div>
@@ -287,7 +322,6 @@ const SettingPage = () => {
                       Catégories disponibles pour les membres.
                     </p>
                   </div>
-
                 </div>
 
                 <button
@@ -298,17 +332,12 @@ const SettingPage = () => {
                   <Plus size={15} />
                   Ajouter
                 </button>
-
               </div>
 
               <div className="divide-y divide-gray-100">
-
                 {kinds.length === 0 ? (
                   <div className="px-5 py-10 text-center">
-                    <Users
-                      size={28}
-                      className="mx-auto text-gray-300"
-                    />
+                    <Users size={28} className="mx-auto text-gray-300" />
 
                     <p className="mt-2 text-sm font-medium text-gray-600">
                       Aucun type de membre
@@ -324,9 +353,7 @@ const SettingPage = () => {
                       key={kind.id}
                       className="flex items-center justify-between px-5 py-3.5 transition hover:bg-gray-50"
                     >
-
                       <div className="flex items-center gap-3">
-
                         <div className="h-2 w-2 rounded-full bg-green-600" />
 
                         <div>
@@ -338,11 +365,9 @@ const SettingPage = () => {
                             Type de membre
                           </p>
                         </div>
-
                       </div>
 
                       <div className="flex items-center gap-1">
-
                         <button
                           type="button"
                           className="rounded-lg p-2 text-gray-400 transition  hover:bg-green-200 hover:text-green-700 cursor-pointer"
@@ -358,17 +383,12 @@ const SettingPage = () => {
                         >
                           <Trash2 size={15} />
                         </button>
-
                       </div>
-
                     </div>
                   ))
                 )}
-
               </div>
-
             </div>
-
           </section>
 
           {/* =====================================================
@@ -450,7 +470,7 @@ const SettingPage = () => {
           {/* =====================================================
               APPARENCE
           ===================================================== */}
-{/* 
+          {/* 
           <section>
 
             <div className="rounded-xl border border-gray-200 bg-white shadow-sm">
@@ -528,23 +548,18 @@ const SettingPage = () => {
           ===================================================== */}
 
           <div className="flex flex-col items-center justify-center border-t border-gray-200 pt-6">
-
             <img
               src={icon}
               alt="CEPARCREA"
               className="h-8 w-8 rounded-lg object-cover opacity-70"
             />
 
-            <p className="mt-2 text-xs font-medium text-gray-500">
-              CEPARCREA
-            </p>
+            <p className="mt-2 text-xs font-medium text-gray-500">CEPARCREA</p>
 
             <p className="mt-1 text-[11px] text-gray-400">
               Plateforme de gestion — Version 1.0.0
             </p>
-
           </div>
-
         </div>
       </div>
 
@@ -552,12 +567,7 @@ const SettingPage = () => {
           MODALE
       ===================================================== */}
 
-      {modal && (
-        <CreateKind
-          onClose={() => setModal(false)}
-          open={modal}
-        />
-      )}
+      {modal && <CreateKind onClose={() => setModal(false)} open={modal} />}
 
       {deleteModal && selectedKind && (
         <DeleteKind
@@ -575,65 +585,32 @@ const SettingPage = () => {
         />
       )}
 
+      {/* rate */}
+
+      {modalRate && (
+        <CreateRate
+          onClose={() => setModalRate(false)}
+          open={modalRate}
+          token={token ?? ""}
+        />
+      )}
+      {editRateModal && selectedRate && (
+        <EditRate
+          onClose={() => setEditRateModal(false)}
+          open={editRateModal}
+          rate={selectedRate}
+          token={token ?? ""}
+        />
+      )}
+      {deleteRateModal && selectedRate && (
+        <DeleteRate
+          onClose={() => setDeleteRateModal(false)}
+          open={deleteRateModal}
+          rate={selectedRate}
+        />
+      )}
     </RootLayout>
   );
 };
 
-/* =========================================================
-   COMPOSANT CARTE PARAMÈTRE
-========================================================= */
-
-type SettingCardProps = {
-  icon: React.ReactNode;
-  title: string;
-  description: string;
-  value?: string;
-};
-
-const SettingCard = ({
-  icon,
-  title,
-  description,
-  value,
-}: SettingCardProps) => {
-  return (
-    <button
-      type="button"
-      className="group flex w-full items-center justify-between rounded-xl border border-gray-200 bg-white p-5 text-left shadow-sm transition hover:border-gray-300 hover:shadow-md"
-    >
-
-      <div className="flex items-center gap-3">
-
-        <div className="rounded-lg bg-gray-100 p-2.5 text-gray-600 transition group-hover:bg-green-50 group-hover:text-green-700">
-          {icon}
-        </div>
-
-        <div>
-          <h3 className="text-sm font-semibold text-gray-900">
-            {title}
-          </h3>
-
-          <p className="mt-1 text-xs text-gray-500">
-            {description}
-          </p>
-
-          {value && (
-            <p className="mt-2 text-xs font-medium text-green-700">
-              {value}
-            </p>
-          )}
-        </div>
-
-      </div>
-
-      <ChevronRight
-        size={18}
-        className="shrink-0 text-gray-300 transition group-hover:text-gray-600"
-      />
-
-    </button>
-  );
-};
-
 export default SettingPage;
-

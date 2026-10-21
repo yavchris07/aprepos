@@ -44,7 +44,7 @@ const ListLoans = ({ loans, loading, onDelete, onEdit, onView }: loanProps) => {
               scope="col"
               className="px-6 py-4 max-w-xs text-left md:max-w-md"
             >
-              Periode
+              Période
             </th>
             <th
               scope="col"
@@ -83,7 +83,9 @@ const ListLoans = ({ loans, loading, onDelete, onEdit, onView }: loanProps) => {
                 <span className="font-medium">{loan.total_a_payer}</span>
               </td>
               <td className="whitespace-nowrap px-6 py-2">
-                <span className="font-medium text-red-700">{loan.duree_mois}</span>
+                <span className="font-medium text-red-700">
+                  {loan.duree_mois}
+                </span>
               </td>
               <td className="whitespace-nowrap px-6 py-2">
                 <span className="font-medium">{loan.date}</span>
