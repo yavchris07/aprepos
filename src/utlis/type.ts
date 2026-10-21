@@ -56,16 +56,6 @@ export type Account = {
   membre_nom?: string;
 };
 
-export type Loan = {
-  id: number;
-  membre: number;
-  montant: number;
-  taux_interet: number;
-  total_a_payer: number;
-  balance: number;
-  date: string;
-};
-
 export type Social = {
   id: number;
   membre: number;

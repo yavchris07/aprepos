@@ -23,6 +23,8 @@ const CreateLoan = ({ onClose, open }: createLoanProps) => {
     taux_interet: 4,
     membre: 0,
     date: new Date().toLocaleDateString("en-CA"),
+    est_solde:true,
+    duree_mois:0
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -86,29 +88,6 @@ const CreateLoan = ({ onClose, open }: createLoanProps) => {
           />
         </div>
 
-        <div className="bg-green-50 text-green-700 rounded-lg py-4 px-2 border my-2">
-          <p className="text-xs">
-            Le taux applique a l'emprunt actuel est de{" "}
-            <span className="font-bold">4</span>
-          </p>
-        </div>
-
-        {/* <div className="w-full my-1">
-          <label className="text-gray-900 text-xs font-semibold">Total</label>
-          <input
-            type="text"
-            value={formData.total_a_payer}
-            onChange={(e) =>
-              setFormData({
-                ...formData,
-                total_a_payer: Number(e.target.value),
-              })
-            }
-            placeholder="Total"
-            className="border border-gray-400 text-black py-2 pl-2 rounded text-sm w-full"
-          />
-        </div> */}
-
         <div className="w-full my-1">
           <label className="text-gray-900 text-xs font-semibold">Devise</label>
           <select
@@ -123,6 +102,30 @@ const CreateLoan = ({ onClose, open }: createLoanProps) => {
               </option>
             ))}
           </select>
+        </div>
+
+        <div className="bg-green-50 text-green-700 rounded-lg py-4 px-2 border my-2">
+          <p className="text-xs">
+            Le taux applique a l'emprunt actuel est de{" "}
+            <span className="font-bold">4</span>
+          </p>
+        </div>
+
+
+        <div className="w-full my-1">
+          <label className="text-gray-900 text-xs font-semibold">Durée</label>
+          <input
+            type="text"
+            value={formData.duree_mois}
+            onChange={(e) =>
+              setFormData({
+                ...formData,
+                duree_mois: Number(e.target.value),
+              })
+            }
+            placeholder="Total"
+            className="border border-gray-400 text-black py-2 pl-2 rounded text-sm w-full"
+          />
         </div>
 
         <div className="w-full my-1">

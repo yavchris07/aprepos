@@ -50,14 +50,6 @@ const EditAdhesion = ({ open, onClose, adhesion }: modalProps) => {
     { id: "cdf", name: "CDF" },
   ];
 
-  // const handleDeviseChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-  //   setFormData({ ...formData, devise: event.target.value });
-  // };
-
-  // const handleMembreChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-  //   setFormData({ ...formData, membre: Number(event.target.value) });
-  // };
-
   const handleDateChange = (date: string) => {
     if (!date) {
       setFormData((prev) => ({
@@ -80,6 +72,7 @@ const EditAdhesion = ({ open, onClose, adhesion }: modalProps) => {
   };
 
   if (!open) return null;
+  
   return (
     <Modal>
       <div className="w-full max-w-md">

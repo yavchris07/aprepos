@@ -1,6 +1,6 @@
 import { Eye, Pencil, Trash2 } from "lucide-react";
-import type { Loan } from "../../../utlis/type";
 import Loading from "../../../components/loading";
+import type { Loan } from "../type";
 
 interface loanProps {
   loans: Loan[];
@@ -11,7 +11,9 @@ interface loanProps {
 }
 
 const ListLoans = ({ loans, loading, onDelete, onEdit, onView }: loanProps) => {
+  // console.log('VVV :',loans)
   if (loading) return <Loading />;
+
   return (
     <div className="w-full bg-gray-100 my-2">
       <table className="text-black w-full">
@@ -42,7 +44,7 @@ const ListLoans = ({ loans, loading, onDelete, onEdit, onView }: loanProps) => {
               scope="col"
               className="px-6 py-4 max-w-xs text-left md:max-w-md"
             >
-              Reste
+              Periode
             </th>
             <th
               scope="col"
@@ -66,20 +68,22 @@ const ListLoans = ({ loans, loading, onDelete, onEdit, onView }: loanProps) => {
                 <span className="font-medium">{loan.id}</span>
               </td>
               <td className="whitespace-nowrap px-6 py-2">
-                <span className="font-medium">{loan.membre}</span>
+                <span className="font-medium">{loan.membre_nom}</span>
               </td>
               <td className="whitespace-nowrap px-6 py-2">
-                <span>{loan.montant}</span>
+                <span>
+                  {loan.montant_emprunt} {loan.devise === "usd" ? "$" : "FC"}
+                </span>
               </td>
 
-              <td className="whitespace-nowrap px-6 py-2">
-                <span className="font-medium">{loan.total_a_payer}</span>
-              </td>
               <td className="whitespace-nowrap px-6 py-2">
                 <span className="font-medium">{loan.taux_interet}</span>
               </td>
               <td className="whitespace-nowrap px-6 py-2">
-                <span className="font-medium text-red-700">{loan.balance}</span>
+                <span className="font-medium">{loan.total_a_payer}</span>
+              </td>
+              <td className="whitespace-nowrap px-6 py-2">
+                <span className="font-medium text-red-700">{loan.duree_mois}</span>
               </td>
               <td className="whitespace-nowrap px-6 py-2">
                 <span className="font-medium">{loan.date}</span>
@@ -88,20 +92,20 @@ const ListLoans = ({ loans, loading, onDelete, onEdit, onView }: loanProps) => {
                 {/* onView={} onEdit={} onDelete={} */}
                 <button
                   onClick={() => onView(loan)}
-                  className=" hover:bg-gray-100 cursor-pointer"
+                  className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg text-gray-400 transition hover:bg-blue-100 hover:text-blue-700"
                 >
                   <Eye size={16} />
                 </button>
                 <button
                   onClick={() => onEdit(loan)}
-                  className=" hover:bg-gray-100 cursor-pointer"
+                  className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg text-gray-400 transition hover:bg-green-100 hover:text-green-700"
                 >
                   <Pencil size={16} />
                 </button>
 
                 <button
                   onClick={() => onDelete(loan)}
-                  className=" text-red-600 hover:bg-red-50 cursor-pointer"
+                  className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg text-gray-400 transition hover:bg-red-50 hover:text-red-600"
                 >
                   <Trash2 size={16} />
                 </button>

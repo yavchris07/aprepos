@@ -23,7 +23,7 @@ const EditTransaction = ({ accounts, onClose, open , transaction}: createAccount
     compte: transaction.compte,
     type_transaction: transaction.type_transaction,
     montant: transaction.montant,
-    created_at:transaction.created_at,
+    created_at: transaction.created_at ? transaction.created_at.split('T')[0] : "",
     reference:transaction.reference
   });
 
@@ -47,6 +47,8 @@ const EditTransaction = ({ accounts, onClose, open , transaction}: createAccount
   const handleAccountChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setFormData({ ...formData, compte: Number(event.target.value) });
   };
+
+  console.log('ACC ',accounts);
 
   if (!open) return null;
   return (
@@ -104,7 +106,6 @@ const EditTransaction = ({ accounts, onClose, open , transaction}: createAccount
               onChange={(e) =>
                 setFormData({ ...formData, montant: Number(e.target.value) })
               }
-              placeholder="Numéro ID"
               className="border border-gray-400 text-black py-2 pl-2 rounded text-sm w-full"
             />
           </div>
@@ -128,11 +129,10 @@ const EditTransaction = ({ accounts, onClose, open , transaction}: createAccount
             </label>
             <input
               type="date"
-              value={formData.montant}
+              value={formData.created_at}
               onChange={(e) =>
                 setFormData({ ...formData, created_at: e.target.value })
               }
-              placeholder="Numéro ID"
               className="border border-gray-400 text-black py-2 pl-2 rounded text-sm w-full"
             />
           </div>
