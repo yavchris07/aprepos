@@ -348,29 +348,6 @@ const CreateRate = ({ onClose, open, token }: CreateRateProps) => {
           </div>
 
           {/* ===================================================
-              STATUS
-          =================================================== */}
-
-          {/* <div className="rounded-lg border border-green-100 bg-green-50 px-3 py-2.5">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-xs font-semibold text-gray-700">
-                  État du membre
-                </p>
-
-                <p className="mt-0.5 text-[10px] text-gray-400">
-                  Le membre sera enregistré comme actif.
-                </p>
-              </div>
-
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-white px-2.5 py-1 text-[10px] font-semibold text-green-700 shadow-sm">
-                <span className="h-1.5 w-1.5 rounded-full bg-green-600" />
-                Actif
-              </span>
-            </div>
-          </div> */}
-
-          {/* ===================================================
               ACTIONS
           =================================================== */}
 
@@ -401,7 +378,7 @@ const CreateRate = ({ onClose, open, token }: CreateRateProps) => {
                   Création...
                 </>
               ) : (
-                "Ajouter le membre"
+                "Ajouter"
               )}
             </button>
           </div>

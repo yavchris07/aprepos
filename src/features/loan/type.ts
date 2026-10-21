@@ -22,13 +22,3 @@ export type CreateLoanPayload = {
   duree_mois:number,
   est_solde:boolean
 };
-
-
-
-//  "montant_emprunt": "8125047",
-//   "devise": "cdf",
-//   "": 4294967295,
-//   "date": "2026-10-21",
-//   "": true,
-//   "membre": 0,
-//   "taux_interet": 0

@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import RootLayout from "../components/root-layout";
-import CreateRefund from "../features/refund/components/create-refund";
+// import CreateRefund from "../features/refund/components/create-refund";
 import ListRefund from "../features/refund/components/list-refund";
 import type { Member } from "../utlis/type";
 import EditRefund from "../features/refund/components/edit-refund";
@@ -12,7 +12,7 @@ import {
   Calculator,
   CalendarDays,
   FileDown,
-  Plus,
+  // Plus,
   RefreshCcw,
   Search,
   X,
@@ -37,7 +37,7 @@ const RefundPage = () => {
 
   const [selectedItem, setSelectedItem] = useState<Refund | null>(null);
 
-  const [modal, setModal] = useState(false);
+  // const [modal, setModal] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
   const [editModal, setEditModal] = useState(false);
   const [viewModal, setViewModal] = useState(false);
@@ -112,7 +112,7 @@ const RefundPage = () => {
           // item.montant ??
           // item.amount ??
           // item.montant_remboursement ??
-          item.montant ?? item.emprumt ?? item.montant ?? 0,
+          item.montant ??  0,
         ),
       0,
     );
@@ -125,6 +125,9 @@ const RefundPage = () => {
       0,
     );
   }, [filteredData]);
+
+
+  console.log('REFUNDS : ',refunds)
 
   return (
     <RootLayout>
@@ -151,14 +154,14 @@ const RefundPage = () => {
               </div>
             </div>
 
-            <button
+            {/* <button
               type="button"
               onClick={() => setModal(true)}
               className="inline-flex items-center justify-center gap-2 rounded-lg bg-green-700 px-4 py-2.5 text-sm font-medium text-white shadow-sm transition hover:bg-green-800 active:scale-[0.98]"
             >
               <Plus size={17} />
               Nouveau remboursement
-            </button>
+            </button> */}
           </div>
 
           {/* ================= KPI ================= */}
@@ -371,7 +374,7 @@ const RefundPage = () => {
 
       {/* ================= MODALES ================= */}
 
-      {modal && <CreateRefund onClose={() => setModal(false)} open={modal} />}
+      {/* {modal && <CreateRefund onClose={() => setModal(false)} open={modal} />} */}
 
       {editModal && selectedItem && (
         <EditRefund

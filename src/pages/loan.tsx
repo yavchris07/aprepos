@@ -1,6 +1,5 @@
 import { useMemo, useState } from "react";
 import RootLayout from "../components/root-layout";
-import type { Loan } from "../utlis/type";
 import CreateLoan from "../features/loan/components/create-loan";
 import ListLoans from "../features/loan/components/list-loan";
 import EditLoan from "../features/loan/components/edit-loan";
@@ -22,7 +21,11 @@ import {
   ArrowBigRight,
 } from "lucide-react";
 import LoanItem from "../features/loan/components/loan-item";
- 
+import { useRates } from "../features/rate/hooks/use-rates";
+import type { Rate } from "../features/rate/type";
+import type { Loan } from "../features/loan/type";
+import CreateRefund from "../features/refund/components/create-refund";
+
 const LoanPage = () => {
   const token = getToken();
 
@@ -30,6 +33,8 @@ const LoanPage = () => {
   const { data: members } = useMembers(token ?? "", 1);
 
   const loans: Loan[] = useMemo(() => data?.loans ?? [], [data?.loans]);
+  const { data: rates } = useRates(token ?? "");
+  const items: Rate[] = rates?.rates ?? [];
 
   const [selectedItem, setSelectedItem] = useState<Loan | null>(null);
 
@@ -37,6 +42,7 @@ const LoanPage = () => {
   const [deleteModal, setDeleteModal] = useState(false);
   const [editModal, setEditModal] = useState(false);
   const [viewModal, setViewModal] = useState(false);
+  const [refundModal, setRefundModal] = useState(false);
 
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -58,6 +64,11 @@ const LoanPage = () => {
   const handleView = (item: Loan) => {
     setSelectedItem(item);
     setViewModal(true);
+  };
+
+  const handleRefund = (item:Loan) => {
+    setSelectedItem(item);
+    setRefundModal(true);
   };
 
   // ============================
@@ -87,7 +98,7 @@ const LoanPage = () => {
   // PAGINATION
   // ============================
 
-  const itemsPerPage = 18;
+  const itemsPerPage = 10;
 
   const totalPages = Math.ceil(filteredData.length / itemsPerPage);
 
@@ -111,7 +122,7 @@ const LoanPage = () => {
           // item.montant ??
           // item.amount ??
           // item.montant_emprunt ??
-          item.montant ?? item.balance ?? item.total_a_payer ?? 0,
+          item.montant_emprunt ?? 0,
         ),
       0,
     );
@@ -125,7 +136,8 @@ const LoanPage = () => {
           // item.reste ??
           // item.solde ??
           // item.montant_restant ?? 0),
-          item.balance ?? item.montant ?? item.total_a_payer ?? 0,
+          // item.balance ?? item.montant_emprunt ??
+          item.total_a_payer ?? 0,
         ),
       0,
     );
@@ -349,13 +361,14 @@ const LoanPage = () => {
 
           {/* ================= LISTE ================= */}
 
-            <ListLoans
-              loading={isLoading}
-              onDelete={handleDelete}
-              onEdit={handleEdit}
-              onView={handleView}
-              loans={currentLoans}
-            />
+          <ListLoans
+            loading={isLoading}
+            onDelete={handleDelete}
+            onEdit={handleEdit}
+            onView={handleView}
+            loans={currentLoans}
+            onRefund={handleRefund}
+          />
 
           {/* ================= PAGINATION ================= */}
 
@@ -403,7 +416,13 @@ const LoanPage = () => {
 
       {/* ================= MODALES ================= */}
 
-      {modal && <CreateLoan onClose={() => setModal(false)} open={modal} />}
+      {modal && (
+        <CreateLoan
+          onClose={() => setModal(false)}
+          open={modal}
+          rates={items}
+        />
+      )}
 
       {editModal && selectedItem && (
         <EditLoan
@@ -441,6 +460,15 @@ const LoanPage = () => {
         //     open: viewModal,
         //   } as any)}
         // />
+      )}
+
+      {refundModal && selectedItem && (
+        <CreateRefund
+          onClose={() => setRefundModal(false)}
+          open={refundModal}
+          loan={selectedItem}
+          token={token ?? ""}
+        />
       )}
     </RootLayout>
   );

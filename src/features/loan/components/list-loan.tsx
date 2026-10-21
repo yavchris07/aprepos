@@ -1,4 +1,4 @@
-import { Eye, Pencil, Trash2 } from "lucide-react";
+import { BanknoteArrowDown, Eye, Pencil, Trash2 } from "lucide-react";
 import Loading from "../../../components/loading";
 import type { Loan } from "../type";
 
@@ -8,9 +8,10 @@ interface loanProps {
   onDelete: (loans: Loan) => void;
   onEdit: (loan: Loan) => void;
   onView: (loan: Loan) => void;
+  onRefund: (loan:Loan) => void;
 }
 
-const ListLoans = ({ loans, loading, onDelete, onEdit, onView }: loanProps) => {
+const ListLoans = ({ loans, loading, onDelete, onEdit, onView, onRefund }: loanProps) => {
   // console.log('VVV :',loans)
   if (loading) return <Loading />;
 
@@ -94,22 +95,45 @@ const ListLoans = ({ loans, loading, onDelete, onEdit, onView }: loanProps) => {
                 {/* onView={} onEdit={} onDelete={} */}
                 <button
                   onClick={() => onView(loan)}
-                  className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg text-gray-400 transition hover:bg-blue-100 hover:text-blue-700"
+                  className="flex h-8 w-8 cursor-pointer
+                  items-center justify-center rounded-lg
+                  text-gray-400 transition hover:bg-blue-100
+                  hover:text-blue-700"
+                  title="Details"
                 >
                   <Eye size={16} />
                 </button>
                 <button
                   onClick={() => onEdit(loan)}
-                  className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg text-gray-400 transition hover:bg-green-100 hover:text-green-700"
+                  className="flex h-8 w-8 cursor-pointer
+                  items-center justify-center rounded-lg
+                  text-gray-400 transition hover:bg-green-100
+                  hover:text-green-700"
+                  title="Modifier"
                 >
                   <Pencil size={16} />
                 </button>
 
                 <button
                   onClick={() => onDelete(loan)}
-                  className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg text-gray-400 transition hover:bg-red-50 hover:text-red-600"
+                  className="flex h-8 w-8 cursor-pointer
+                  items-center justify-center rounded-lg
+                  text-gray-400 transition hover:bg-red-50 
+                  hover:text-red-600"
+                  title="Supprimer"
                 >
                   <Trash2 size={16} />
+                </button>
+
+                <button
+                  onClick={() => onRefund(loan)}
+                  className="flex h-8 w-8 cursor-pointer 
+                  items-center justify-center rounded-lg 
+                  text-gray-400 transition hover:bg-purple-100 
+                  hover:text-purple-600"
+                  title="Rembourser"
+                >
+                  <BanknoteArrowDown size={16} />
                 </button>
               </td>
             </tr>

@@ -6,13 +6,15 @@ import Modal from "../../../components/modal";
 import { useCreateLoan } from "../hooks/use-create-loan";
 import GetMember from "../../members/components/get-member";
 import { currency } from "../../../utlis/currency";
+import type { Rate } from "../../rate/type";
 
 type createLoanProps = {
   open: boolean;
   onClose: () => void;
+  rates:Rate[]
 };
 
-const CreateLoan = ({ onClose, open }: createLoanProps) => {
+const CreateLoan = ({ onClose, open, rates }: createLoanProps) => {
   const token = getToken();
   const { create, fail, pending } = useCreateLoan(token ?? "");
 
@@ -23,8 +25,8 @@ const CreateLoan = ({ onClose, open }: createLoanProps) => {
     taux_interet: 4,
     membre: 0,
     date: new Date().toLocaleDateString("en-CA"),
-    est_solde:true,
-    duree_mois:0
+    est_solde: true,
+    duree_mois: 0,
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -46,6 +48,10 @@ const CreateLoan = ({ onClose, open }: createLoanProps) => {
 
   const handleDeviseChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setFormData({ ...formData, devise: event.target.value });
+  };
+
+  const handleRateChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setFormData({ ...formData, taux_interet: Number(event.target.value) });
   };
 
   if (!open) return null;
@@ -104,13 +110,21 @@ const CreateLoan = ({ onClose, open }: createLoanProps) => {
           </select>
         </div>
 
-        <div className="bg-green-50 text-green-700 rounded-lg py-4 px-2 border my-2">
-          <p className="text-xs">
-            Le taux applique a l'emprunt actuel est de{" "}
-            <span className="font-bold">4</span>
-          </p>
+        <div className="w-full my-1">
+          <label className="text-gray-900 text-xs font-semibold">Taux</label>
+          <select
+            className="border border-gray-400 text-black py-2 pl-2 rounded text-xs w-full cursor-pointer"
+            onChange={handleRateChange}
+            value={formData.taux_interet}
+          >
+            <option value="">-- Taux d'interet --</option>
+            {rates.map((rate) => (
+              <option key={rate.id} value={rate.id} className="cursor-pointer">
+                {rate.description}
+              </option>
+            ))}
+          </select>
         </div>
-
 
         <div className="w-full my-1">
           <label className="text-gray-900 text-xs font-semibold">Durée</label>
